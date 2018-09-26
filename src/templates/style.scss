@@ -1,0 +1,378 @@
+$breakpoints: ('sm': 'screen and (max-width: 768px)',
+'pc': 'screen and (min-width: 769px)'
+) !default;
+
+@mixin mq($breakpoint: sm) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+@mixin vertical-center($height) {
+  height: $height;
+  line-height: $height;
+}
+
+
+
+body {
+  margin: 0;
+
+  .mainframe {
+    margin-top: 2em;
+
+    @include mq(pc) {
+      overflow: auto;
+    }
+  }
+
+  header {
+    width: 100%;
+    background-color: #7CB3D9;
+    font-family: monospace;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+
+    @include mq(pc) {
+      font-size: 5em;
+      @include vertical-center(400px);
+    }
+
+    @include mq(sm) {
+      font-size: 3em;
+      @include vertical-center(200px);
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+
+      &:hover {
+        color: #ddd;
+      }
+    }
+  }
+
+  main {
+    box-sizing: border-box;
+
+    @include mq(pc) {
+      float: left;
+      width: 80%;
+      padding: 0 2em;
+    }
+
+    @include mq(sm) {
+      width: 100%;
+      padding: 0;
+    }
+
+    article {
+      z-index: 2;
+      margin: 2em 0;
+      position: relative;
+      padding: 0.5em 1.5em;
+      border-top: dashed 1px black;
+      border-bottom: dashed 1px black;
+      font-family: '游ゴシック体', 'Yu Gothic', 'YuGothic', 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', 'メイリオ', 'Meiryo', 'Osaka', 'ＭＳ Ｐゴシック', 'MS PGothic', 'sans-serif';
+      word-wrap: break-word;
+
+      &:after,
+      &:before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        width: 1px;
+        height: -webkit-calc(100% + 20px);
+        height: calc(100% + 20px);
+        background-color: black;
+      }
+
+      &:before {
+        left: 10px;
+      }
+
+      &:after {
+        right: 10px;
+      }
+
+      p {
+        margin: 0;
+        margin-bottom: 1em;
+        padding: 0;
+        line-height: 1.5em;
+        letter-spacing: 0.03em;
+      }
+
+      h1.title {
+        font: {
+          family: "Mplus 1p";
+          weight: inherit;
+        }
+
+        margin: 0;
+        word-break: normal;
+        float: left;
+        display: inline-block;
+        line-height: 35px;
+        overflow: auto;
+        overflow-y: hidden;
+
+        @include mq(pc) {
+          max-width: calc(100% - 107px);
+          font-size: 2em;
+        }
+
+        @include mq(sm) {
+          max-width: 100%;
+        }
+
+        background-image: linear-gradient(to right, #e4ff3c 0%, #e4ff3c 100%);
+        background-position: 0 0.7em;
+        background-repeat: repeat-x;
+        background-size: 1px 15px;
+        background-color: transparent;
+        text-decoration: none;
+        color: #022547;
+
+        &,
+        &:after,
+        &:before {
+          box-sizing: inherit;
+        }
+      }
+
+      .date {
+        display: inline-block;
+
+        .penguin-shadow {
+          @include mq(sm) {
+            display: none;
+          }
+
+          float: left;
+          width: 107px;
+          height: 35px;
+        }
+
+        p {
+          @include mq(pc) {
+            position: absolute;
+            color: white;
+            width: 107px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+          }
+
+          @include mq(sm) {
+            color: black;
+          }
+
+        }
+      }
+
+      .content-body {
+        @include mq(pc) {
+          margin: {
+            top: 3em;
+          }
+        }
+
+        @include mq(sm) {
+          margin: {
+            top: 2em;
+          }
+        }
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+
+        pre {
+          overflow-x: scroll;
+        }
+
+        table {
+          border-collapse: collapse;
+
+          th {
+            background: {
+              color: #f7f7f7;
+            }
+
+            border: 1px solid #ddd;
+            padding: 5px 12px;
+          }
+
+          td {
+            border: 1px solid #ddd;
+            padding: 5px 12px;
+          }
+        }
+      }
+
+      .tag-list {
+        ul {
+          @include mq(pc) {
+            padding: {
+              left: 40px;
+            }
+          }
+
+          @include mq(sm) {
+            padding: {
+              left: 0;
+            }
+          }
+
+          list-style: none;
+
+          li {
+            a {
+              color: #022547;
+            }
+
+            margin: {
+              bottom: 0.8em;
+            }
+          }
+        }
+      }
+
+      ul.content-tags {
+        &:after {
+          content: '';
+        }
+
+        margin: {
+          top: 1em;
+          bottom: 0;
+          left: 1em;
+        }
+
+        padding: 0;
+        list-style: none;
+
+        li {
+          &:after {
+            content: ',';
+          }
+
+          float: left;
+
+          a {
+            color: #0785ff;
+          }
+
+          &:last-child {
+            float: none;
+          }
+        }
+
+        &:last-child {
+          content: '';
+        }
+      }
+    }
+  }
+
+  aside.tag-link,
+  aside.category-link {
+    @include mq(sm) {
+      padding: {
+        left: 1em;
+      }
+    }
+
+    box-sizing: border-box;
+
+    h1 {
+      margin: {
+        bottom: 10px;
+      }
+    }
+
+    ul {
+      list-style: none;
+
+      margin: {
+        top: 0px;
+      }
+
+      li {
+        display: inline-block;
+        margin-right: 1em;
+
+        &:after {
+          content: ',';
+        }
+
+        a {
+          text-decoration: underline;
+          color: #022547;
+          word-wrap: break-word;
+        }
+
+        &:last-child {
+          float: none;
+        }
+      }
+    }
+  }
+
+  .tag-link {
+    @include mq(pc) {
+      position: relative;
+      top: 2em;
+    }
+  }
+
+  .pagenate {
+    @include mq(pc) {
+      width: 70%;
+    }
+
+    padding: {
+      left: 3em;
+      right: 3em;
+    }
+
+    height: calc(60px + 1em);
+
+    img {
+      height: 60px;
+    }
+
+    p {
+      margin: {
+        top: 0px;
+      }
+    }
+
+    .previous {
+      float: left;
+    }
+
+    .next {
+      float: right;
+    }
+  }
+
+  footer {
+    width: 100%;
+    height: 3em;
+    background-color: #022547;
+
+    p {
+      font-size: 1em;
+      color: white;
+      width: fit-content;
+      word-break: inherit;
+      margin: 1em auto;
+      line-height: 3em;
+    }
+  }
+}

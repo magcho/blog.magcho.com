@@ -1,0 +1,36 @@
+.tag-name{
+  width: fit-content;
+  margin: auto
+}
+.post{
+  z-index: 2;
+  margin: 2em 0;
+  position: relative;
+  padding: 0.5em 1.5em;
+  border-top: dashed 1px black;
+  border-bottom: dashed 1px black;
+  font-family: '游ゴシック体', 'Yu Gothic', 'YuGothic', 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', 'メイリオ', 'Meiryo', 'Osaka', 'ＭＳ Ｐゴシック', 'MS PGothic', 'sans-serif';
+  word-wrap: break-word;
+
+  &:after,
+  &:before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    width: 1px;
+    height: -webkit-calc(100% + 20px);
+    height: calc(100% + 20px);
+    background-color: black;
+  }
+
+  h1.title{
+    max-width: 100%;
+    float: none;
+    max-width: 100%;
+    float: none;
+  }
+  a{
+    text-decoration: none;
+    color: black;
+  }
+}

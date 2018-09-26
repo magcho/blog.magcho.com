@@ -1,0 +1,143 @@
+const _ = require('lodash')
+const Promise = require('bluebird')
+const path = require('path')
+const { createFilePath } = require('gatsby-source-filesystem')
+
+const createPaginatedPages = require("gatsby-paginate")
+
+exports.createPages = ({ graphql, actions }) => {
+  const { createPage } = actions
+
+  return new Promise((resolve, reject) => {
+    const blogPost = path.resolve('./src/templates/blog-post.js')
+    resolve(
+      graphql(
+        `
+          {
+            site {
+              siteMetadata {
+              title
+              description
+              }
+            },
+            allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, limit: 1000) {
+              edges {
+                node {
+                  excerpt
+                  fields {
+                    slug
+                  }
+                  frontmatter {
+                    date(formatString: "MM/DD")
+                    title
+                    category
+                    tags
+                  }
+                }
+              },
+              group(field: frontmatter___tags) {
+                fieldValue,
+                edges {
+                  node {
+                    id
+                    excerpt
+                    frontmatter{
+                      date(formatString: "MM/DD")
+                      title
+                      category
+                      tags
+                    }
+                    fields {
+                      slug
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `
+      ).then(result => {
+        if (result.errors) {
+          console.log(result.errors)
+          reject(result.errors)
+        }
+
+        // Create blog posts pages.
+        const posts = result.data.allMarkdownRemark.edges
+        
+
+        createPaginatedPages({
+          edges: posts,
+          createPage: createPage,
+          pageTemplate: "src/templates/index.js",
+          pageLength: 10, // This is optional and defaults to 10 if not used
+          pathPrefix: "", // This is optional and defaults to an empty string if not used
+          context: {
+            result: result,
+            tagsList: result.data.allMarkdownRemark.group,
+            siteMetadata: result.data.site.siteMetadata
+          } // This is optional and defaults to an empty object if not used
+        });
+
+        // タグ別記事ページ
+        _.each(result.data.allMarkdownRemark.group, (items) => {
+          createPage({
+            path: `/tag/${items.fieldValue}/`,
+            component: path.resolve('./src/templates/tags-list.js'),
+            context: {
+              postList: items.edges,
+              tagName: items.fieldValue,
+              siteMetadata: result.data.site.siteMetadata,
+              siteTagsList: result.data.allMarkdownRemark.group,
+            }
+          })
+        })
+
+        const categoriesList = [
+          '舞台技術',
+          '電子工作',
+          'プログラミング',
+          '日記',
+        ]
+        _.each(categoriesList, (category) => {
+          createPage({
+            path: `/category/${category}/`,
+            component: path.resolve('./src/templates/categories-list.js'),
+            context: {
+              categoryName: category,
+              siteTagsList: result.data.allMarkdownRemark.group,
+            },
+          })
+        })
+        
+        _.each(posts, (post, index) => {
+          const previous = index === posts.length - 1 ? null : posts[index + 1].node;
+          const next = index === 0 ? null : posts[index - 1].node;
+
+          createPage({
+            path: post.node.fields.slug,
+            component: blogPost,
+            context: {
+              slug: post.node.fields.slug,
+              previous,
+              next,
+            },
+          })
+        })
+      })
+    )
+  })
+}
+
+exports.onCreateNode = ({ node, actions, getNode }) => {
+  const { createNodeField } = actions
+
+  if (node.internal.type === `MarkdownRemark`) {
+    const value = createFilePath({ node, getNode })
+    createNodeField({
+      name: `slug`,
+      node,
+      value,
+    })
+  }
+}
