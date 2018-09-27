@@ -9,6 +9,7 @@ import '../templates/style.scss'
 import './post-list.scss'
 import Tags from '../components/tags'
 import PostTitle from '../components/posttitle'
+import Ogp from '../components/ogp'
 
 
 class BlogPostTemplate extends React.Component{
@@ -39,6 +40,7 @@ class BlogPostTemplate extends React.Component{
           }]}
           title={`${tagName} | ${siteTitle}`}
         />
+        <Ogp props={this.props}/>
         <h1 className='tag-name'>#{tagName}</h1>
         {postList.map(item => {
           return(

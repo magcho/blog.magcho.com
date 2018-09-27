@@ -9,6 +9,7 @@ import './post-list.scss'
 import Tags from '../components/tags'
 import PostTitle from '../components/posttitle'
 import Penguin from '../components/penguin'
+import Ogp from '../components/ogp'
 
 class BlogPostTemplate extends React.Component{
 
@@ -40,6 +41,7 @@ class BlogPostTemplate extends React.Component{
         }]}
         title={`${this.props.pageContext.categoryName} | ${siteTitle}`}
       />
+      <Ogp props={this.props}/>
       <h1 className='tag-name'>【{this.props.pageContext.categoryName}】</h1>
       {postList.map(item => (
         <article key={item.node.fields.slug}>
