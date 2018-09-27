@@ -9,6 +9,7 @@ import Penguin from '../components/penguin'
 import '../templates/style.scss'
 import Tags from '../components/tags'
 import PostTitle from '../components/posttitle'
+import SnsOgp from '../components/sns-ogp'
 
 
 class BlogPostTemplate extends React.Component{
@@ -21,6 +22,7 @@ class BlogPostTemplate extends React.Component{
     const { previous, next } = this.props.pageContext
     const tagsList = get(this.props, 'data.allMarkdownRemark.group')
     
+    console.log(this.props)
     return(
       <Layout location={this.props.location}
         siteTitle={siteTitle}
@@ -35,6 +37,13 @@ class BlogPostTemplate extends React.Component{
             content: postDescription,
           }]}
           title={`${post.frontmatter.title} | ${siteTitle}`}
+        />
+        <SnsOgp
+          pageUrl={this.props.location.pathname}
+          directLink={this.props.location.href}
+          image={`${this.props.origin}/twitter-icon.jpg`}
+          title={siteTitle}
+          description={postDescription}
         />
         <article key={post.id}>
           <div className={'content-header'}>
