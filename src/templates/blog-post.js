@@ -27,6 +27,7 @@ class BlogPostTemplate extends React.Component{
         tagsList={tagsList}
         previous={previous}
         next={next}
+        parent={'blog-post'}
       >
         <Helmet
           htmlAttributes={{lang: 'ja'}}
