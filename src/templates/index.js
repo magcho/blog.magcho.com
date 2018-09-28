@@ -10,6 +10,7 @@ import '../templates/style.scss'
 import Tags from '../components/tags'
 import PostTitle from '../components/posttitle'
 import ReadMore from '../components/readmore'
+import Ogp from '../components/ogp'
 
 
 class BlogIndex extends React.Component {
@@ -42,6 +43,7 @@ class BlogIndex extends React.Component {
           meta={[{ name: 'description', content: siteMetadata.description }]}
           title={siteMetadata.title}
         />
+        <Ogp props={this.props}/>
         {posts.map(({ node }) => {
           return (
             <article key={node.fields.slug}>
