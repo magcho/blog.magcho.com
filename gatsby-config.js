@@ -3,7 +3,7 @@ module.exports = {
     title: 'magchoの雑記',
     author: 'magcho',
     description: 'magchoの日記とか思いつきを記録するブログ',
-    siteUrl: 'https://blog.magcho.com/',
+    siteUrl: 'https://blog.magcho.com',
   },
   plugins: [
     'gatsby-plugin-sass',
@@ -17,8 +17,7 @@ module.exports = {
     {
       resolve: `gatsby-transformer-remark`,
       options: {
-        plugins: [
-          {
+        plugins: [{
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 590,
@@ -59,5 +58,30 @@ module.exports = {
     },
     `gatsby-plugin-offline`,
     `gatsby-plugin-react-helmet`,
-  ],
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        output: `/sitemap.xml`,
+        // Exclude specific pages or groups of pages using glob parameters
+        // See: https://github.com/isaacs/minimatch
+        // The example below will exclude the single `path/to/page` and all routes beginning with `category`
+        exclude: ["/category/*", `/tag/*`,`/dev-404-page/`,`/404/`, `/404.html`],
+        query: `
+          {
+            site {
+              siteMetadata {
+                siteUrl
+              }
+            }
+            allSitePage {
+              edges {
+                node {
+                  path
+                }
+              }
+            }
+          }`
+      }
+    }
+  ]
 }
