@@ -44,7 +44,7 @@ class BlogPostTemplate extends React.Component{
       <Ogp props={this.props}/>
       <h1 className='tag-name'>【{this.props.pageContext.categoryName}】</h1>
       {postList.map(item => (
-        <article key={item.node.fields.slug}>
+        <article key={item.node.fields.slug} className='post'>
           <Link to={item.node.fields.slug}>
             <div className='eyecatch'/>
             <PostTitle category={this.props.pageContext.categoryName}>{item.node.frontmatter.title}</PostTitle>
