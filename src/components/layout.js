@@ -127,11 +127,19 @@ class Template extends React.Component {
   
   render() {
     const { location, siteTitle, children } = this.props
-    
+    let headerStyle
+    let headerAnkerStyle
+    if(this.props.parent != undefined){
+      headerStyle = { height: '200px' }
+      headerAnkerStyle = { lineHeight : '200px' }
+    }else{
+      headerAnkerStyle = {}
+      headerStyle = {}
+    }
     return (
       <>
-        <header>
-          <Link to={'/'}>
+        <header style={headerStyle}>
+          <Link to={'/'} style={headerAnkerStyle}>
             <div className="title">{ siteTitle }</div>
           </Link>
         </header>
