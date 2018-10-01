@@ -13,7 +13,7 @@ import Ogp from '../components/ogp'
 
 class BlogPostTemplate extends React.Component{
 
-  
+
   render(){
     const siteTitle = this.props.data.site.siteMetadata.title
     const siteDescription = this.props.data.site.description
@@ -22,9 +22,9 @@ class BlogPostTemplate extends React.Component{
     this.props.pageContext.siteTagsList.map( item => {
       tagsList.push({fieldValue: item.fieldValue})
     })
-    
 
-  
+
+
     return(
       <Layout location={this.props.location}
         siteTitle={siteTitle}
@@ -32,7 +32,7 @@ class BlogPostTemplate extends React.Component{
         previous=""
         next=""
       >
-      
+
       <Helmet
         htmlAttributes={{lang: 'ja'}}
         meta={[{
@@ -74,7 +74,7 @@ query CategoryPage($categoryName: String) {
     totalCount
     edges {
       node {
-        excerpt
+        excerpt(pruneLength: 400)
         fields{
           slug
         }
