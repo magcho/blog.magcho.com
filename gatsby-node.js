@@ -23,7 +23,7 @@ exports.createPages = ({ graphql, actions }) => {
             allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, limit: 1000) {
               edges {
                 node {
-                  excerpt
+                  excerpt(pruneLength: 400)
                   fields {
                     slug
                   }
@@ -40,7 +40,7 @@ exports.createPages = ({ graphql, actions }) => {
                 edges {
                   node {
                     id
-                    excerpt
+                    excerpt(pruneLength: 400)
                     frontmatter{
                       date(formatString: "MM/DD")
                       title
@@ -64,7 +64,7 @@ exports.createPages = ({ graphql, actions }) => {
 
         // Create blog posts pages.
         const posts = result.data.allMarkdownRemark.edges
-        
+
 
         createPaginatedPages({
           edges: posts,
@@ -109,7 +109,7 @@ exports.createPages = ({ graphql, actions }) => {
             },
           })
         })
-        
+
         _.each(posts, (post, index) => {
           const previous = index === posts.length - 1 ? null : posts[index + 1].node;
           const next = index === 0 ? null : posts[index - 1].node;
