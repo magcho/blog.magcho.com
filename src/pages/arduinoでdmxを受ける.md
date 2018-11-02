@@ -10,6 +10,4 @@ DMXSerial使っただけ。この方法だとHardwareSerialを使うので、ス
 
 ![null](./images/20180105190616.png)
 
-{% gist 257ba101ae0ba998f83275564c8c5f6a %}
-
 <https://qiita.com/loveandsheep/items/e1295ec9ce589>
