@@ -162,3 +162,9 @@ zplug load
 # prompt pure
 
 ```
+
+
+# git 
+
+- httpsで認証したいので
+`git config --global credential.helper osxkeychain`
