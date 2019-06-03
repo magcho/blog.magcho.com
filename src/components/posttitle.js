@@ -27,7 +27,7 @@ class PostTitle extends React.Component{
     }
     return(
       <h1 className='title' style={{
-        backgroundImage: `linear-gradient(to right, ${color} 0%, ${color}  100%)`
+        borderBottom: `solid ${color} 0.3rem`,
       }}>
         { this.props.children }
       </h1>

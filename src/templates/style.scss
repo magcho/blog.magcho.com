@@ -105,17 +105,28 @@ body {
         letter-spacing: 0.03em;
       }
 
+      div.title > a{
+        text-decoration: none;
+        color: #022547;
+      }
       h1.title {
         font: {
           family: "Mplus 1p";
           weight: inherit;
         }
-
+        display: inline;
         margin: 0;
         word-break: normal;
-        float: left;
-        display: inline-block;
-        line-height: 35px;
+        // font-size: 2rem;
+        line-height: 2rem;
+        @include mq(pc) {
+          float: left
+        }
+        @include mq(sm){
+          float: unset
+        }
+        // display: inline-block;
+        // line-height: 35px;
         overflow: auto;
         overflow-y: hidden;
 
@@ -125,22 +136,21 @@ body {
         }
 
         @include mq(sm) {
-          max-width: 100%;
+          // max-width: 100%;
         }
 
-        background-image: linear-gradient(to right, #e4ff3c 0%, #e4ff3c 100%);
-        background-position: 0 0.7em;
-        background-repeat: repeat-x;
-        background-size: 1px 15px;
-        background-color: transparent;
-        text-decoration: none;
-        color: #022547;
+        // background-image: linear-gradient(to right, #e4ff3c 0%, #e4ff3c 100%);
+        // background-position: 0 0.7em;
+        // background-repeat: repeat-x;
+        // background-size: 1px 15px;
+        // background-color: transparent;
+        
 
-        &,
-        &:after,
-        &:before {
-          box-sizing: inherit;
-        }
+        // &,
+        // &:after,
+        // &:before {
+        //   box-sizing: inherit;
+        // }
       }
 
       .date {
@@ -160,6 +170,7 @@ body {
           @include mq(pc) {
             position: absolute;
             color: white;
+            font-weight: bold;
             width: 107px;
             height: 35px;
             line-height: 35px;
@@ -168,6 +179,7 @@ body {
 
           @include mq(sm) {
             color: black;
+            line-height: 2rem;
           }
         }
       }
