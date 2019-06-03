@@ -1,5 +1,6 @@
-$breakpoints: ('sm': 'screen and (max-width: 768px)',
-'pc': 'screen and (min-width: 769px)'
+$breakpoints: (
+  "sm": "screen and (max-width: 768px)",
+  "pc": "screen and (min-width: 769px)"
 ) !default;
 
 @mixin mq($breakpoint: sm) {
@@ -12,8 +13,6 @@ $breakpoints: ('sm': 'screen and (max-width: 768px)',
   height: $height;
   line-height: $height;
 }
-
-
 
 body {
   margin: 0;
@@ -28,7 +27,7 @@ body {
 
   header {
     width: 100%;
-    background-color: #7CB3D9;
+    background-color: #7cb3d9;
     font-family: monospace;
     color: white;
     font-weight: bold;
@@ -75,12 +74,13 @@ body {
       padding: 0.5em 1.5em;
       border-top: dashed 1px black;
       border-bottom: dashed 1px black;
-      font-family: '游ゴシック体', 'Yu Gothic', 'YuGothic', 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', 'メイリオ', 'Meiryo', 'Osaka', 'ＭＳ Ｐゴシック', 'MS PGothic', 'sans-serif';
+      font-family: "游ゴシック体", "Yu Gothic", "YuGothic", "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro",
+        "メイリオ", "Meiryo", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "sans-serif";
       word-wrap: break-word;
 
       &:after,
       &:before {
-        content: '';
+        content: "";
         position: absolute;
         top: -10px;
         width: 1px;
@@ -169,7 +169,6 @@ body {
           @include mq(sm) {
             color: black;
           }
-
         }
       }
 
@@ -197,6 +196,7 @@ body {
 
         table {
           border-collapse: collapse;
+          margin: auto;
 
           th {
             background: {
@@ -244,7 +244,7 @@ body {
 
       ul.content-tags {
         &:after {
-          content: '';
+          content: "";
         }
 
         margin: {
@@ -258,7 +258,7 @@ body {
 
         li {
           &:after {
-            content: ',';
+            content: ",";
           }
 
           float: left;
@@ -273,7 +273,7 @@ body {
         }
 
         &:last-child {
-          content: '';
+          content: "";
         }
       }
     }
@@ -307,7 +307,7 @@ body {
         margin-right: 1em;
 
         &:after {
-          content: ',';
+          content: ",";
         }
 
         a {
