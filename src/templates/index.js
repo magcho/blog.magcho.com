@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'gatsby'
+import { Link, graphql } from 'gatsby'
 import get from 'lodash/get'
 import Helmet from 'react-helmet'
 
@@ -15,19 +15,20 @@ import Ogp from '../components/ogp'
 
 class BlogIndex extends React.Component {
   render() {
-    const siteMetadata = this.props.pageContext.additionalContext.siteMetadata
-    const posts = get(this, 'props.pageContext.group')
-    const tagsList = this.props.pageContext.additionalContext.tagsList
+    const siteMetadata = this.props.data.site.siteMetadata
+    const posts = this.props.data.allMarkdownRemark.edges
+    const tagsList = this.props.data.allMarkdownRemark.group
 
-    const index = this.props.pageContext.index
+    // const index = this.props.pageContext.index
+    const currentPageNum = this.props.pageContext.currentPage
     let previousUrl
-    if(index >= 2){
-      previousUrl = index -1 != 1 ? (index - 1).toString() : "/"
+    if(currentPageNum >= 2){
+      previousUrl = currentPageNum - 1 != 1 ? (currentPageNum - 1).toString() : "/"
     }else{
       previousUrl = ""
     }
-    const nextUrl = this.props.pageContext.last ? "" : (index + 1).toString()
-    const lastPageFlag = this.props.pageContext.last
+    const lastPageFlag = (this.props.pageContext.numPages == currentPageNum)
+    const nextUrl = lastPageFlag ? "" : (currentPageNum + 1).toString()
 
       
     return (
@@ -67,5 +68,54 @@ class BlogIndex extends React.Component {
     )
   }
 }
+
+export const blogListQuery = graphql`
+  query blogListQuery($skip: Int!, $limit: Int!) {
+    site {
+      siteMetadata {
+      title
+      description
+      }
+    },
+    allMarkdownRemark(
+      sort: { fields: [frontmatter___date], order: DESC }
+      limit: $limit
+      skip: $skip
+    ) {
+      edges {
+        node {
+          excerpt(pruneLength: 400)
+          fields {
+            slug
+          }
+          frontmatter {
+            date(formatString: "MM/DD")
+            title
+            category
+            tags
+          }
+        }
+      },
+      group(field: frontmatter___tags) {
+        fieldValue,
+        edges {
+          node {
+            id
+            excerpt(pruneLength: 400)
+            frontmatter{
+              date(formatString: "MM/DD")
+              title
+              category
+              tags
+            }
+            fields {
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+`
 
 export default BlogIndex

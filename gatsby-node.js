@@ -3,8 +3,6 @@ const Promise = require('bluebird')
 const path = require('path')
 const { createFilePath } = require('gatsby-source-filesystem')
 
-const createPaginatedPages = require("gatsby-paginate")
-
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
 
@@ -64,20 +62,25 @@ exports.createPages = ({ graphql, actions }) => {
 
         // Create blog posts pages.
         const posts = result.data.allMarkdownRemark.edges
+        const postsPerPage = 4
+        const numPages = Math.ceil(posts.length / postsPerPage)
+        Array.from({ length: numPages }).forEach((_, i) => {
+          createPage({
+            path: i === 0 ? `/` : `/${i + 1}`,
+            component: path.resolve("./src/templates/index.js"),
+            context: {
+              limit: postsPerPage,
+              skip: i * postsPerPage,
+              numPages,
+              currentPage: i + 1,
+              result: result,
+              tagsList: result.data.allMarkdownRemark.group,
+              siteMetadata: result.data.site.siteMetadata
+            },
+          })
+        })
 
 
-        createPaginatedPages({
-          edges: posts,
-          createPage: createPage,
-          pageTemplate: "src/templates/index.js",
-          pageLength: 10, // This is optional and defaults to 10 if not used
-          pathPrefix: "", // This is optional and defaults to an empty string if not used
-          context: {
-            result: result,
-            tagsList: result.data.allMarkdownRemark.group,
-            siteMetadata: result.data.site.siteMetadata
-          } // This is optional and defaults to an empty object if not used
-        });
 
         // タグ別記事ページ
         _.each(result.data.allMarkdownRemark.group, (items) => {

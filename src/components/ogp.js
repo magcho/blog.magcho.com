@@ -10,13 +10,13 @@ class OgpHelmet extends React.Component{
     const locationPath = parentProps.location.pathname
     if(locationPath == '/'){
       // index
-      ogTitle = parentProps.pageContext.additionalContext.siteMetadata.title
-      ogDescription = parentProps.pageContext.additionalContext.siteMetadata.description
+      ogTitle = parentProps.pageContext.siteMetadata.title
+      ogDescription = parentProps.pageContext.siteMetadata.description
       ogType = 'blog'
     }else if(locationPath.match(/^\/\d*$/)){
       // page
-      ogTitle = parentProps.pageContext.additionalContext.siteMetadata.title
-      ogDescription = parentProps.pageContext.additionalContext.siteMetadata.description
+      ogTitle = parentProps.pageContext.siteMetadata.title
+      ogDescription = parentProps.pageContext.siteMetadata.description
       ogType = 'blog'
     }else if(locationPath.match(/^\/category/) != null){
       // category
