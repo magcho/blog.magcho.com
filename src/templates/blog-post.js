@@ -47,6 +47,7 @@ class BlogPostTemplate extends React.Component{
         /> */}
         <article key={post.id}>
           <div className={'content-header'}>
+            
             <div className={'title'}>
               <PostTitle category={post.frontmatter.category}>
                 {post.frontmatter.title}
@@ -56,8 +57,9 @@ class BlogPostTemplate extends React.Component{
               <Penguin category={post.frontmatter.category}  date={post.frontmatter.date}/>
             </div>
           </div>
-          <div className={'content-body'} dangerouslySetInnerHTML={{ __html: post.html }} />
           <Tags list={post.frontmatter.tags || [] } category={post.frontmatter.category || []}/>
+          <div className={'content-body'} dangerouslySetInnerHTML={{ __html: post.html }} />
+          {/* <Tags list={post.frontmatter.tags || [] } category={post.frontmatter.category || []}/> */}
         </article>
       </Layout>
     )
