@@ -52,7 +52,10 @@ body {
       }
     }
   }
-
+  .mainframe{
+    max-width: 1280px;
+    margin: auto;
+  }
   main {
     box-sizing: border-box;
 
@@ -104,14 +107,19 @@ body {
         line-height: 1.5em;
         letter-spacing: 0.03em;
       }
-
+      @include mq(pc){
+        .title-flame{
+          float: left;
+        }
+      }
       div.title > a{
         text-decoration: none;
         color: #022547;
       }
       h1.title {
         font: {
-          family: "Mplus 1p";
+          font-family: "游ゴシック体", "Yu Gothic", "YuGothic", "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro",
+        "メイリオ", "Meiryo", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "sans-serif";
           weight: inherit;
         }
         display: inline;
@@ -120,7 +128,7 @@ body {
         // font-size: 2rem;
         line-height: 2rem;
         @include mq(pc) {
-          float: left
+          // float: left
         }
         @include mq(sm){
           float: unset
@@ -192,6 +200,7 @@ body {
         }
         .excerpt{
           line-height: 1.8rem;
+          margin-bottom: 0;
         }
         p {
           text-indent: 1rem;
@@ -348,9 +357,9 @@ body {
           word-wrap: break-word;
         }
 
-        &:last-child {
-          float: none;
-        }
+        // &:last-child {
+        //   float: none;
+        // }
       }
     }
   }

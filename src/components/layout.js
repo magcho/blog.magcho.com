@@ -149,8 +149,9 @@ class Template extends React.Component {
           </main>
           <CategoriesLinks/>
           <TagsLinks tags={this.props.tagsList}/>
+          <Pagenate props={this.props} path={location.pathname} lastPageFlag={this.props.lastPageFlag} />
         </div>
-        <Pagenate props={this.props} path={location.pathname} lastPageFlag={this.props.lastPageFlag} />
+        
         <Footer />
       </>
     )

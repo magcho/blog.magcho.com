@@ -11,7 +11,7 @@ const ReadMore = (props) => {
       break;
       
     case '日記':
-      color = '#9AF5A5'
+      color = '#4fe661'
       break;
 
     case '電子工作':

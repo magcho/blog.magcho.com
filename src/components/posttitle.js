@@ -10,7 +10,7 @@ class PostTitle extends React.Component{
         break;
         
       case '日記':
-        color = '#9AF5A5'
+        color = '#4fe661'
         break;
 
       case '電子工作':
@@ -26,11 +26,13 @@ class PostTitle extends React.Component{
         break;
     }
     return(
-      <h1 className='title' style={{
-        borderBottom: `solid ${color} 0.3rem`,
-      }}>
-        { this.props.children }
-      </h1>
+      <div className="title-flame">
+        <h1 className='title' style={{
+          borderBottom: `solid ${color} 0.3rem`,
+        }}>
+          { this.props.children }
+        </h1>
+      </div>
     )
   }
 }

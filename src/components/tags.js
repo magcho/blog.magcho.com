@@ -5,7 +5,7 @@ import {Link} from 'gatsby'
 const Cate = (props) => {
   if(props.category.category != ""){
     return (
-      <li>
+      <li className={props.category.category}>
         <Link to={`/category/${props.category.category}/`}>
           【{props.category.category}】
         </Link>
@@ -21,7 +21,7 @@ const Tags = (props) => {
       {props.list.map(
         tag => {
           return(
-            <li key={tag}>
+            <li key={tag} className={tag}>
               <Link to={`/tag/${tag}/`}>
                 {tag}
               </Link>
