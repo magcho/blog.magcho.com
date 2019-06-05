@@ -270,10 +270,19 @@ body {
         }
         display: block;
 
-        margin: {
-          top: 1em;
-          bottom: 0;
-          left: 1em;
+        @include mq(pc){
+          margin: {
+            top: 2em;
+            bottom: 0;
+            left: 1em;
+          }
+        }
+        @include mq(sm){
+          margin: {
+            top: 0em;
+            bottom: 0;
+            left: 1em;
+          }
         }
 
         padding: 0;
