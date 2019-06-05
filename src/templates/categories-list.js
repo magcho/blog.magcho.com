@@ -10,6 +10,7 @@ import Tags from '../components/tags'
 import PostTitle from '../components/posttitle'
 import Penguin from '../components/penguin'
 import Ogp from '../components/ogp'
+import ReadMore from '../components/readmore'
 
 class BlogPostTemplate extends React.Component{
 
@@ -51,6 +52,7 @@ class BlogPostTemplate extends React.Component{
             <Penguin category={this.props.pageContext.categoryName} date={item.node.frontmatter.date}/>
             <p className='excerpt'>{item.node.excerpt}</p>
           </Link>
+          <ReadMore category={this.props.pageContext.categoryName} slug={item.node.fields.slug}/>
           <Tags list={item.node.frontmatter.tags} category={this.props.pageContext.categoryName} />
         </article>
       ))}
