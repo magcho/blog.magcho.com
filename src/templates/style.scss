@@ -190,8 +190,19 @@ body {
             top: 2rem;
           }
         }
-
-
+        .excerpt{
+          line-height: 1.8rem;
+        }
+        p {
+          text-indent: 1rem;
+          line-height: 1.8rem;
+          margin-bottom: 2rem;
+        }
+        ul{
+          p{
+            margin-bottom: unset;
+          }
+        }
         img {
           width: 100%;
           height: auto;

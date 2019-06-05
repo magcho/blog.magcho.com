@@ -58,7 +58,9 @@ class BlogIndex extends React.Component {
                 </div>
                 <Penguin category={node.frontmatter.category}  date={node.frontmatter.date}/>
               </div>
-              <div className={'content-body'} dangerouslySetInnerHTML={{ __html: node.excerpt }} />
+              <div className={'content-body'}>
+                <p className={'excerpt'} dangerouslySetInnerHTML={{ __html: node.excerpt }} />
+              </div>
               <ReadMore category={node.frontmatter.category} slug={node.fields.slug}/>
               <Tags list={node.frontmatter.tags || [] } category={node.frontmatter.category || []}/>
             </article>
