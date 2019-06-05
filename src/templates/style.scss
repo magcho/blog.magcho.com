@@ -187,15 +187,10 @@ body {
       .content-body {
         @include mq(pc) {
           margin: {
-            top: 3em;
+            top: 2rem;
           }
         }
 
-        @include mq(sm) {
-          margin: {
-            top: 2em;
-          }
-        }
 
         img {
           width: 100%;
@@ -209,6 +204,10 @@ body {
         table {
           border-collapse: collapse;
           margin: auto;
+          overflow-x: scroll;
+          display: block;
+          width: 100%;
+          border-collapse: collapse;
 
           th {
             background: {
