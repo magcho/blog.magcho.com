@@ -52,7 +52,7 @@ body {
       }
     }
   }
-  .mainframe{
+  .mainframe {
     max-width: 1280px;
     margin: auto;
   }
@@ -102,24 +102,26 @@ body {
 
       p {
         margin: 0;
-        margin-bottom: 1em;
+        margin-top: 1em;
         padding: 0;
         line-height: 1.5em;
         letter-spacing: 0.03em;
+        font-family: "ヒラギノ丸ゴ Pro W4", "ヒラギノ丸ゴ Pro", "Hiragino Maru Gothic Pro", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro", "HG丸ｺﾞｼｯｸM-PRO", "HGMaruGothicMPRO";
+
       }
-      @include mq(pc){
-        .title-flame{
+      @include mq(pc) {
+        .title-flame {
           float: left;
         }
       }
-      div.title > a{
+      div.title > a {
         text-decoration: none;
         color: #022547;
       }
       h1.title {
         font: {
           font-family: "游ゴシック体", "Yu Gothic", "YuGothic", "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro",
-        "メイリオ", "Meiryo", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "sans-serif";
+            "メイリオ", "Meiryo", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "sans-serif";
           weight: inherit;
         }
         display: inline;
@@ -130,8 +132,8 @@ body {
         @include mq(pc) {
           // float: left
         }
-        @include mq(sm){
-          float: unset
+        @include mq(sm) {
+          float: unset;
         }
         // display: inline-block;
         // line-height: 35px;
@@ -152,7 +154,6 @@ body {
         // background-repeat: repeat-x;
         // background-size: 1px 15px;
         // background-color: transparent;
-        
 
         // &,
         // &:after,
@@ -175,6 +176,7 @@ body {
         }
 
         p {
+          margin: 0;
           @include mq(pc) {
             position: absolute;
             color: white;
@@ -198,7 +200,7 @@ body {
             top: 2rem;
           }
         }
-        .excerpt{
+        .excerpt {
           line-height: 1.8rem;
           margin-bottom: 0;
         }
@@ -207,8 +209,8 @@ body {
           line-height: 1.8rem;
           margin-bottom: 2rem;
         }
-        ul{
-          p{
+        ul {
+          p {
             margin-bottom: unset;
           }
         }
@@ -279,14 +281,14 @@ body {
         }
         display: block;
 
-        @include mq(pc){
+        @include mq(pc) {
           margin: {
             top: 2em;
             bottom: 0;
             left: 1em;
           }
         }
-        @include mq(sm){
+        @include mq(sm) {
           margin: {
             top: 0em;
             bottom: 0;
