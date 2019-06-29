@@ -107,6 +107,7 @@ class Pagenate extends React.Component {
 const Footer = () => (
   <footer>
     <p className="copyright">(C)copyright magcho 2018-</p>
+		<p className="google-analytics">google analyticsを導入しています</p>
   </footer>
 )
 
