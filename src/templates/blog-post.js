@@ -3,7 +3,6 @@ import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
 import get from 'lodash/get'
 
-
 import Layout from '../components/layout'
 import Penguin from '../components/penguin'
 import '../templates/style.scss'
@@ -11,18 +10,16 @@ import Tags from '../components/tags'
 import PostTitle from '../components/posttitle'
 import Ogp from '../components/ogp'
 
-
-class BlogPostTemplate extends React.Component{
-
-  
-  render(){
+class BlogPostTemplate extends React.Component {
+  render() {
     const post = this.props.data.markdownRemark
     const siteTitle = get(this.props, 'data.site.siteMetadata.title')
     const postDescription = post.excerpt
     const { previous, next } = this.props.pageContext
     const tagsList = get(this.props, 'data.allMarkdownRemark.group')
-    return(
-      <Layout location={this.props.location}
+    return (
+      <Layout
+        location={this.props.location}
         siteTitle={siteTitle}
         tagsList={tagsList}
         previous={previous}
@@ -30,14 +27,16 @@ class BlogPostTemplate extends React.Component{
         parent={'blog-post'}
       >
         <Helmet
-          htmlAttributes={{lang: 'ja'}}
-          meta={[{
-            name: 'description',
-            content: postDescription,
-          }]}
+          htmlAttributes={{ lang: 'ja' }}
+          meta={[
+            {
+              name: 'description',
+              content: postDescription,
+            },
+          ]}
           title={`${post.frontmatter.title} | ${siteTitle}`}
         />
-        <Ogp props={this.props}/>
+        <Ogp props={this.props} />
         {/* <SnsOgp
           pageUrl={this.props.location.pathname}
           directLink={this.props.location.href}
@@ -47,18 +46,26 @@ class BlogPostTemplate extends React.Component{
         /> */}
         <article key={post.id}>
           <div className={'content-header'}>
-            
             <div className={'title'}>
               <PostTitle category={post.frontmatter.category}>
                 {post.frontmatter.title}
               </PostTitle>
             </div>
             <div className={'date'}>
-              <Penguin category={post.frontmatter.category}  date={post.frontmatter.date}/>
+              <Penguin
+                category={post.frontmatter.category}
+                date={post.frontmatter.date}
+              />
             </div>
           </div>
-          <Tags list={post.frontmatter.tags || [] } category={post.frontmatter.category || []}/>
-          <div className={'content-body'} dangerouslySetInnerHTML={{ __html: post.html }} />
+          <Tags
+            list={post.frontmatter.tags || []}
+            category={post.frontmatter.category || []}
+          />
+          <div
+            className={'content-body'}
+            dangerouslySetInnerHTML={{ __html: post.html }}
+          />
           {/* <Tags list={post.frontmatter.tags || [] } category={post.frontmatter.category || []}/> */}
         </article>
       </Layout>
@@ -85,12 +92,12 @@ export const pageQuery = graphql`
         tags
         category
         date(formatString: "MM/DD")
-      },
-    },
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }){
+      }
+    }
+    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
       group(field: frontmatter___tags) {
         fieldValue
-      },
+      }
     }
   }
 `

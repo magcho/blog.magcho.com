@@ -3,11 +3,13 @@ layout: post
 title: Homebrew Caskで特定のアプリがインストールできなくなった話
 category: プログラミング
 tags:
- - Homebrew
+  - Homebrew
 date: 2016-12-03
 ---
+
 ## 状況説明
-かなり前からhomebrew caskを使うと。
+
+かなり前から homebrew cask を使うと。
 
 ```
 $ brew cask list
@@ -22,8 +24,8 @@ following to your HOMEBREW_CASK_OPTS:
 For more details on each of those options, see https://github.com/caskroom/homebrew-cask/issues/21913.
 ```
 
-こんなのが出てきていた。「caskのバージョンアップでアプリが配置されるディレクトリの場所が変わったから前の場所に置いてたアプリ新しいとこに移動してくれ」っていう話だった気がする、筆者は<s>面倒だから</s>移動しなくても使えるからやっていなかったが、dockerがうまくインストールできないので今更対応した。
-やることは簡単、コンソールに書いてある[URL](https://github.com/caskroom/homebrew-cask/issues/21913)に書いている通りに進めるだけだが、しかし今回Thunderbirdが再インストールに失敗した。
+こんなのが出てきていた。「cask のバージョンアップでアプリが配置されるディレクトリの場所が変わったから前の場所に置いてたアプリ新しいとこに移動してくれ」っていう話だった気がする、筆者は<s>面倒だから</s>移動しなくても使えるからやっていなかったが、docker がうまくインストールできないので今更対応した。
+やることは簡単、コンソールに書いてある[URL](https://github.com/caskroom/homebrew-cask/issues/21913)に書いている通りに進めるだけだが、しかし今回 Thunderbird が再インストールに失敗した。
 
 ```
 $ brew cask install thunderbird-ja
@@ -36,15 +38,17 @@ fatal error
 エラー吐いてインストールが止まってしまう。
 
 ## 対応
-上のコンソールで```Already download```ってなってるから以前ダウンロードしてあるインストーラを使おうとしているのだが
+
+上のコンソールで`Already download`ってなってるから以前ダウンロードしてあるインストーラを使おうとしているのだが
 
 ```
 $ cd /Users/{username}/Library/Caches/Homebrew/Cask/
 No such file or directory
 ```
 
-となる。ディレクトリ自体が無いので、移動時にどっかいった可能性が高い。そこで新しいファイルをダウンロードすればいいと思い```$ brew cask install --force thunderbird-ja```としたもののやはり```Already download```となりダウンロードしてくれない。そこで最新バージョンではなくBetaを一旦インストールする。そしてキャッシュを消し、最新バージョンへアップグレードする。とうまくいった。
-事前にcask versionsがインストールしてある場合は２つ目の$から始めてもらえばいいかと。
+となる。ディレクトリ自体が無いので、移動時にどっかいった可能性が高い。そこで新しいファイルをダウンロードすればいいと思い`$ brew cask install --force thunderbird-ja`としたもののやはり`Already download`となりダウンロードしてくれない。そこで最新バージョンではなく Beta を一旦インストールする。そしてキャッシュを消し、最新バージョンへアップグレードする。とうまくいった。
+事前に cask versions がインストールしてある場合は２つ目の\$から始めてもらえばいいかと。
+
 ```
 $ brew tap caskroom/versions
 ==> Tapping caskroom/versions
@@ -79,5 +83,6 @@ $ brew cask install thunderbird
 ```
 
 ## まとめ
-brew caskのキャッシュ周りのことを理解しないで使っているので本当はもっといい解決策があるかもしれないが、今回はこれで収まったのでよしとする。
-homebrewはオープンソースプロジェクトなのでGithubでどんなことやってるかは確認できるが、仕様変更なんかがあった時にエラー吐いてググって変更あったんだーってなることが多いので、もっと自己防衛のためにもアンテナ張ってなきゃな〜って思った。
+
+brew cask のキャッシュ周りのことを理解しないで使っているので本当はもっといい解決策があるかもしれないが、今回はこれで収まったのでよしとする。
+homebrew はオープンソースプロジェクトなので Github でどんなことやってるかは確認できるが、仕様変更なんかがあった時にエラー吐いてググって変更あったんだーってなることが多いので、もっと自己防衛のためにもアンテナ張ってなきゃな〜って思った。

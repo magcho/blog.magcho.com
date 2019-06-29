@@ -1,39 +1,38 @@
 import React from 'react'
-import {Link} from 'gatsby'
+import { Link } from 'gatsby'
 
 import './readmore.scss'
 
-const ReadMore = (props) => {
-  let color = ""
+const ReadMore = props => {
+  let color = ''
   switch (props.category) {
     case '舞台技術':
       color = '#7CB3D9'
-      break;
-      
+      break
+
     case '日記':
       color = '#4fe661'
-      break;
+      break
 
     case '電子工作':
       color = '#F18AF2'
-      break;
+      break
 
     case 'プログラミング':
       color = '#F29333'
-      break;
-    
+      break
+
     default:
       color = '#b0cc05'
-      break;
+      break
   }
-  return(
-    <Link to={props.slug} style={{textDecoration: 'none'}}>
-      <div className='readmore' style={{backgroundColor: color}}>
+  return (
+    <Link to={props.slug} style={{ textDecoration: 'none' }}>
+      <div className="readmore" style={{ backgroundColor: color }}>
         続きを読む
       </div>
     </Link>
   )
 }
-
 
 export default ReadMore

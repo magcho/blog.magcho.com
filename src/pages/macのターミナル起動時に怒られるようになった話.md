@@ -3,16 +3,17 @@ layout: post
 title: macのターミナル起動時に怒られるようになった話
 category: プログラミング
 tags:
- - mac
+  - mac
 date: 2018-06-05
 ---
+
 今日ターミナルを起動すると
 
 ```
 Can't locate local/lib.pm in @INC (you may need to install the local::lib module)
 ```
 
-と表示されるようになった。とりあえずperlを最新にしてみようとplenvをインストール
+と表示されるようになった。とりあえず perl を最新にしてみようと plenv をインストール
 <https://github.com/tokuhirom/plenv#homebrew-on-mac-os-x>
 公式の説明どうりに
 
@@ -21,7 +22,7 @@ $ brew intall plenv
 $ brew install perl-build
 ```
 
-.bachrcに追記
+.bachrc に追記
 
 ```
 if which plenv > /dev/null; then eval "$(plenv init -)"; fi
@@ -34,7 +35,7 @@ $ plenv install 5.26.2
 $ plenv global 5.26.2
 ```
 
-パッケージマネージャーもインストール(pip的なやつ)
+パッケージマネージャーもインストール(pip 的なやつ)
 
 ```
 $ plenv install-cpanm
@@ -45,5 +46,5 @@ $ PLENV_INSTALL_CPANM="-v" plenv install-cpanm
 
 ```
 $ cpan
-$ install local/lib.pm 
+$ install local/lib.pm
 ```

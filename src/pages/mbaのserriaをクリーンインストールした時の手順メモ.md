@@ -3,30 +3,31 @@ layout: post
 title: MBAのSerriaをクリーンインストールした時の手順メモ
 category: プログラミング
 tags:
- - mac
+  - mac
 date: 2016-12-30
 ---
+
 **自分用のメモ記事なので、参考程度にどうぞ。**
 
 ## 環境
 
-* MacBookAir macOS Sierra 10.12.2
-* homebrew 1.1.5
-* homebrew-cask 1.1.5
-* mas 1.3.1
-* mackup 0.8.15
+- MacBookAir macOS Sierra 10.12.2
+- homebrew 1.1.5
+- homebrew-cask 1.1.5
+- mas 1.3.1
+- mackup 0.8.15
 
 ## 準備編
 
-１.  必要なファイルを外部のストレージにコピー
+１. 必要なファイルを外部のストレージにコピー
 
-* homeディレクトリをそのままコピーしてしまえばある程度は安心
-* プッシュしていないGitプロジェクトはプロジェクトごとコピーしておけばブランチ構造ごとコピーできる
-* VirtualBoxのエクスポートツールでバックアップしてもいいし、面倒ならフォルダごとコピーして*.vboxファイルをあとでインポートすればOK
+- home ディレクトリをそのままコピーしてしまえばある程度は安心
+- プッシュしていない Git プロジェクトはプロジェクトごとコピーしておけばブランチ構造ごとコピーできる
+- VirtualBox のエクスポートツールでバックアップしてもいいし、面倒ならフォルダごとコピーして\*.vbox ファイルをあとでインポートすれば OK
 
-２. Dropboxをインストールし同期できるように設定しておく
+２. Dropbox をインストールし同期できるように設定しておく
 
-* インストール済みならばそれでOK
+- インストール済みならばそれで OK
 
 ３. アプリの設定ファイルなどをバックアップ
 
@@ -35,11 +36,10 @@ $ brew install mackup
 $ mackup backup
 ```
 
-* エクスポートしたファイル群はDropboxの共有フォルダにあるので、同期しておく
-* /Users/{ユーザー名}/Dropbox/Mackupが作られる
+- エクスポートしたファイル群は Dropbox の共有フォルダにあるので、同期しておく
+- /Users/{ユーザー名}/Dropbox/Mackup が作られる
 
 ４. homebrwe, homebrew cask でコマンドでインストールしたアプリの一覧を取得する
-     
 
 ```
 $ cd ~/Dropbox/mac_backup
@@ -47,80 +47,80 @@ $ brew list >> brew_list.txt
 $ brew cask list >> brew_cask_list.txt
 ```
 
-* Docker は別で再インストールしたほうがいい(Docker tool box)
+- Docker は別で再インストールしたほうがいい(Docker tool box)
 
-５. AppStoreでからインストールしたアプリの一覧を取得する
+５. AppStore でからインストールしたアプリの一覧を取得する
 
 ```
 $ cd ~/Dropbox/mac_backup
 $ brew install mas
-$ mas list >> mas_list.txt 
+$ mas list >> mas_list.txt
 ```
 
 ６. インストール一覧からシェルスクリプトを作る
 
 {% gist 5023c8d38d325b6578112807c1fd46b2 %}
 
-[macを引っ越す時にアプリを一括インストールするスクリプト](https://gist.github.com/5023c8d38d325b6578112807c1fd46b2)
+[mac を引っ越す時にアプリを一括インストールするスクリプト](https://gist.github.com/5023c8d38d325b6578112807c1fd46b2)
 
 ## リストア編
 
-１.  xcodeをappstoreからインストール
+１. xcode を appstore からインストール
 
-２. xcodeを起動しxcode comand line toolをインストール
+２. xcode を起動し xcode comand line tool をインストール
 
-３. Homebrewをインストール
+３. Homebrew をインストール
 
 ```
 $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-４. 1passwordをインストールする
+４. 1password をインストールする
 
 ```
 $ brew cask install 1passwrod
 ```
 
-* **caskは\[brew cask]とコマンドを打つと気を利かせてhomebrewがインストールしてくれるので、自分でやる必要はない**
-* 自分はiPhoneとも同期しているのでicloud同期で設定
+- **cask は\[brew cask]とコマンドを打つと気を利かせて homebrew がインストールしてくれるので、自分でやる必要はない**
+- 自分は iPhone とも同期しているので icloud 同期で設定
 
-５. Dropboxをインストールしファイルを同期する
+５. Dropbox をインストールしファイルを同期する
 
 ```
 $ brew cask install dropbox
 ```
 
-６. mackupをインストールし、復元
+６. mackup をインストールし、復元
 
 ```
 $ brew install mackup
 $ mackup restore
 ```
 
-７. 準備編(上記)で作ったシェルスクリプトを実行してbrew と cask系を一括インストール
+７. 準備編(上記)で作ったシェルスクリプトを実行して brew と cask 系を一括インストール
 
 ```
 $ cd /Users/{ユーザー名}/Dropbox/mac_backup
 $ sudo sh brew-install-list.sh
 ```
 
-８. atomエディタのアドオンと設定を復元
+８. atom エディタのアドオンと設定を復元
 
 ```
 $ apm install atom-settings
 [atom内のコマンドで（cmd+shift+p)] -> [sync-settings:restore]とタイプしEnter
 ```
 
-* apmコマンドが使えない場合は一度atomを起動し \[Atom] -> \[Install Shell Commands]を押しapmが使えるようにする。 
-* 復元中に、gistのリストとパッケージの最新バージョンが違ったりすると警告が出るので、各自判断で手動ならインストールできます。
-* Settings > Packages を見るとatomの再起動が必要なパッケージはダウンロードされた時点で一時停止しているので、インストールを押してやればOKです。
+- apm コマンドが使えない場合は一度 atom を起動し \[Atom] -> \[Install Shell Commands]を押し apm が使えるようにする。
+- 復元中に、gist のリストとパッケージの最新バージョンが違ったりすると警告が出るので、各自判断で手動ならインストールできます。
+- Settings > Packages を見ると atom の再起動が必要なパッケージはダウンロードされた時点で一時停止しているので、インストールを押してやれば OK です。
 
-９. Git系のセットアップ
+９. Git 系のセットアップ
 
-* gitはsourcetree内蔵ではなく、自分で入れたものを使っているのでbrew でインストール後Sourcetreeの設定でシステムのGitに切り替えます
-* GithubとBitbucketでログインする。２段階認証にどちらも対応してるのでアクセストークンをあれこれする必要はなく、IDとPWでログインして、携帯などで6桁の数字を確認して２段階認証しておきましょう
-* OuathかBasicで認証したりSSHキーを認証したりしておく。
+- git は sourcetree 内蔵ではなく、自分で入れたものを使っているので brew でインストール後 Sourcetree の設定でシステムの Git に切り替えます
+- Github と Bitbucket でログインする。２段階認証にどちらも対応してるのでアクセストークンをあれこれする必要はなく、ID と PW でログインして、携帯などで 6 桁の数字を確認して２段階認証しておきましょう
+- Ouath か Basic で認証したり SSH キーを認証したりしておく。
 
 ## 後記
 
-アプリのインストール管理はbrew-fileとやらでできるらしいので、もっと早く知りたかった。それと、1passwordってappstoreからだと7,800円するけど、caskなら試用版をメール認証なしでインストールできるっていう発見。
+アプリのインストール管理は brew-file とやらでできるらしいので、もっと早く知りたかった。それと、1password って appstore からだと 7,800 円するけど、cask なら試用版をメール認証なしでインストールできるっていう発見。

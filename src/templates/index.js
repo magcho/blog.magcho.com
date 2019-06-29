@@ -3,7 +3,6 @@ import { Link, graphql } from 'gatsby'
 import get from 'lodash/get'
 import Helmet from 'react-helmet'
 
-
 import Layout from '../components/layout'
 import Penguin from '../components/penguin'
 import '../templates/style.scss'
@@ -11,7 +10,6 @@ import Tags from '../components/tags'
 import PostTitle from '../components/posttitle'
 import ReadMore from '../components/readmore'
 import Ogp from '../components/ogp'
-
 
 class BlogIndex extends React.Component {
   render() {
@@ -22,17 +20,18 @@ class BlogIndex extends React.Component {
     // const index = this.props.pageContext.index
     const currentPageNum = this.props.pageContext.currentPage
     let previousUrl
-    if(currentPageNum >= 2){
-      previousUrl = currentPageNum - 1 != 1 ? (currentPageNum - 1).toString() : "/"
-    }else{
-      previousUrl = ""
+    if (currentPageNum >= 2) {
+      previousUrl =
+        currentPageNum - 1 != 1 ? (currentPageNum - 1).toString() : '/'
+    } else {
+      previousUrl = ''
     }
-    const lastPageFlag = (this.props.pageContext.numPages == currentPageNum)
-    const nextUrl = lastPageFlag ? "" : (currentPageNum + 1).toString()
+    const lastPageFlag = this.props.pageContext.numPages == currentPageNum
+    const nextUrl = lastPageFlag ? '' : (currentPageNum + 1).toString()
 
-      
     return (
-      <Layout location={this.props.location}
+      <Layout
+        location={this.props.location}
         siteTitle={siteMetadata.title}
         tagsList={tagsList}
         previous={previousUrl}
@@ -44,7 +43,7 @@ class BlogIndex extends React.Component {
           meta={[{ name: 'description', content: siteMetadata.description }]}
           title={siteMetadata.title}
         />
-        <Ogp props={this.props}/>
+        <Ogp props={this.props} />
         {posts.map(({ node }) => {
           return (
             <article key={node.fields.slug}>
@@ -56,13 +55,25 @@ class BlogIndex extends React.Component {
                     </PostTitle>
                   </Link>
                 </div>
-                <Penguin category={node.frontmatter.category}  date={node.frontmatter.date}/>
+                <Penguin
+                  category={node.frontmatter.category}
+                  date={node.frontmatter.date}
+                />
               </div>
               <div className={'content-body'}>
-                <p className={'excerpt'} dangerouslySetInnerHTML={{ __html: node.excerpt }} />
+                <p
+                  className={'excerpt'}
+                  dangerouslySetInnerHTML={{ __html: node.excerpt }}
+                />
               </div>
-              <ReadMore category={node.frontmatter.category} slug={node.fields.slug}/>
-              <Tags list={node.frontmatter.tags || [] } category={node.frontmatter.category || []}/>
+              <ReadMore
+                category={node.frontmatter.category}
+                slug={node.fields.slug}
+              />
+              <Tags
+                list={node.frontmatter.tags || []}
+                category={node.frontmatter.category || []}
+              />
             </article>
           )
         })}
@@ -75,10 +86,10 @@ export const blogListQuery = graphql`
   query blogListQuery($skip: Int!, $limit: Int!) {
     site {
       siteMetadata {
-      title
-      description
+        title
+        description
       }
-    },
+    }
     allMarkdownRemark(
       sort: { fields: [frontmatter___date], order: DESC }
       limit: $limit
@@ -97,14 +108,14 @@ export const blogListQuery = graphql`
             tags
           }
         }
-      },
+      }
       group(field: frontmatter___tags) {
-        fieldValue,
+        fieldValue
         edges {
           node {
             id
             excerpt(pruneLength: 400)
-            frontmatter{
+            frontmatter {
               date(formatString: "MM/DD")
               title
               category
