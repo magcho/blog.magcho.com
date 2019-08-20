@@ -1,11 +1,10 @@
 ---
 title: homebrew-caskにないアプリは自分で追加しよう
-date: 2019-01-08
+date: 2019-08-20
 category: プログラミング
 tags:
   - homebrew
 ---
-
 ## Cask に追加してみる
 
 1. homebrew を更新し、作業中は自動更新を止める

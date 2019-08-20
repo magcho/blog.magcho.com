@@ -46,7 +46,7 @@
   "homepage": "https://blog.magcho.com",
   "keywords": [
     "gatsby",
-		"magcho"
+    "magcho"
   ],
   "license": "",
   "main": "n/a",
@@ -57,7 +57,7 @@
   "scripts": {
     "dev": "gatsby develop",
     "lint": "./node_modules/.bin/eslint --ext .js,.jsx --ignore-pattern public .",
-		"format": "./node_modules/.bin/prettier --trailing-comma es5 --no-semi --single-quote --write 'src/**/*.js' 'src/**/*.md'",
+    "format": "./node_modules/.bin/prettier --trailing-comma es5 --no-semi --single-quote --write 'src/**/*.js' 'src/**/*.md'",
     "dev-m": "gatsby develop -H 0.0.0.0 -p 8000",
     "build": "gatsby build",
     "fix-semi": "./node_modules/.bin/eslint --quiet --ignore-pattern node_modules --ignore-pattern public --parser babel-eslint --no-eslintrc --rule '{\"semi\": [2, \"never\"], \"no-extra-semi\": [2]}' --fix gatsby-node.js"
