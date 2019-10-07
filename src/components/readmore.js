@@ -11,7 +11,7 @@ const ReadMore = props => {
       break
 
     case '日記':
-      color = '#4fe661'
+      color = '#00bb16'
       break
 
     case '電子工作':
@@ -27,10 +27,12 @@ const ReadMore = props => {
       break
   }
   return (
-    <Link to={props.slug} style={{ textDecoration: 'none' }}>
-      <div className="readmore" style={{ backgroundColor: color }}>
-        続きを読む
-      </div>
+    <Link
+      to={props.slug}
+      style={{ textDecoration: 'none' }}
+      className="readmore-link"
+    >
+      <div className={`readmore ${props.category}`}>続きを読む</div>
     </Link>
   )
 }

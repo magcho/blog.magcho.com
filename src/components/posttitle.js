@@ -9,7 +9,7 @@ class PostTitle extends React.Component {
         break
 
       case '日記':
-        color = '#4fe661'
+        color = '#00bb16'
         break
 
       case '電子工作':
