@@ -1,3 +1,10 @@
+@mixin dark-mode{
+		@media (prefers-color-scheme: dark) {
+				@content
+		}
+}
+
+
 .readmore {
   margin: auto;
   width: fit-content;
@@ -9,5 +16,41 @@
   }
   padding: 0.5em 2em;
   border-radius: 2em;
+	// border: solid;
   color: white;
+	background-color : #b0cc05; // default background color
+}
+.readmore-link{
+	.舞台技術{
+			background-color: #7CB3D9;
+	}
+	.日記{
+			background-color: #00bb16;
+	}
+	.電子工作{
+			background-color: #F18AF2;
+	}
+	.プログラミング{
+			background-color: #F29333;
+	}
+
+	.readmore{
+			@include dark-mode{
+					background-color: #1A2937; // overwride for dark-mode
+			}
+	}
+	@include dark-mode{
+			.舞台技術{
+					border: solid 2px #7CB3D9;
+			}
+			.日記{
+					border: solid 2px #00bb16;
+			}
+			.電子工作{
+					border: solid 2px #F18AF2;
+			}
+			.プログラミング{
+					border: solid 2px #F29333;
+			}
+	}
 }
