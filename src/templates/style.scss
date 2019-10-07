@@ -18,8 +18,19 @@ $font-pop: "ヒラギノ丸ゴ Pro W4", "ヒラギノ丸ゴ Pro", "Hiragino Maru
   line-height: $height;
 }
 
+@mixin dark-mode{
+		@media (prefers-color-scheme: dark) {
+				@content
+		}
+}
+
 body {
-  margin: 0;
+		margin: 0;
+		@include dark-mode{
+				background-color: #1A2937;
+				// background-color: #1c2532;
+				color: rgba(255,255,255,0.86);
+		}
 
   .mainframe {
     margin-top: 2em;
@@ -33,9 +44,12 @@ body {
     width: 100%;
     background-color: #7cb3d9;
     font-family: monospace;
-    color: white;
+    // color: white;
     font-weight: bold;
     text-align: center;
+		@include dark-mode{
+				background-color: #005e86;
+		}
 
     @include mq(pc) {
       font-size: 5em;
@@ -83,6 +97,11 @@ body {
       border-bottom: dashed 1px black;
       font-family: $font-gothic;
       word-wrap: break-word;
+			@include dark-mode{
+					border-top: dashed 1px rgba(255,255,255,0.5);
+					border-bottom: dashed 1px rgba(255,255,255,0.5);
+					// background-color: #1c2532;
+			}
 
       &:after,
       &:before {
@@ -93,6 +112,9 @@ body {
         height: -webkit-calc(100% + 20px);
         height: calc(100% + 20px);
         background-color: black;
+				@include dark-mode{
+						background-color: rgba(255,255,255,0.5);
+				}
       }
 
       &:before {
@@ -120,6 +142,9 @@ body {
       div.title > a {
         text-decoration: none;
         color: #022547;
+				@include dark-mode{
+						color: white;
+				}
       }
       h1.title {
         font: {
@@ -182,16 +207,23 @@ body {
           @include mq(pc) {
             position: absolute;
             color: white;
+						@include dark-mode{
+								color: black;
+						}
             font-weight: bold;
             width: 107px;
             height: 35px;
             line-height: 35px;
             text-align: center;
+						
           }
 
           @include mq(sm) {
             color: black;
             line-height: 2rem;
+						@include dark-mode{
+								color:white;
+						}
           }
         }
       }
@@ -210,6 +242,12 @@ body {
           text-indent: 1rem;
           line-height: 1.8rem;
           margin-bottom: 2rem;
+					a{
+							color: #00b4ff;
+							&:visited{
+									color: #1d9db3
+							}
+					}
         }
         ul {
           p {
@@ -267,7 +305,10 @@ body {
 
           li {
             a {
-              color: #022547;
+								color: #022547;
+								@include dark-mode{
+										color: #00c3ff;
+								}
             }
 
             margin: {
@@ -302,6 +343,7 @@ body {
         list-style: none;
 
         li {
+						margin-right: 0.5rem;
           &:after {
             content: ",";
           }
@@ -309,8 +351,8 @@ body {
           float: left;
 
           a {
-            color: #0785ff;
-            font-family: serif;
+            color: #00b4ff;
+            font-family: $font-pop;
           }
 
           &:last-child {
@@ -335,11 +377,13 @@ body {
     font-family: serif;
 
     box-sizing: border-box;
-
     h1 {
       margin: {
         bottom: 10px;
       }
+			@include dark-mode{
+					color: white;
+			}
     }
 
     ul {
@@ -351,15 +395,23 @@ body {
 
       li {
         display: inline-block;
-        margin-right: 1em;
+        margin-right: 0.5rem;
 
         &:after {
-          content: ",";
+						content: ",";
+						@include dark-mode{
+								color: #777;
+						}
         }
 
         a {
           text-decoration: underline;
           color: #022547;
+					@include dark-mode{
+							color: #00b4ff;
+							line-height: 1.8rem;
+							font-family: $font-pop;
+					}
           word-wrap: break-word;
         }
 
@@ -420,9 +472,14 @@ body {
 				font-size: 0.8rem;
 		  margin: auto 0;
       color: white;
+			@include dark-mode{
+					color: #777;
+					background-color: #0c141b;
+			}
 			width: 100%;
       word-break: inherit;
       text-align: center;
     }
   }
 }
+
