@@ -1,12 +1,13 @@
 $breakpoints: (
-  "sm": "screen and (max-width: 768px)",
-  "pc": "screen and (min-width: 769px)"
+  'sm': 'screen and (max-width: 768px)',
+  'pc': 'screen and (min-width: 769px)',
 ) !default;
 
+$font-gothic: '游ゴシック体', 'Yu Gothic', 'YuGothic', 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', 'メイリオ',
+  'Meiryo', 'Osaka', 'ＭＳ Ｐゴシック', 'MS PGothic', 'sans-serif';
+$font-pop: 'ヒラギノ丸ゴ Pro W4', 'ヒラギノ丸ゴ Pro', 'Hiragino Maru Gothic Pro', 'ヒラギノ角ゴ Pro W3',
+  'Hiragino Kaku Gothic Pro', 'HG丸ｺﾞｼｯｸM-PRO', 'HGMaruGothicMPRO';
 
-$font-gothic: "游ゴシック体", "Yu Gothic", "YuGothic", "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", "メイリオ", "Meiryo", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "sans-serif";
-$font-pop: "ヒラギノ丸ゴ Pro W4", "ヒラギノ丸ゴ Pro", "Hiragino Maru Gothic Pro", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro", "HG丸ｺﾞｼｯｸM-PRO", "HGMaruGothicMPRO";
-		
 @mixin mq($breakpoint: sm) {
   @media #{map-get($breakpoints, $breakpoint)} {
     @content;
@@ -18,19 +19,19 @@ $font-pop: "ヒラギノ丸ゴ Pro W4", "ヒラギノ丸ゴ Pro", "Hiragino Maru
   line-height: $height;
 }
 
-@mixin dark-mode{
-		@media (prefers-color-scheme: dark) {
-				@content
-		}
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
 }
 
 body {
-		margin: 0;
-		@include dark-mode{
-				background-color: #1A2937;
-				// background-color: #1c2532;
-				color: rgba(255,255,255,0.86);
-		}
+  margin: 0;
+  @include dark-mode {
+    background-color: #1a2937;
+    // background-color: #1c2532;
+    color: rgba(255, 255, 255, 0.86);
+  }
 
   .mainframe {
     margin-top: 2em;
@@ -47,9 +48,9 @@ body {
     // color: white;
     font-weight: bold;
     text-align: center;
-		@include dark-mode{
-				background-color: #005e86;
-		}
+    @include dark-mode {
+      background-color: #005e86;
+    }
 
     @include mq(pc) {
       font-size: 5em;
@@ -73,6 +74,12 @@ body {
   .mainframe {
     max-width: 1280px;
     margin: auto;
+    a {
+      color: #00b4ff;
+      &:visited {
+        color: #1d9db3;
+      }
+    }
   }
   main {
     box-sizing: border-box;
@@ -97,24 +104,24 @@ body {
       border-bottom: dashed 1px black;
       font-family: $font-gothic;
       word-wrap: break-word;
-			@include dark-mode{
-					border-top: dashed 1px rgba(255,255,255,0.5);
-					border-bottom: dashed 1px rgba(255,255,255,0.5);
-					// background-color: #1c2532;
-			}
+      @include dark-mode {
+        border-top: dashed 1px rgba(255, 255, 255, 0.5);
+        border-bottom: dashed 1px rgba(255, 255, 255, 0.5);
+        // background-color: #1c2532;
+      }
 
       &:after,
       &:before {
-        content: "";
+        content: '';
         position: absolute;
         top: -10px;
         width: 1px;
         height: -webkit-calc(100% + 20px);
         height: calc(100% + 20px);
         background-color: black;
-				@include dark-mode{
-						background-color: rgba(255,255,255,0.5);
-				}
+        @include dark-mode {
+          background-color: rgba(255, 255, 255, 0.5);
+        }
       }
 
       &:before {
@@ -132,7 +139,6 @@ body {
         line-height: 1.5em;
         letter-spacing: 0.03em;
         font-family: $font-pop;
-
       }
       @include mq(pc) {
         .title-flame {
@@ -142,13 +148,13 @@ body {
       div.title > a {
         text-decoration: none;
         color: #022547;
-				@include dark-mode{
-						color: white;
-				}
+        @include dark-mode {
+          color: white;
+        }
       }
       h1.title {
         font: {
-				font-family: $font-gothic;
+          font-family: $font-gothic;
           weight: inherit;
         }
         display: inline;
@@ -207,23 +213,22 @@ body {
           @include mq(pc) {
             position: absolute;
             color: white;
-						@include dark-mode{
-								color: black;
-						}
+            @include dark-mode {
+              color: black;
+            }
             font-weight: bold;
             width: 107px;
             height: 35px;
             line-height: 35px;
             text-align: center;
-						
           }
 
           @include mq(sm) {
             color: black;
             line-height: 2rem;
-						@include dark-mode{
-								color:white;
-						}
+            @include dark-mode {
+              color: white;
+            }
           }
         }
       }
@@ -242,12 +247,12 @@ body {
           text-indent: 1rem;
           line-height: 1.8rem;
           margin-bottom: 2rem;
-					a{
-							color: #00b4ff;
-							&:visited{
-									color: #1d9db3
-							}
-					}
+          a {
+            color: #00b4ff;
+            &:visited {
+              color: #1d9db3;
+            }
+          }
         }
         ul {
           p {
@@ -264,25 +269,31 @@ body {
         }
 
         table {
+          margin: auto;
           border-collapse: collapse;
           margin: auto;
           overflow-x: scroll;
           display: block;
-          width: 100%;
+          width: fit-content;
           border-collapse: collapse;
 
           th {
-            background: {
-              color: #f7f7f7;
+            background-color: #f7f7f7;
+            @include dark-mode {
+              background-color: #0b141b;
             }
 
             border: 1px solid #ddd;
             padding: 5px 12px;
           }
-
-          td {
-            border: 1px solid #ddd;
-            padding: 5px 12px;
+          tr {
+            td {
+              border: 1px solid #ddd;
+              padding: 5px 12px;
+            }
+            &:nth-child(odd) {
+              background-color: #2a3c4c;
+            }
           }
         }
       }
@@ -305,10 +316,10 @@ body {
 
           li {
             a {
-								color: #022547;
-								@include dark-mode{
-										color: #00c3ff;
-								}
+              color: #022547;
+              @include dark-mode {
+                color: #00c3ff;
+              }
             }
 
             margin: {
@@ -320,7 +331,7 @@ body {
 
       ul.content-tags {
         &:after {
-          content: "";
+          content: '';
         }
         display: block;
 
@@ -343,9 +354,9 @@ body {
         list-style: none;
 
         li {
-						margin-right: 0.5rem;
+          margin-right: 0.5rem;
           &:after {
-            content: ",";
+            content: ',';
           }
 
           float: left;
@@ -361,7 +372,7 @@ body {
         }
 
         &:last-child {
-          content: "";
+          content: '';
         }
       }
     }
@@ -381,9 +392,9 @@ body {
       margin: {
         bottom: 10px;
       }
-			@include dark-mode{
-					color: white;
-			}
+      @include dark-mode {
+        color: white;
+      }
     }
 
     ul {
@@ -398,20 +409,20 @@ body {
         margin-right: 0.5rem;
 
         &:after {
-						content: ",";
-						@include dark-mode{
-								color: #777;
-						}
+          content: ',';
+          @include dark-mode {
+            color: #777;
+          }
         }
 
         a {
           text-decoration: underline;
           color: #022547;
-					@include dark-mode{
-							color: #00b4ff;
-							line-height: 1.8rem;
-							font-family: $font-pop;
-					}
+          @include dark-mode {
+            color: #00b4ff;
+            line-height: 1.8rem;
+            font-family: $font-pop;
+          }
           word-wrap: break-word;
         }
 
@@ -433,6 +444,17 @@ body {
     @include mq(pc) {
       width: 70%;
     }
+    .dark-mode {
+      display: none;
+    }
+    @include dark-mode {
+      .light-mode {
+        display: none;
+      }
+      .dark-mode {
+        display: unset;
+      }
+    }
 
     padding: {
       left: 3em;
@@ -445,12 +467,18 @@ body {
       height: 60px;
     }
 
-    p {
-      margin: {
-					top: 0px;
-					bottom: 0;
+    a {
+      p {
+        margin: {
+          top: 0px;
+          bottom: 0;
+        }
+        font-family: $font-pop;
       }
-			font-family: $font-pop;
+      color: #00b4ff;
+      &:visited {
+        color: #1d9db3;
+      }
     }
 
     .previous {
@@ -466,20 +494,19 @@ body {
     width: 100%;
     // height: 4rem;
     background-color: #022547;
-		margin-top: 1rem;
-		font-family: $font-pop;
+    margin-top: 1rem;
+    font-family: $font-pop;
     p {
-				font-size: 0.8rem;
-		  margin: auto 0;
+      font-size: 0.8rem;
+      margin: auto 0;
       color: white;
-			@include dark-mode{
-					color: #777;
-					background-color: #0c141b;
-			}
-			width: 100%;
+      @include dark-mode {
+        color: #777;
+        background-color: #0c141b;
+      }
+      width: 100%;
       word-break: inherit;
       text-align: center;
     }
   }
 }
-

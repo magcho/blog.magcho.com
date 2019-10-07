@@ -3,6 +3,8 @@ import { Link } from 'gatsby'
 
 import previousPenguin from '../assets/penguin-previous.svg'
 import nextPenguin from '../assets/penguin-next.svg'
+import previousPenguinWhite from '../assets/penguin-previous-white.svg'
+import nextPenguinWhite from '../assets/penguin-next-white.svg'
 
 const CategoriesLinks = () => {
   const categories = ['舞台技術', '電子工作', 'プログラミング', '日記']
@@ -64,8 +66,7 @@ class Pagenate extends React.Component {
       nextPath = ''
     } else {
       // 記事個別ページ
-      previousPath =
-        parentProps.previous != null ? parentProps.previous.fields.slug : ''
+      previousPath = parentProps.previous != null ? parentProps.previous.fields.slug : ''
       nextPath = parentProps.next != null ? parentProps.next.fields.slug : ''
     }
 
@@ -75,7 +76,8 @@ class Pagenate extends React.Component {
       previousComponent = (
         <div className="previous">
           <Link to={previousPath}>
-            <img src={previousPenguin} alt="Previous" />
+            <img src={previousPenguin} alt="Previous" className="light-mode" />
+            <img src={previousPenguinWhite} alt="Previous" className="dark-mode" />
             <p>←Previous</p>
           </Link>
         </div>
@@ -87,7 +89,8 @@ class Pagenate extends React.Component {
       nextComponent = (
         <div className="next">
           <Link to={nextPath}>
-            <img src={nextPenguin} alt="Next" />
+            <img src={nextPenguin} alt="Next" className="light-mode" />
+            <img src={nextPenguinWhite} alt="Next" className="dark-mode" />
             <p>Next→</p>
           </Link>
         </div>
@@ -107,7 +110,7 @@ class Pagenate extends React.Component {
 const Footer = () => (
   <footer>
     <p className="copyright">(C)copyright magcho 2018-</p>
-		<p className="google-analytics">google analyticsを導入しています</p>
+    <p className="google-analytics">google analyticsを導入しています</p>
   </footer>
 )
 
@@ -134,11 +137,7 @@ class Template extends React.Component {
           <main>{children}</main>
           <CategoriesLinks />
           <TagsLinks tags={this.props.tagsList} />
-          <Pagenate
-            props={this.props}
-            path={location.pathname}
-            lastPageFlag={this.props.lastPageFlag}
-          />
+          <Pagenate props={this.props} path={location.pathname} lastPageFlag={this.props.lastPageFlag} />
         </div>
 
         <Footer />
