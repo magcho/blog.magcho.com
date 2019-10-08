@@ -10,7 +10,7 @@ tags:
 
 macOS(Mojave)でiterm2を使っています、emacsのテーマを設定していてunderlineが表示できなくて困りました。
 
-emacsでは文字色や背景色のほか、<u>文字の下線</u>, **太字**,  *斜体* , ~取り消し~など色々な表記ができます。
+emacsでは文字色や背景色のほか、<u>文字の下線</u>, **太字**,  *斜体*, <s>取り消し</s>など色々な表記ができます。
 
 自分の環境ではflycheckのerror, warningなどが下線付きの書式になるはずでした。
 
@@ -22,7 +22,7 @@ iterm2上で直接emacsを起動している時にはきちんと下線が表示
 そもそもターミナル上でこのようにunderlineやboldなどの文字装飾を行う時はANSIエスケープシーケンスかなーと思ったんですが
 iterm直接とtmux上で
 
-```
+```bash
 print "\u001b[1m BOLD \u001b[0m\u001b[4m Underline \u001b[0m\u001b[7m Reversed \u001b[0m"
 ```
 
@@ -35,7 +35,7 @@ print "\u001b[1m BOLD \u001b[0m\u001b[4m Underline \u001b[0m\u001b[7m Reversed \
 
 もともと、tmuxには256色に対応させるために以下の設定をしていたんですが、それが原因だったようでscreenではなくxtermにすると改善しました。
 
-```.tmux.conf
+```bash:title=.tmux.conf
 # これはダメ
 set -g default-terminal "screen-256color"
 

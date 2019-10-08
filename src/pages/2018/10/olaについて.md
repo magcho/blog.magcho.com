@@ -36,7 +36,7 @@ OLA は Linux と MacOS・FreeBSD に対応している。残念ながら Window
 1. RaspberryPi が FTDI デバイスを扱えるようにルールファイルを作成します。詳しくは[公式 Wiki](https://wiki.openlighting.org/index.php/OLA_Device_Specific_Configuration#Open_DMX_USB_.2F_FTDI_RS485)にも書いてあります。
    `/etc/udev/rules.d/10-local.rules`というパスに
 
-```
+```bash:title=10-local.rules
 # udev rules for ftdi devices
 SUBSYSTEM=="usb|usb_device", ACTION=="add", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", GROUP="plugdev"
 ```
@@ -50,7 +50,7 @@ SUBSYSTEM=="usb|usb_device", ACTION=="add", ATTRS{idVendor}=="0403", ATTRS{idPro
    ![](スクリーンショット 2018-10-14 1.47.49.png)
    `Config Location`に書いてあるパスに設定ファイルがあるので、編集します。
 
-```
+```bash:title=ola-usbserial.conf
 device_dir = /dev
 device_prefix = ttyUSB
 device_prefix = cu.usbserial-
@@ -65,7 +65,7 @@ ultra_fps_limit = 40
 
 1. 次に`FTDI USB DMX`の設定ファイルを編集します。
 
-```
+```bash:title=ola-ftdidmx.conf
 enabled = false <-- trueに変更してください
 frequency = 30
 ```

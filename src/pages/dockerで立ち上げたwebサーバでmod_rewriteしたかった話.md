@@ -30,7 +30,7 @@ DockerHub の公式の PHP イメージを使っていて、mod_rewite したい
 
 このルールで URL を置換させるには.htaccess に
 
-```
+```:title=.htaccess
 RewriteEngine On
 RewriteBase /
 RewriteRule ^([0-9]+) index.php?cmd=view&page=$1 [L]
