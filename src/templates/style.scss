@@ -296,6 +296,25 @@ body {
             }
           }
         }
+				
+				.gatsby-code-title{
+						background-color: #1d1f21;
+						border-top-left-radius: 0.3em;
+						border-top-right-radius: 0.3em;
+						border-bottom: solid 2px #919492;
+						width: fit-content;
+						span{
+								padding-left: 1rem;
+								padding-right: 1rem;
+						}
+						color: hsla(0,0%,100%,.86);
+				}
+				.gatsby-highlight{
+						pre{
+								margin-top: 0;
+								border-top-left-radius: 0;
+						}
+				}
       }
 
       .tag-list {

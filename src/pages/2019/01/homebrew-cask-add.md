@@ -13,8 +13,8 @@ tags:
 
    次に、homebrew は Cask を自動更新する仕様なので作業中はこれを止めておきます。
 
-   ```
-   export HOMEBREW_NO_AUTO_UPDATE=1
+   ```bash
+   $ export HOMEBREW_NO_AUTO_UPDATE=1
    ```
 
    環境変数なのでターミナルを開き直したあとや、別のターミナルには効きませんのでご注意を。
@@ -25,25 +25,25 @@ tags:
 
 1. github 上で[homebrew-cask](https://github.com/Homebrew/homebrew-cask)を fork する
 1. local 上の homebrew ディレクトリの git に fork したリポジトリを追加する
-   ```language:bash
-   github_user='<my-github-username>'
-   cd "$(brew --repository)"/Library/Taps/Homebrew/homebrew-cask
-   git remote add "${github_user}" "https://github.com/${github_user}/homebrew-cask"
+   ```bash
+   $ github_user='<my-github-username>'
+   $ cd "$(brew --repository)"/Library/Taps/Homebrew/homebrew-cask
+   $ git remote add "${github_user}" "https://github.com/${github_user}/homebrew-cask"
    ```
 1. Cask 名を決める
 
    いわゆる`brew cask install 〇〇`のところの名前です。命名規則があるようなのですがこれを自動で決めてくれるコマンドがあります。
 
-   ```
-   "$(brew --repository)/Library/Taps/Homebrew/homebrew-cask/developer/bin/generate_cask_token" '/Applications/〇〇.app'
+   ```bash
+   $ "$(brew --repository)/Library/Taps/Homebrew/homebrew-cask/developer/bin/generate_cask_token" '/Applications/〇〇.app'
    ```
 
 1. Cask の定義ファイルを作る
 
    定義ファイルは.rb ファイルのテキストです。Stanzas という記法らしいです。これもコマンドにて雛形を作ってくれます。
 
-   ```
-   brew cask create {Cask名}
+   ```bash
+   $ brew cask create {Cask名}
    ```
 
 1. 定義ファイルを書く
@@ -52,8 +52,8 @@ tags:
 
    ちなみに`SHA-256`の部分は.app ではなくダウンロードした.zip や.dmg などのファイルのハッシュ値です。これは以下のコマンドで確認できます。ダウンロードフォルダにファイルが残っていると思うので以下のような感じで確認できます。
 
-   ```
-   shasum -a 256 "~/Downloads/〇〇.zip"
+   ```bash
+   $ shasum -a 256 "~/Downloads/〇〇.zip"
    ```
 
    また、url にバージョンの数字などが含まれる場合は変数としておくことでバージョンアップ時に定義ファイルを自動更新できるので変更しておきましょう。変数は`#{version}`で置き換えることができます。ここで注意したいのは先のコマンドで作った雛形ではシングルクオートですが、変数を含める際にはダブルクオートでなければなりません。
@@ -71,19 +71,19 @@ tags:
 
    まず実際にインストールできるか確認しましょう。手順の中ですでに PC 内にインストール済みなので、アンインストールするか、`-f`オプションで上書きしましょう。
 
-   ```
-   brew cask install -f 〇〇
+   ```bash
+   $ brew cask install -f 〇〇
    ```
 
    インストール後動作に問題がなければ OK です。
 
    定義ファイルのシンタックスチェックや、必要事項の記入漏れなどを確認・自動修正してくれるコマンドが備えれらています。
 
-   ```
-   brew cask audit 〇〇 --download
-   brew cask style Casks/〇〇.rb
+   ```bash
+   $ brew cask audit 〇〇 --download
+   $ brew cask style Casks/〇〇.rb
 
-   brew cask style Casks/〇〇.rb --fix   // <- 自動修正してくれます。
+   $ brew cask style Casks/〇〇.rb --fix   // <- 自動修正してくれます。
    ```
 
    これにて定義ファイルが完成です。次は PR をしていきます。
@@ -99,8 +99,8 @@ tags:
    [ここ](https://github.com/Homebrew/homebrew-cask/blob/master/doc/development/adding_a_cask.md#commit-messages)には例とかもっと詳しいガイドラインの紹介とかがあります
    そして fork した自分のリポジトリに push します
 
-   ```
-   git push <my-github-username> {branch名}
+   ```bash
+   $ git push <my-github-username> {branch名}
    ```
 
 1. プルリクエストを出す
@@ -111,9 +111,9 @@ tags:
 
 1. 最後に作業した環境を戻しておきます
 
-   別にやらなくてもいいような気もしますが、推奨されているのでやっときましょう
+   推奨されているのでやっときましょう
 
-   ```
-   cd "$(brew --repository)"/Library/Taps/Homebrew/homebrew-cask
-   git checkout master
+   ```bash
+   $ cd "$(brew --repository)"/Library/Taps/Homebrew/homebrew-cask
+   $ git checkout master
    ```
