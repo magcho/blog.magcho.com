@@ -103,13 +103,13 @@ body {
         border-bottom: dashed 1px rgba(255, 255, 255, 0.5);
         // background-color: #1c2532;
       }
-			  a {
-      color: #00b4ff;
-      &:visited {
-        color: #1d9db3;
-      }
-    }
-
+			a {
+					color: #00b4ff;
+					&:visited {
+							color: #1d9db3;
+					}
+			}
+			
       &:after,
       &:before {
         content: '';
