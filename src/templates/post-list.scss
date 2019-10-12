@@ -30,13 +30,19 @@
     width: 1px;
     height: -webkit-calc(100% + 20px);
     height: calc(100% + 20px);
-    background-color: rgba(255,255,255,0.5)
+	  background-color: black;
+		@include dark-mode{
+				background-color: rgba(255,255,255,0.5);
+		}
   }
 
   h1.title{
     max-width: 100%;
     float: none;
-		color: white;
+		color: #022547;
+		@include dark-mode{
+				color: white;
+		}
   }
   p.excerpt {
     margin: 2rem 0;
@@ -45,10 +51,13 @@
     line-height: 1.8rem;
     letter-spacing: 0.03em;
     text-indent: 1rem;
+		color: black;
+			@include dark-mode{
+					color: rgba(255, 255, 255, 0.86);
+			}
   }
   a{
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.86);
+			text-decoration: none;
   }
   .content-tags{
     a{
