@@ -7,17 +7,17 @@ exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
 
   return new Promise((resolve, reject) => {
-    const blogPost = path.resolve('./src/templates/blog-post.js')
+    const blogPost = path.resolve('./src/templates/blog-post.jsx')
     resolve(
       graphql(
         `
           {
             site {
               siteMetadata {
-              title
-              description
+                title
+                description
               }
-            },
+            }
             allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, limit: 1000) {
               edges {
                 node {
@@ -32,14 +32,14 @@ exports.createPages = ({ graphql, actions }) => {
                     tags
                   }
                 }
-              },
+              }
               group(field: frontmatter___tags) {
-                fieldValue,
+                fieldValue
                 edges {
                   node {
                     id
                     excerpt(pruneLength: 400)
-                    frontmatter{
+                    frontmatter {
                       date(formatString: "MM/DD")
                       title
                       category
@@ -67,7 +67,7 @@ exports.createPages = ({ graphql, actions }) => {
         Array.from({ length: numPages }).forEach((_, i) => {
           createPage({
             path: i === 0 ? `/` : `/${i + 1}`,
-            component: path.resolve("./src/templates/index.js"),
+            component: path.resolve('./src/templates/index.jsx'),
             context: {
               limit: postsPerPage,
               skip: i * postsPerPage,
@@ -75,37 +75,30 @@ exports.createPages = ({ graphql, actions }) => {
               currentPage: i + 1,
               result: result,
               tagsList: result.data.allMarkdownRemark.group,
-              siteMetadata: result.data.site.siteMetadata
+              siteMetadata: result.data.site.siteMetadata,
             },
           })
         })
 
-
-
         // タグ別記事ページ
-        _.each(result.data.allMarkdownRemark.group, (items) => {
+        _.each(result.data.allMarkdownRemark.group, items => {
           createPage({
             path: `/tag/${items.fieldValue}/`,
-            component: path.resolve('./src/templates/tags-list.js'),
+            component: path.resolve('./src/templates/tags-list.jsx'),
             context: {
               postList: items.edges,
               tagName: items.fieldValue,
               siteMetadata: result.data.site.siteMetadata,
               siteTagsList: result.data.allMarkdownRemark.group,
-            }
+            },
           })
         })
 
-        const categoriesList = [
-          '舞台技術',
-          '電子工作',
-          'プログラミング',
-          '日記',
-        ]
-        _.each(categoriesList, (category) => {
+        const categoriesList = ['舞台技術', '電子工作', 'プログラミング', '日記']
+        _.each(categoriesList, category => {
           createPage({
             path: `/category/${category}/`,
-            component: path.resolve('./src/templates/categories-list.js'),
+            component: path.resolve('./src/templates/categories-list.jsx'),
             context: {
               categoryName: category,
               siteTagsList: result.data.allMarkdownRemark.group,
