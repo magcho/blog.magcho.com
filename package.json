@@ -34,6 +34,7 @@
     "react-dom": "^16.12.0",
     "react-helmet": "^5.2.1",
     "react-typography": "^0.16.19",
+    "remark-cli": "^7.0.1",
     "textlint": "^11.5.0",
     "textlint-rule-no-todo": "^2.0.1",
     "typeface-merriweather": "0.0.72",
@@ -64,6 +65,7 @@
     "format": "./node_modules/.bin/prettier --trailing-comma es5 --no-semi --single-quote --write 'src/**/*.js' 'src/**/*.md'",
     "dev-m": "gatsby develop -H 0.0.0.0 -p 8000",
     "build": "gatsby build",
-    "fix-semi": "./node_modules/.bin/eslint --quiet --ignore-pattern node_modules --ignore-pattern public --parser babel-eslint --no-eslintrc --rule '{\"semi\": [2, \"never\"], \"no-extra-semi\": [2]}' --fix gatsby-node.js"
+    "fix-semi": "./node_modules/.bin/eslint --quiet --ignore-pattern node_modules --ignore-pattern public --parser babel-eslint --no-eslintrc --rule '{\"semi\": [2, \"never\"], \"no-extra-semi\": [2]}' --fix gatsby-node.js",
+		"format-md":"remark *.md -o"
   }
 }
