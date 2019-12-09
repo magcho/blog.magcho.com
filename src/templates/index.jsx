@@ -21,8 +21,7 @@ class BlogIndex extends React.Component {
     const currentPageNum = this.props.pageContext.currentPage
     let previousUrl
     if (currentPageNum >= 2) {
-      previousUrl =
-        currentPageNum - 1 != 1 ? (currentPageNum - 1).toString() : '/'
+      previousUrl = currentPageNum - 1 != 1 ? (currentPageNum - 1).toString() : '/'
     } else {
       previousUrl = ''
     }
@@ -50,30 +49,16 @@ class BlogIndex extends React.Component {
               <div className={'content-header'}>
                 <div className={'title'}>
                   <Link to={node.fields.slug}>
-                    <PostTitle category={node.frontmatter.category}>
-                      {node.frontmatter.title}
-                    </PostTitle>
+                    <PostTitle category={node.frontmatter.category}>{node.frontmatter.title}</PostTitle>
                   </Link>
                 </div>
-                <Penguin
-                  category={node.frontmatter.category}
-                  date={node.frontmatter.date}
-                />
+                <Penguin category={node.frontmatter.category} date={node.frontmatter.date} />
               </div>
               <div className={'content-body'}>
-                <p
-                  className={'excerpt'}
-                  dangerouslySetInnerHTML={{ __html: node.excerpt }}
-                />
+                <p className={'excerpt'} dangerouslySetInnerHTML={{ __html: node.excerpt }} />
               </div>
-              <ReadMore
-                category={node.frontmatter.category}
-                slug={node.fields.slug}
-              />
-              <Tags
-                list={node.frontmatter.tags || []}
-                category={node.frontmatter.category || []}
-              />
+              <ReadMore category={node.frontmatter.category} slug={node.fields.slug} />
+              <Tags list={node.frontmatter.tags || []} category={node.frontmatter.category || []} />
             </article>
           )
         })}
@@ -90,11 +75,7 @@ export const blogListQuery = graphql`
         description
       }
     }
-    allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: DESC }
-      limit: $limit
-      skip: $skip
-    ) {
+    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, limit: $limit, skip: $skip) {
       edges {
         node {
           excerpt(pruneLength: 400)

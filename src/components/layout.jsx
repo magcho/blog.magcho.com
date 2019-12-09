@@ -9,7 +9,7 @@ import nextPenguinWhite from '../assets/penguin-next-white.svg'
 const CategoriesLinks = () => {
   const categories = ['舞台技術', '電子工作', 'プログラミング', '日記']
   return (
-    <aside className="category-link">
+    <nav className="category-link">
       <h1 className="title">Categories</h1>
       <ul>
         {categories.map(category => {
@@ -20,13 +20,13 @@ const CategoriesLinks = () => {
           )
         })}
       </ul>
-    </aside>
+    </nav>
   )
 }
 
 const TagsLinks = props => {
   return (
-    <aside className="tag-link">
+    <nav className="tag-link">
       <h1 className="title">Tags</h1>
       <ul>
         {props.tags.map(tag => {
@@ -40,7 +40,7 @@ const TagsLinks = props => {
           )
         })}
       </ul>
-    </aside>
+    </nav>
   )
 }
 
@@ -139,7 +139,6 @@ class Template extends React.Component {
           <TagsLinks tags={this.props.tagsList} />
           <Pagenate props={this.props} path={location.pathname} lastPageFlag={this.props.lastPageFlag} />
         </div>
-
         <Footer />
       </>
     )
