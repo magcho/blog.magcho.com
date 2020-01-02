@@ -46,7 +46,7 @@ RewriteRule ^category index.php?cmd=category [L]
 
 理由は単純だった、使っているシステムが違った。どちらも apache なのは違いないが、本番は CentOS で構成されており、開発環境の Docker の公式 image の php は debian で構成されていた。
 
-[https://github.com/docker-library/php/blob/2630167f7e69394bdd91f240443a0a521fd7872d/7.0/apache/Dockerfile:embed:cite]
+[Dockerfile](https://github.com/docker-library/php/blob/2630167f7e69394bdd91f240443a0a521fd7872d/7.0/apache/Dockerfile)
 
 debian 系の apache で mod_rewrite を有効化するにはコンテナに入ってコマンドを打てばいいらしい。
 
@@ -102,7 +102,7 @@ php-7.0:
 ~~~~~~~~~~~~~~以下略~~~~~~~~~~~~~~~~
 ```
 
-この３ファイルを同じディレクトリに入れ`docker-compose up`で OK。
+この３ファイルを同じディレクトリに入れ`docker-compose build`なりでイメージをリビルドして`docker-compose up`OK。
 
 ちなみに、mysql も使いたいよって人は
 
