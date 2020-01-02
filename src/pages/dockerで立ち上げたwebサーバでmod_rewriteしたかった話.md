@@ -102,7 +102,7 @@ php-7.0:
 ~~~~~~~~~~~~~~以下略~~~~~~~~~~~~~~~~
 ```
 
-この３ファイルを同じディレクトリに入れ`docker-compose build`なりでイメージをリビルドして`docker-compose up`OK。
+この３ファイルを同じディレクトリに入れ`docker-compose build`なりでイメージをリビルドして`docker-compose up`でOK。
 
 ちなみに、mysql も使いたいよって人は
 
