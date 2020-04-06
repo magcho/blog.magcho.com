@@ -1,4 +1,5 @@
 {
+	"private": true,
   "name": "magcho-blog",
   "description": "blog of magcho",
   "version": "1.0.0",
