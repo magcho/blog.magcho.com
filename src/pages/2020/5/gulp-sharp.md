@@ -24,7 +24,7 @@ npm i through2 gulp-util sharp
 ```
 
 
-```node:title=my-gulp-sharp.js
+```js:title=my-gulp-sharp.js
 const through = require("through2");
 const gulputil = require("gulp-util");
 const sharp = require("sharp");
@@ -70,7 +70,7 @@ npmでsharpとgulpプラグインを作るためにthrough2とgulp-utilをイン
 
 あとはgulpfile.jsからいつも通り読み込みます。
 
-```node:title=gulpfile.js
+```js:title=gulpfile.js
 cost gulp = require('gulp')
 const my-gulp-sharp = require('./my-gulp-sharp')
 
