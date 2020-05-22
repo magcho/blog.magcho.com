@@ -16,7 +16,7 @@ tags:
 
 ## Ctrlキー
 
-Ctrlキー含め装飾キーには様々なキーバインドが割り当てられています。一般的には`C + j`にはreturn・`C + h`にはbackspaceなど色々あります。zsh/bashなどのshellやターミナルのキーバインドに設定されていることが多いです。macでは`C + k`に行末まで削除があったりと気が利いています。
+Ctrlキー含め装飾キーには様々なキーバインドが割り当てられています。一般的には`C-j`にはreturn・`C-h`にはbackspaceなど色々あります。zsh/bashなどのshellやターミナルのキーバインドに設定されていることが多いです。macでは`C-k`に行末まで削除があったりと気が利いています。
 
 qmk firmwareではraise/lower等のキーマップを変更・追加してカスタマイズするのが一般的ですがこの場合は複合キーを入力するマクロを全てのキーにおいて定義する必要があり厄介です。
 
@@ -126,7 +126,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 ```
-上のコードで、switchにてctrlキーとレイヤ切り替えキーを判定し、それ以外はdefaultに入ります。ここでctrl\_pressedフラグを用いて押下中(修飾キー)であるかを判定し、任意のキーとの組み合わせ(ここではC-J/C-N)であればregister\_code(KEYCODE)にてキーを打ちます。
+上のコードで、switchにてctrlキーとレイヤ切り替えキーを判定し、それ以外はdefaultに入ります。ここで`ctrl\_pressed`フラグを用いて押下中(修飾キー)であるかを判定し、任意のキーとの組み合わせ(ここでは`C-J`/`C-N`)であれば`register\_code(KEYCODE)`にてキーを打ちます。
 
 今回のようにbackspaceやハイフンといった本来修飾キーを用いないキー(Ctrlとの複合キーではないキー)の場合はPCにこれは修飾キーでないことを伝えるために`unregister_code(KC_LCTRL)`にてctrlキーをを仮想的に押上しておきます。
 
