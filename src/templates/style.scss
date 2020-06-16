@@ -292,7 +292,10 @@ body {
               padding: 5px 12px;
             }
             &:nth-child(odd) {
-              background-color: #2a3c4c;
+              background-color: #eee;
+              @include dark-mode {
+                background-color: #2a3c4c;
+              }
             }
           }
         }
