@@ -310,9 +310,15 @@ body {
           color: hsla(0, 0%, 100%, 0.86);
         }
         .gatsby-highlight {
+          overflow-x: scroll;
           pre {
+            word-break: keep-all;
             margin-top: 0;
             border-top-left-radius: 0;
+          }
+          code {
+            word-break: keep-all;
+            word-wrap: normal;
           }
         }
       }
