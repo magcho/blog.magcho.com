@@ -1,4 +1,4 @@
 {
   "private": true,
-  "workspaces": ["theme", "site"]
+  "workspaces": ["gatsby-theme-penguin", "site"]
 }
