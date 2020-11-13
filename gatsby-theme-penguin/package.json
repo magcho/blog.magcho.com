@@ -19,6 +19,7 @@
   },
   "scripts": {
     "dev": "gatsby develop",
+		"clean": "gatsby clean",
     "lint": "./node_modules/.bin/eslint --ext .js,.jsx --ignore-pattern public .",
     "format": "./node_modules/.bin/prettier --trailing-comma es5 --no-semi --single-quote --write 'src/**/*.js' 'src/**/*.md'",
     "dev-m": "gatsby develop -H 0.0.0.0 -p 8000",
