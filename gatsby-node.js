@@ -10,6 +10,8 @@ exports.createPages = async ({ graphql, actions }) => {
         siteMetadata {
           title
           description
+          categories
+          postParPage
         }
       }
       allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, limit: 1000) {
@@ -56,7 +58,7 @@ exports.createPages = async ({ graphql, actions }) => {
   // Generate index pages
   const posts = result.data.allMarkdownRemark.edges
   const indexTempalte = path.resolve('./src/templates/index.jsx')
-  const POST_PAR_PAGE = 10
+  const POST_PAR_PAGE = result.data.site.siteMetadata.postParPage
   const numPages = Math.ceil(posts.length / POST_PAR_PAGE)
   Array.from({ length: numPages }).forEach((_, i) => {
     createPage({
@@ -91,7 +93,7 @@ exports.createPages = async ({ graphql, actions }) => {
   })
 
   // Generate category pages
-  const categories = ['舞台技術', '電子工作', 'プログラミング', '日記']
+  const categories = result.data.site.siteMetadata.categories
   const categoryisPageTemplate = path.resolve('./src/templates/categories-list.jsx')
   categories.map((category) => {
     createPage({
