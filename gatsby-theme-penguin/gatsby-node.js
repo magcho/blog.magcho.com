@@ -54,9 +54,9 @@ exports.createPages = async ({ graphql, actions }) => {
   }
 
   // create index pages
-  const indexTempalte = path.resolve(`./src/templates/index.jsx`)
-  const POST_PAR_PAGE = 10
   const posts = result.data.allMarkdownRemark.edges
+  const indexTempalte = path.resolve('./src/templates/index.jsx')
+  const POST_PAR_PAGE = 10
   const numPages = Math.ceil(posts.length / POST_PAR_PAGE)
   Array.from({ length: numPages }).forEach((_, i) => {
     createPage({
@@ -70,6 +70,22 @@ exports.createPages = async ({ graphql, actions }) => {
         result: result,
         tagsList: result.data.allMarkdownRemark.group,
         siteMetadata: result.data.site.siteMetadata,
+      },
+    })
+  })
+
+  // blog posts
+  const blogPostTemplate = path.resolve('./src/templates/blog-post.jsx')
+  posts.forEach((post, index) => {
+    const previous = index === posts.length - 1 ? null : posts[index + 1].node
+    const next = index === 0 ? null : posts[index - 1].node
+    createPage({
+      path: post.node.fields.slug,
+      component: blogPostTemplate,
+      context: {
+        slug: post.node.fields.slug,
+        previous,
+        next,
       },
     })
   })
