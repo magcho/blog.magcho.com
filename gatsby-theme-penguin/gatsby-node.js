@@ -53,7 +53,7 @@ exports.createPages = async ({ graphql, actions }) => {
     throw result.errors
   }
 
-  // create index pages
+  // Generate index pages
   const posts = result.data.allMarkdownRemark.edges
   const indexTempalte = path.resolve('./src/templates/index.jsx')
   const POST_PAR_PAGE = 10
@@ -74,7 +74,7 @@ exports.createPages = async ({ graphql, actions }) => {
     })
   })
 
-  // blog posts
+  // Generate blog posts
   const blogPostTemplate = path.resolve('./src/templates/blog-post.jsx')
   posts.forEach((post, index) => {
     const previous = index === posts.length - 1 ? null : posts[index + 1].node
@@ -86,6 +86,20 @@ exports.createPages = async ({ graphql, actions }) => {
         slug: post.node.fields.slug,
         previous,
         next,
+      },
+    })
+  })
+
+  // Generate category pages
+  const categories = ['舞台技術', '電子工作', 'プログラミング', '日記']
+  const categoryisPageTemplate = path.resolve('./src/templates/categories-list.jsx')
+  categories.map((category) => {
+    createPage({
+      path: `/category/${category}/`,
+      component: categoryisPageTemplate,
+      context: {
+        categoryName: category,
+        siteTagsList: result.data.allMarkdownRemark.group,
       },
     })
   })
