@@ -1,9 +1,11 @@
 module.exports = {
   siteMetadata: {
-    title: 'magchoの雑記',
+    title: "magcho's blog",
     author: 'magcho',
     description: 'magchoの日記とか思いつきを記録するブログ',
     siteUrl: 'https://blog.magcho.com',
+    categories: ['舞台技術', '電子工作', 'プログラミング', '日記'],
+    postParPage: 10,
   },
   plugins: [
     'gatsby-plugin-sass',

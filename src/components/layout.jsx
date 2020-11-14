@@ -12,7 +12,7 @@ const CategoriesLinks = () => {
     <nav className="category-link">
       <h1 className="title">Categories</h1>
       <ul>
-        {categories.map(category => {
+        {categories.map((category) => {
           return (
             <li key={category}>
               <Link to={`/category/${category}/`}>{category}</Link>
@@ -24,12 +24,12 @@ const CategoriesLinks = () => {
   )
 }
 
-const TagsLinks = props => {
+const TagsLinks = (props) => {
   return (
     <nav className="tag-link">
       <h1 className="title">Tags</h1>
       <ul>
-        {props.tags.map(tag => {
+        {props.tags.map((tag) => {
           if (tag.fieldValue == '') {
             return ''
           }
@@ -75,7 +75,7 @@ class Pagenate extends React.Component {
     if (previousPath != '') {
       previousComponent = (
         <div className="previous">
-          <Link to={previousPath}>
+          <Link to={`/${previousPath}`}>
             <img src={previousPenguin} alt="Previous" className="light-mode" />
             <img src={previousPenguinWhite} alt="Previous" className="dark-mode" />
             <p>←Previous</p>
@@ -88,7 +88,7 @@ class Pagenate extends React.Component {
     if (nextPath != '') {
       nextComponent = (
         <div className="next">
-          <Link to={nextPath}>
+          <Link to={`/${nextPath}`}>
             <img src={nextPenguin} alt="Next" className="light-mode" />
             <img src={nextPenguinWhite} alt="Next" className="dark-mode" />
             <p>Next→</p>
