@@ -54,9 +54,9 @@ class Pagenate extends React.Component {
 
     if (path.match(/^\/\d*$/) != null) {
       // 記事一覧ページ
-      previousPath = parentProps.previous != '' ? parentProps.previous : ''
+      previousPath = `/${parentProps.previous != '' ? parentProps.previous : ''}`
       if (!this.props.lastPageFlag) {
-        nextPath = parentProps.next != '' ? parentProps.next : ''
+        nextPath = `/${parentProps.next != '' ? parentProps.next : ''}`
       } else {
         nextPath = ''
       }
@@ -75,7 +75,7 @@ class Pagenate extends React.Component {
     if (previousPath != '') {
       previousComponent = (
         <div className="previous">
-          <Link to={`/${previousPath}`}>
+          <Link to={`${previousPath}`}>
             <img src={previousPenguin} alt="Previous" className="light-mode" />
             <img src={previousPenguinWhite} alt="Previous" className="dark-mode" />
             <p>←Previous</p>
@@ -88,7 +88,7 @@ class Pagenate extends React.Component {
     if (nextPath != '') {
       nextComponent = (
         <div className="next">
-          <Link to={`/${nextPath}`}>
+          <Link to={`${nextPath}`}>
             <img src={nextPenguin} alt="Next" className="light-mode" />
             <img src={nextPenguinWhite} alt="Next" className="dark-mode" />
             <p>Next→</p>
