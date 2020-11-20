@@ -403,6 +403,11 @@ body {
           content: '';
         }
       }
+      .footnotes {
+        p {
+          display: inline;
+        }
+      }
     }
   }
 
