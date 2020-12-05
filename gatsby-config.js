@@ -93,6 +93,9 @@ module.exports = {
               }
             }
           }`,
+        resolveSiteUrl: ({ site, allSitePage }) => {
+          return site.siteMetadata.siteUrl
+        },
       },
     },
   ],
