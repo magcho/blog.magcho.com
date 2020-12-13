@@ -21,7 +21,7 @@ Lily58のデフォルトFWにはRaise/Lower/Adjustの3レイヤーが定義さ�
 
 
 まず、以下のようにNUMBERレイヤーを定義します。
-```c:title=keymap.c
+```diff-c:title=keymap.c
  #define _QWERTY 0
  #define _LOWER 1
  #define _RAISE 2
@@ -29,7 +29,7 @@ Lily58のデフォルトFWにはRaise/Lower/Adjustの3レイヤーが定義さ�
 +#define _NUMBER 4
 ```
 
-```c:title=keymap.c
+```diff-c:title=keymap.c
 	[_ADJUST] =
 		LAYOUT(XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
 		XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
@@ -155,17 +155,17 @@ Lily58のオプションで付けられるOLEDにはレイヤー名や入力履�
 
 この関数の実装にNUMBERレイヤーに関する記述をすると
 
-```c:title=lib/layer_state_reader.c
-#define L_BASE 0
-#define L_LOWER (1 << 1)
-#define L_RAISE (1 << 2)
-#define L_ADJUST (1 << 3)
-#define L_ADJUST_TRI (L_ADJUST | L_RAISE | L_LOWER)
+```diff-c:title=lib/layer_state_reader.c
+ #define L_BASE 0
+ #define L_LOWER (1 << 1)
+ #define L_RAISE (1 << 2)
+ #define L_ADJUST (1 << 3)
+ #define L_ADJUST_TRI (L_ADJUST | L_RAISE | L_LOWER)
 +#define L_NUMBER (1 << 4)
 ```
 
-```c:title=lib/layer_state_reader.c
-const char *read_layer_state(void) {
+```diff-c:title=lib/layer_state_reader.c
+ const char *read_layer_state(void) {
     switch (layer_state) {
 +        case L_NUMBER:
 +            snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Number");
@@ -175,7 +175,7 @@ const char *read_layer_state(void) {
     }
 
     return layer_state_str;
-}
+ }
 ```
 これでOLEDにLayer: Numberと表示されるようになります。めでたしめでたし。
 
