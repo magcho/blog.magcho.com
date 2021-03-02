@@ -89,7 +89,7 @@ GRANT SELECT ON databasename.* TO 'username'@'localhost' IDENTIFIED BY 'password
 CREATE TABLE tablename(subdomain VARCHAR(255) PRIMARY KEY, port INT);
 ```
 
-Nginx からは DB の読みとり権限だけ必要なので当該ユーザーに SELECT 権限を与えておきます。別途転送したいサブドメインとport番号をinsertする処理を作っておきましょう。
+Nginx からは DB の読みとり権限だけ必要なので当該ユーザーに SELECT 権限を与えておきます。別途転送したいサブドメインと port 番号を insert する処理を作っておきましょう。
 
 ### Nginx の設定ファイルへの Lua スクリプトの記述
 
@@ -137,11 +137,29 @@ listen 443 ssl;
 }
 ```
 
-server部のserver_nameで`~^(?<subdomain>[^\.]+).example.com$;`としてサブドメインにsubdomainという名前をつけてマッチしておくと後続の処理で変数として利用することができる。
+server 部の server_name で`~^(?<subdomain>[^\.]+).example.com$;`としてサブドメインに subdomain という名前をつけてマッチしておくと後続の処理で変数として利用することができる。
 
-luaからNginx confの変数を参照・代入することができる。しかしluaで新しい変数を宣言することはできないので先に変数`localport`を宣言しておくとluaから`ngx.env.localport`でアクセスできる。
+lua から Nginx conf の変数を参照・代入することができる。しかし lua で新しい変数を宣言することはできないので先に変数`localport`を宣言しておくと lua から`ngx.env.localport`でアクセスできる。
 
-db:query()にSQLクエリを入れて実行する。Luaの結合演算子`..`を利用できます。クエリの実行結果は`res`に２次元の配列(table)で返却されます。Luaは1 based indexな言語なので最初の要素のindexは1です、クエリに`limit 1`をかけているので`res[1]['port']`で転送すべきport番号が分かります。なのでこの番号に`proxy_pass`すればOKです。
+db:query()に SQL クエリを入れて実行する。Lua の結合演算子`..`を利用できます。クエリの実行結果は`res`に２次元の配列(table)で返却されます。Lua は 1 based index な言語なので最初の要素の index は 1 です、クエリに`limit 1`をかけているので`res[1]['port']`で転送すべき port 番号が分かります。なのでこの番号に`proxy_pass`すれば OK です。
+
+## おまけ
+
+サブドメインが可変なので https にするには毎回発行・無効化せずワイルドカード証明書を当てておきます。ワイルドカード証明書は DNS 認証しかできないので
+
+```bash
+sudo certbot certonly \
+  --manual \
+  --domain *.example.com \
+  --email mail@example.com \
+  --agree-tos \
+  --manual-public-ip-logging-ok \
+  --preferred-challenges dns
+```
+
+表示された文字列をネームサーバの TXT レコードに登録し認証すれば OK。
+
+自動更新するにはネームサーバーのレコード登録を自動化する必要があり外部 API に対応したネームサーバにすると良さそうです。
 
 ## 参考
 
