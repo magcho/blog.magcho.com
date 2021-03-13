@@ -10,6 +10,9 @@ const OgpHelmet = ({ description, title }) => {
           title
           description
           siteUrl
+          social {
+            twitter
+          }
         }
       }
     }
@@ -19,10 +22,10 @@ const OgpHelmet = ({ description, title }) => {
   const ogpDescription = description || site.siteMetadata.description
 
   return (
-    <Helmet htmlAttributes={{ prefix: 'og: http:ogp.me/ns#' }}>
+    <Helmet htmlAttributes={{ prefix: 'og: http:ogp.me/ns#', jang: 'ja' }}>
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:site" content="@magcho0527" />
-      <meta name="twitter:player" content="@magcho0527" />
+      <meta name="twitter:site" content={site.siteMetadata.social.twitter} />
+      <meta name="twitter:player" content={site.siteMetadata.social.twitter} />
       <meta property="og:title" content={ogpTitle} />
 
       <meta property="og:description" content={ogpDescription} />

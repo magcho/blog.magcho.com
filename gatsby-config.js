@@ -6,6 +6,9 @@ module.exports = {
     siteUrl: 'https://blog.magcho.com',
     categories: ['舞台技術', '電子工作', 'プログラミング', '日記'],
     postParPage: 10,
+    social: {
+      twitter: '@magcho0527',
+    },
   },
   plugins: [
     'gatsby-plugin-sass',
