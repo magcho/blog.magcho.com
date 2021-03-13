@@ -41,7 +41,7 @@ const BlogIndex = ({ data, location, pageContext }) => {
         meta={[{ name: 'description', content: siteMetadata.description }]}
         title={siteMetadata.title}
       />
-      {/* <Ogp props={this.props} /> */}
+      <Ogp />
       {posts.map(({ node }) => {
         return (
           <article key={node.fields.slug}>

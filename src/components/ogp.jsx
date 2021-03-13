@@ -1,58 +1,35 @@
-import React from 'react'
-import Helmet from 'react-helmet'
+import * as React from 'react'
+import { Helmet } from 'react-helmet'
+import { useStaticQuery, graphql } from 'gatsby'
 
-class OgpHelmet extends React.Component {
-  render() {
-    const parentProps = this.props.props
-    let ogType = parentProps.location.pathname == '/' ? 'blog' : 'article'
-    let ogTitle = ''
-    let ogDescription = ''
-    const locationPath = parentProps.location.pathname
-    if (locationPath == '/') {
-      // index
-      ogTitle = parentProps.pageContext.siteMetadata.title
-      ogDescription = parentProps.pageContext.siteMetadata.description
-      ogType = 'blog'
-    } else if (locationPath.match(/^\/\d*$/)) {
-      // page
-      ogTitle = parentProps.pageContext.siteMetadata.title
-      ogDescription = parentProps.pageContext.siteMetadata.description
-      ogType = 'blog'
-    } else if (locationPath.match(/^\/category/) != null) {
-      // category
-      ogTitle = parentProps.data.site.siteMetadata.title
-      ogDescription = parentProps.data.site.siteMetadata.description
-      ogType = 'blog'
-    } else if (locationPath.match(/^\/tag/) != null) {
-      // tag
-      ogTitle = parentProps.pageContext.siteMetadata.title
-      ogDescription = parentProps.pageContext.siteMetadata.description
-      ogType = 'blog'
-    } else {
-      // blog post
-      ogTitle = `${parentProps.data.markdownRemark.frontmatter.title} | ${parentProps.data.site.siteMetadata.title}`
-      ogDescription = parentProps.data.markdownRemark.excerpt
-      ogType = 'article'
+const OgpHelmet = ({ description, title }) => {
+  const { site } = useStaticQuery(graphql`
+    query {
+      site {
+        siteMetadata {
+          title
+          description
+          siteUrl
+        }
+      }
     }
+  `)
 
-    return (
-      <Helmet htmlAttributes={{ prefix: 'og: http://ogp.me/ns#' }}>
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@magcho0527" />
-        <meta name="twitter:player" content="@magcho0527" />
-        <meta property="og:title" content={ogTitle} />
+  const ogpTitle = title || site.siteMetadata.title
+  const ogpDescription = description || site.siteMetadata.description
 
-        <meta property="og:type" content={ogType} />
-        <meta property="og:description" content={ogDescription} />
-        <meta property="og:url" content={parentProps.location.href} />
-        <meta property="og:site_name" content={ogTitle} />
-        <meta
-          property="og:image"
-          content={`${parentProps.location.origin}/twitter-icon.jpg`}
-        />
-      </Helmet>
-    )
-  }
+  return (
+    <Helmet htmlAttributes={{ prefix: 'og: http:ogp.me/ns#' }}>
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:site" content="@magcho0527" />
+      <meta name="twitter:player" content="@magcho0527" />
+      <meta property="og:title" content={ogpTitle} />
+
+      <meta property="og:description" content={ogpDescription} />
+      <meta property="og:site_name" content={ogpTitle} />
+      <meta property="og:image" content={`${site.siteMetadata.siteUrl}/twitter-icon.jpg`} />
+    </Helmet>
+  )
 }
 
 export default OgpHelmet
