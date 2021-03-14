@@ -107,14 +107,12 @@ exports.createPages = async ({ graphql, actions }) => {
   })
 
   // Generate tag pages
-  const tags = result.data.allMarkdownRemark.group
   const tagsListTemplate = path.resolve('./src/templates/tags-list.jsx')
   tags.map((tag) => {
     createPage({
       path: `/tag/${tag.fieldValue}`,
       component: tagsListTemplate,
       context: {
-        postList: tag.edges,
         tagName: tag.fieldValue,
         siteMetadata: result.data.site.siteMetadata,
         siteTagsList: result.data.allMarkdownRemark.group,

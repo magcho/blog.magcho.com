@@ -1,6 +1,6 @@
-import React from 'react'
-import Helmet from 'react-helmet'
-import { Link } from 'gatsby'
+import * as React from 'react'
+import { Helmet } from 'react-helmet'
+import { graphql, Link } from 'gatsby'
 
 import Layout from '../components/layout'
 import Penguin from '../components/penguin'
@@ -11,44 +11,80 @@ import PostTitle from '../components/posttitle'
 import Ogp from '../components/ogp'
 import ReadMore from '../components/readmore'
 
-class BlogPostTemplate extends React.Component {
-  render() {
-    const postList = this.props.pageContext.postList
-    const siteTitle = this.props.pageContext.siteMetadata.title
-    const siteDescription = this.props.pageContext.siteMetadata.description
-    const tagName = this.props.pageContext.tagName
+const TagsListTemplate = ({ location, pageContext, data }) => {
+  const siteTitle = data.site.siteMetadata.title
+  const siteDescription = data.site.siteMetadata.siteDescription
+  const tagName = pageContext.tagName
+  const postList = data.allMarkdownRemark.edges
 
-    return (
-      <Layout location={this.props.location} siteTitle={siteTitle} previous="" next="">
-        <Helmet
-          htmlAttributes={{ lang: 'ja' }}
-          meta={[
-            {
-              name: 'description',
-              content: siteDescription,
-            },
-          ]}
-          title={`${tagName} | ${siteTitle}`}
-        />
-        <Ogp props={this.props} />
-        <h1 className="tag-name">#{tagName}</h1>
-        {postList.map((item) => {
-          return (
-            <article key={item.node.fields.slug} className="post">
-              <Link to={item.node.fields.slug}>
-                <div className="eyecatch" />
-                <PostTitle category={item.node.frontmatter.category}>{item.node.frontmatter.title}</PostTitle>
-                <Penguin category={item.node.frontmatter.category} date={item.node.frontmatter.date} />
-                <p className="excerpt">{item.node.excerpt}</p>
-              </Link>
-              <ReadMore category={item.node.frontmatter.category} slug={item.node.fields.slug} />
-              <Tags list={item.node.frontmatter.tags} category={item.node.frontmatter.category} />
-            </article>
-          )
-        })}
-      </Layout>
-    )
-  }
+  return (
+    <Layout location={location} siteTitle={siteTitle} previous="" next="">
+      <Helmet
+        htmlAttributes={{ lang: 'ja' }}
+        meta={[
+          {
+            name: 'description',
+            content: siteDescription,
+          },
+        ]}
+        title={`${tagName} | ${siteTitle}`}
+      />
+      <Ogp />
+      <h1 className="tag-name">#{tagName}</h1>
+      {postList.map((item) => {
+        const slug = item.node.fields.slug
+        const title = item.node.frontmatter.title
+        const category = item.node.frontmatter.category
+        const tags = item.node.frontmatter.tags
+        const date = item.node.frontmatter.date
+        const excerpt = item.node.excerpt
+
+        return (
+          <article key={slug} className="post">
+            <Link to={slug}>
+              <div className="eyecatch" />
+              <PostTitle category={category}>{title}</PostTitle>
+              <Penguin category={category} date={date} />
+              <p className="excerpt">{excerpt}</p>
+            </Link>
+            <ReadMore category={category} slug={slug} />
+            <Tags list={tags} category={category} />
+          </article>
+        )
+      })}
+    </Layout>
+  )
 }
 
-export default BlogPostTemplate
+export default TagsListTemplate
+
+export const TagPostList = graphql`
+  query TagPostList($tagName: String) {
+    site {
+      siteMetadata {
+        title
+        description
+      }
+    }
+    allMarkdownRemark(
+      limit: 1000
+      sort: { fields: [frontmatter___date], order: DESC }
+      filter: { frontmatter: { tags: { eq: $tagName } } }
+    ) {
+      edges {
+        node {
+          excerpt(pruneLength: 400)
+          fields {
+            slug
+          }
+          frontmatter {
+            title
+            category
+            tags
+            date(formatString: "MM/DD")
+          }
+        }
+      }
+    }
+  }
+`
