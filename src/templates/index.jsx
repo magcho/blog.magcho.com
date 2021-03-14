@@ -18,25 +18,21 @@ const BlogIndex = ({ data, location, pageContext }) => {
 
   // const index = this.props.pageContext.index
   const currentPageNum = pageContext.currentPage
-  let previousUrl
-  if (currentPageNum >= 2) {
-    previousUrl = currentPageNum - 1 != 1 ? (currentPageNum - 1).toString() : '/'
-  } else {
-    previousUrl = ''
+
+  let previousPath
+  let nextPath
+  if (3 <= currentPageNum) {
+    previousPath = `/${currentPageNum - 1}`
+  } else if (currentPageNum === 2) {
+    previousPath = '/'
   }
-  const lastPageFlag = pageContext.numPages == currentPageNum
-  const nextUrl = lastPageFlag ? '' : (currentPageNum + 1).toString()
+
+  if (pageContext.numPages !== currentPageNum) {
+    nextPath = `/${currentPageNum + 1}`
+  }
 
   return (
-    <Layout
-      location={location}
-      siteTitle={siteMetadata.title}
-      tagsList={tagsList}
-      previous={previousUrl}
-      next={nextUrl}
-      currentPage={pageContext.currentPage}
-      lastPageFlag={lastPageFlag}
-    >
+    <Layout siteTitle={siteMetadata.title} previousPath={previousPath} nextPath={nextPath}>
       <Helmet
         htmlAttributes={{ lang: 'ja' }}
         meta={[{ name: 'description', content: siteMetadata.description }]}
