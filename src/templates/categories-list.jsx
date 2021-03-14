@@ -1,75 +1,51 @@
-import React from 'react'
-import Helmet from 'react-helmet'
+import * as React from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, graphql } from 'gatsby'
 
-import Layout from '../components/layout'
 import '../templates/style.scss'
 import './post-list.scss'
+import Layout from '../components/layout'
 import Tags from '../components/tags'
 import PostTitle from '../components/posttitle'
 import Penguin from '../components/penguin'
 import Ogp from '../components/ogp'
 import ReadMore from '../components/readmore'
 
-class BlogPostTemplate extends React.Component {
-  render() {
-    const siteTitle = this.props.data.site.siteMetadata.title
-    const siteDescription = this.props.data.site.description
-    const postList = this.props.data.allMarkdownRemark.edges
-    let tagsList = []
-    this.props.pageContext.siteTagsList.map(item => {
-      tagsList.push({ fieldValue: item.fieldValue })
-    })
+const CategoryPostListTemplate = ({ data, location, pageContext }) => {
+  const siteTitle = data.site.siteMetadata.title
+  const postList = data.allMarkdownRemark.edges
 
-    return (
-      <Layout
-        location={this.props.location}
-        siteTitle={siteTitle}
-        tagsList={tagsList}
-        previous=""
-        next=""
-      >
-        <Helmet
-          htmlAttributes={{ lang: 'ja' }}
-          meta={[
-            {
-              name: 'description',
-              content: siteDescription,
-            },
-          ]}
-          title={`${this.props.pageContext.categoryName} | ${siteTitle}`}
-        />
-        <Ogp props={this.props} />
-        <h1 className="tag-name">【{this.props.pageContext.categoryName}】</h1>
-        {postList.map(item => (
-          <article key={item.node.fields.slug} className="post">
-            <Link to={item.node.fields.slug}>
-              <div className="eyecatch" />
-              <PostTitle category={this.props.pageContext.categoryName}>
-                {item.node.frontmatter.title}
-              </PostTitle>
-              <Penguin
-                category={this.props.pageContext.categoryName}
-                date={item.node.frontmatter.date}
-              />
-              <p className="excerpt">{item.node.excerpt}</p>
-            </Link>
-            <ReadMore
-              category={this.props.pageContext.categoryName}
-              slug={item.node.fields.slug}
-            />
-            <Tags
-              list={item.node.frontmatter.tags}
-              category={this.props.pageContext.categoryName}
-            />
-          </article>
-        ))}
-      </Layout>
-    )
-  }
+  return (
+    <Layout location={location} siteTitle={siteTitle} previous="" next="">
+      <Helmet
+        htmlAttributes={{ lang: 'ja' }}
+        meta={[
+          {
+            name: 'description',
+            content: data.site.siteMetadata.description,
+          },
+        ]}
+        title={`${pageContext.categoryName} | ${siteTitle}`}
+      />
+      <Ogp />
+      <h1 className="tag-name">【{pageContext.categoryName}】</h1>
+      {postList.map((item) => (
+        <article key={item.node.fields.slug} className="post">
+          <Link to={item.node.fields.slug}>
+            <div className="eyecatch" />
+            <PostTitle category={pageContext.categoryName}>{item.node.frontmatter.title}</PostTitle>
+            <Penguin category={pageContext.categoryName} date={item.node.frontmatter.date} />
+            <p className="excerpt">{item.node.excerpt}</p>
+          </Link>
+          <ReadMore category={pageContext.categoryName} slug={item.node.fields.slug} />
+          <Tags list={item.node.frontmatter.tags} category={pageContext.categoryName} />
+        </article>
+      ))}
+    </Layout>
+  )
 }
 
-export default BlogPostTemplate
+export default CategoryPostListTemplate
 
 export const categoryPostList = graphql`
   query CategoryPage($categoryName: String) {

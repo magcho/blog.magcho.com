@@ -1,10 +1,11 @@
-import React from 'react'
+import * as React from 'react'
 import { Link } from 'gatsby'
 
 import previousPenguin from '../assets/penguin-previous.svg'
 import nextPenguin from '../assets/penguin-next.svg'
 import previousPenguinWhite from '../assets/penguin-previous-white.svg'
 import nextPenguinWhite from '../assets/penguin-next-white.svg'
+import AllTags from '../components/allTags'
 
 const CategoriesLinks = () => {
   const categories = ['舞台技術', '電子工作', 'プログラミング', '日記']
@@ -16,26 +17,6 @@ const CategoriesLinks = () => {
           return (
             <li key={category}>
               <Link to={`/category/${category}/`}>{category}</Link>
-            </li>
-          )
-        })}
-      </ul>
-    </nav>
-  )
-}
-
-const TagsLinks = (props) => {
-  return (
-    <nav className="tag-link">
-      <h1 className="title">Tags</h1>
-      <ul>
-        {props.tags.map((tag) => {
-          if (tag.fieldValue == '') {
-            return ''
-          }
-          return (
-            <li key={tag.fieldValue}>
-              <Link to={`/tag/${tag.fieldValue}/`}>{tag.fieldValue}</Link>
             </li>
           )
         })}
@@ -136,7 +117,7 @@ class Template extends React.Component {
         <div className="mainframe">
           <main>{children}</main>
           <CategoriesLinks />
-          <TagsLinks tags={this.props.tagsList} />
+          <AllTags />
           <Pagenate props={this.props} path={location.pathname} lastPageFlag={this.props.lastPageFlag} />
         </div>
         <Footer />
