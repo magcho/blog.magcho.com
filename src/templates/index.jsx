@@ -34,6 +34,7 @@ const BlogIndex = ({ data, location, pageContext }) => {
       tagsList={tagsList}
       previous={previousUrl}
       next={nextUrl}
+      currentPage={pageContext.currentPage}
       lastPageFlag={lastPageFlag}
     >
       <Helmet

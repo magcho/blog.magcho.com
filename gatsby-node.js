@@ -107,6 +107,7 @@ exports.createPages = async ({ graphql, actions }) => {
   })
 
   // Generate tag pages
+  const tags = result.data.allMarkdownRemark.group
   const tagsListTemplate = path.resolve('./src/templates/tags-list.jsx')
   tags.map((tag) => {
     createPage({
