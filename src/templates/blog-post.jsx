@@ -13,18 +13,12 @@ const BlogPostTemplate = ({ data, location, pageContext }) => {
   const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata.title
   const postDescription = post.excerpt
-  const { previous, next } = pageContext
-  const tagsList = data.allMarkdownRemark.group
+
+  const previousPath = pageContext.previous ? pageContext.previous.fields.slug : null
+  const nextPath = pageContext.next ? pageContext.next.fields.slug : null
 
   return (
-    <Layout
-      location={location}
-      siteTitle={siteTitle}
-      tagsList={tagsList}
-      previous={previous}
-      next={next}
-      parent={'blog-post'}
-    >
+    <Layout location={location} siteTitle={siteTitle} previousPath={previousPath} nextPath={nextPath}>
       <Helmet
         htmlAttributes={{ lang: 'ja' }}
         meta={[
