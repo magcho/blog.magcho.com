@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Restore dependency cache
+      - name: Cache dependencis
         id: node_modules_cache_id
         uses: actions/cache@v2
         with:
@@ -28,6 +28,15 @@ jobs:
         if: steps.node_modules_cache_id.outputs.cache-hit != 'true'
         run: npm ci
 
+      - name: Cache build
+        id: gatsby_build_cache_id
+        uses: actions/cache@v2
+        with:
+          path: |
+            .cache
+            public
+          key: ${{ GITHUB_REPOSITORY }}-${{ github.ref }}
+        
       - name: Build
         run: npm run build
 
