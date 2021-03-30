@@ -41,5 +41,4 @@ jobs:
         run: npm run build
 
       - name: Deploy
-        # run: npx netlify-cli deploy -d public --prod -a ${{ secrets.NETLIFY_AUTH_TOKEN }} -s ${{ secrets.NETLIFY_SITE_ID }}
-        run: npx netlify-cli deploy -d public -a ${{ secrets.NETLIFY_AUTH_TOKEN }} -s ${{ secrets.NETLIFY_SITE_ID }}
+        run: npx netlify-cli deploy -d public --prod -a ${{ secrets.NETLIFY_AUTH_TOKEN }} -s ${{ secrets.NETLIFY_SITE_ID }}
