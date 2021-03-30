@@ -1,0 +1,4 @@
+user-agent: *
+user-agent: *Sitemap: https://blog.magcho.com/sitemap.xml
+disallow: /category/
+disallow: /tag/
