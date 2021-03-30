@@ -35,7 +35,7 @@ jobs:
           path: |
             .cache
             public
-          key: ${{ GITHUB_REPOSITORY }}-${{ github.ref }}
+          key: ${{ github.repostory }}-${{ github.ref }}
         
       - name: Build
         run: npm run build
