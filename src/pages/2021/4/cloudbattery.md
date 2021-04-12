@@ -19,8 +19,9 @@ tags:
 
 探すと[Cloud Battery](https://apps.apple.com/jp/app/cloud-battery/id1481005137)というアプリを見つけました、これは単一のiCloudアカウントでログインしているデバイスに入れておけば全てのデバイスのバッテリー残量をiCloud越しに共有し、さらには通知もできるという素晴らしいアプリです。
 
-数多くのデバイスに対応し、自分の手持ちではmac, iPhone, iPad, Apple pencil, Apple Watch, MagicTrackpad 2のバッテリー情報を共有できました。AppStoreのスクリーンショットを見る限りAppleデバイスではなくても登録できるっぽいんですが手持ちのBluetoothイヤホンは登録できませんでした。残念
+数多くのデバイスに対応し、自分の手持ちではmac, iPhone, iPad, Apple pencil, Apple Watch, MagicTrackpad 2のバッテリー情報を共有できました。AppStoreのスクリーンショットを見る限りAppleデバイスではなくても登録できるっぽいんですが手持ちのBluetoothイヤホンは登録できませんでした、残念。
 
+※追記LogicoolのERGO M575も対応していました。BluetoothイヤホンはIOSデバイスにペアリングしている時のみ対応していました。
 
 さらに、デバイス間で残量を共有しているのでmacのバッテリーが20%を下回ったときにApple WatchやiPhoneでpush通知を受け取ることができます。通知は指定値を下回ったら通知されるものに加え指定値を超えたときに通知することもできます。なので通常はApple Watchの充電完了通知はペアリングしているiPhoneしか通知が届きませんがこの機能により全てのデバイスでpush通知がきます。iPadで動画見てても気がつけるのはうれしい
 
