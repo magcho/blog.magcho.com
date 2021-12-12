@@ -1,25 +1,26 @@
-@mixin dark-mode{
-		@media (prefers-color-scheme: dark) {
-				@content
-		}
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
 }
 
-.tag-name{
+.tag-name {
   width: fit-content;
-  margin: auto
+  margin: auto;
 }
-.post{
+.post {
   z-index: 2;
   margin: 2em 0;
   position: relative;
   padding: 0.5em 1.5em;
   border-top: dashed 1px black;
   border-bottom: dashed 1px black;
-	@include dark-mode{
-			border-top: dashed 1px rgba(255, 255, 255, 0.5);
-			border-bottom: dashed 1px rgba(255, 255, 255, 0.5);
-	}
-  font-family: '游ゴシック体', 'Yu Gothic', 'YuGothic', 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', 'メイリオ', 'Meiryo', 'Osaka', 'ＭＳ Ｐゴシック', 'MS PGothic', 'sans-serif';
+  @include dark-mode {
+    border-top: dashed 1px rgba(255, 255, 255, 0.5);
+    border-bottom: dashed 1px rgba(255, 255, 255, 0.5);
+  }
+  font-family: '游ゴシック体', 'Yu Gothic', 'YuGothic', 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', 'メイリオ',
+    'Meiryo', 'Osaka', 'ＭＳ Ｐゴシック', 'MS PGothic', 'sans-serif';
   word-wrap: break-word;
 
   &:after,
@@ -30,19 +31,19 @@
     width: 1px;
     height: -webkit-calc(100% + 20px);
     height: calc(100% + 20px);
-	  background-color: black;
-		@include dark-mode{
-				background-color: rgba(255,255,255,0.5);
-		}
+    background-color: black;
+    @include dark-mode {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
   }
 
-  h1.title{
+  h1.title {
     max-width: 100%;
     float: none;
-		color: #022547;
-		@include dark-mode{
-				color: white;
-		}
+    color: #022547;
+    @include dark-mode {
+      color: white;
+    }
   }
   p.excerpt {
     margin: 2rem 0;
@@ -51,16 +52,17 @@
     line-height: 1.8rem;
     letter-spacing: 0.03em;
     text-indent: 1rem;
-		color: black;
-			@include dark-mode{
-					color: rgba(255, 255, 255, 0.86);
-			}
+    color: black;
+    @include dark-mode {
+      color: rgba(255, 255, 255, 0.86);
+      color: #c5c8c6;
+    }
   }
-  a{
-			text-decoration: none;
+  a {
+    text-decoration: none;
   }
-  .content-tags{
-    a{
+  .content-tags {
+    a {
       text-decoration: underline;
     }
   }
