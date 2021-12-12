@@ -3,11 +3,11 @@ import { Helmet } from 'react-helmet'
 import { graphql } from 'gatsby'
 
 import Layout from '../components/layout'
-import Penguin from '../components/penguin'
 import '../templates/style.scss'
 import Tags from '../components/tags'
 import PostTitle from '../components/posttitle'
 import Ogp from '../components/ogp'
+import GithubLink from '../components/githubLink'
 
 const BlogPostTemplate = ({ data, location, pageContext }) => {
   const post = data.markdownRemark
@@ -36,13 +36,16 @@ const BlogPostTemplate = ({ data, location, pageContext }) => {
           <div className={'title'}>
             <PostTitle category={post.frontmatter.category}>{post.frontmatter.title}</PostTitle>
           </div>
-          <div className={'date'}>
-            <Penguin category={post.frontmatter.category} date={post.frontmatter.date} />
-          </div>
+        </div>
+        <div>
+          <time dateTime={post.frontmatter.fullDate}>
+            <span>{post.frontmatter.fullDate}</span>
+          </time>
         </div>
         <Tags list={post.frontmatter.tags || []} category={post.frontmatter.category || []} />
         <div className={'content-body'} dangerouslySetInnerHTML={{ __html: post.html }} />
         <Tags list={post.frontmatter.tags || []} category={post.frontmatter.category || []} />
+        <GithubLink filePath={post.fileAbsolutePath} />
       </article>
     </Layout>
   )
@@ -62,11 +65,12 @@ export const pageQuery = graphql`
       id
       excerpt
       html
+      fileAbsolutePath
       frontmatter {
         title
         tags
         category
-        date(formatString: "MM/DD")
+        fullDate: date(formatString: "YYYY-MM-DD")
       }
     }
     allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
