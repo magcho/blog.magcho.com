@@ -118,24 +118,6 @@ module.exports = {
       options: {
         output: `/sitemap.xml`,
         excludes: ['/category/*', `/tag/*`, `/dev-404-page/`, `/404/`, `/404.html`],
-        query: `
-          {
-            site {
-              siteMetadata {
-                siteUrl
-              }
-            }
-            allSitePage {
-              edges {
-                node {
-                  path
-                }
-              }
-            }
-          }`,
-        resolveSiteUrl: ({ site, allSitePage }) => {
-          return site.siteMetadata.siteUrl
-        },
       },
     },
   ],
