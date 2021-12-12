@@ -77,28 +77,7 @@ module.exports = {
       resolve: `gatsby-plugin-sitemap`,
       options: {
         output: `/sitemap.xml`,
-        // Exclude specific pages or groups of pages using glob parameters
-        // See: https://github.com/isaacs/minimatch
-        // The example below will exclude the single `path/to/page` and all routes beginning with `category`
-        exclude: ['/category/*', `/tag/*`, `/dev-404-page/`, `/404/`, `/404.html`],
-        query: `
-          {
-            site {
-              siteMetadata {
-                siteUrl
-              }
-            }
-            allSitePage {
-              edges {
-                node {
-                  path
-                }
-              }
-            }
-          }`,
-        resolveSiteUrl: ({ site, allSitePage }) => {
-          return site.siteMetadata.siteUrl
-        },
+        excludes: ['/category/*', `/tag/*`, `/dev-404-page/`, `/404/`, `/404.html`],
       },
     },
   ],
