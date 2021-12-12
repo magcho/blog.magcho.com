@@ -30,7 +30,8 @@ body {
   @include dark-mode {
     background-color: #1a2937;
     // background-color: #1c2532;
-    color: rgba(255, 255, 255, 0.86);
+    // color: rgba(255, 255, 255, 0.86);
+    color:#c5c8c6
   }
 
   .mainframe {
@@ -139,6 +140,10 @@ body {
         line-height: 1.5em;
         letter-spacing: 0.03em;
         font-family: $font-pop;
+        @include dark-mode{
+            font-family: $font-gothic
+        }
+
       }
       @include mq(pc) {
         .title-flame {
@@ -160,6 +165,9 @@ body {
         display: inline;
         margin: 0;
         word-break: normal;
+        @include dark-mode{
+          color: white
+        }
         // font-size: 2rem;
         line-height: 2rem;
         @include mq(pc) {
@@ -451,10 +459,11 @@ body {
         a {
           text-decoration: underline;
           color: #022547;
+            font-family: $font-pop;
           @include dark-mode {
             color: #00b4ff;
             line-height: 1.8rem;
-            font-family: $font-pop;
+            font-family: $font-gothic
           }
           word-wrap: break-word;
         }
