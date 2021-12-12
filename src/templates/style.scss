@@ -29,9 +29,7 @@ body {
   margin: 0;
   @include dark-mode {
     background-color: #1a2937;
-    // background-color: #1c2532;
-    // color: rgba(255, 255, 255, 0.86);
-    color:#c5c8c6
+    color: #c5c8c6;
   }
 
   .mainframe {
@@ -46,7 +44,6 @@ body {
     width: 100%;
     background-color: #7cb3d9;
     font-family: monospace;
-    // color: white;
     font-weight: bold;
     text-align: center;
     @include dark-mode {
@@ -102,7 +99,6 @@ body {
       @include dark-mode {
         border-top: dashed 1px rgba(255, 255, 255, 0.5);
         border-bottom: dashed 1px rgba(255, 255, 255, 0.5);
-        // background-color: #1c2532;
       }
       a {
         color: #00b4ff;
@@ -140,10 +136,9 @@ body {
         line-height: 1.5em;
         letter-spacing: 0.03em;
         font-family: $font-pop;
-        @include dark-mode{
-            font-family: $font-gothic
+        @include dark-mode {
+          font-family: $font-gothic;
         }
-
       }
       @include mq(pc) {
         .title-flame {
@@ -165,19 +160,13 @@ body {
         display: inline;
         margin: 0;
         word-break: normal;
-        @include dark-mode{
-          color: white
+        @include dark-mode {
+          color: white;
         }
-        // font-size: 2rem;
         line-height: 2rem;
-        @include mq(pc) {
-          // float: left
-        }
         @include mq(sm) {
           float: unset;
         }
-        // display: inline-block;
-        // line-height: 35px;
         overflow: auto;
         overflow-y: hidden;
 
@@ -185,22 +174,6 @@ body {
           max-width: calc(100% - 107px);
           font-size: 2em;
         }
-
-        @include mq(sm) {
-          // max-width: 100%;
-        }
-
-        // background-image: linear-gradient(to right, #e4ff3c 0%, #e4ff3c 100%);
-        // background-position: 0 0.7em;
-        // background-repeat: repeat-x;
-        // background-size: 1px 15px;
-        // background-color: transparent;
-
-        // &,
-        // &:after,
-        // &:before {
-        //   box-sizing: inherit;
-        // }
       }
 
       .date {
@@ -459,18 +432,14 @@ body {
         a {
           text-decoration: underline;
           color: #022547;
-            font-family: $font-pop;
+          font-family: $font-pop;
           @include dark-mode {
             color: #00b4ff;
             line-height: 1.8rem;
-            font-family: $font-gothic
+            font-family: $font-gothic;
           }
           word-wrap: break-word;
         }
-
-        // &:last-child {
-        //   float: none;
-        // }
       }
     }
   }
