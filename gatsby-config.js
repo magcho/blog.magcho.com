@@ -58,17 +58,57 @@ module.exports = {
         trackingId: `UA-125180742-2`,
       },
     },
-    `gatsby-plugin-feed`,
     {
-      resolve: `gatsby-plugin-manifest`,
+      resolve: `gatsby-plugin-feed`,
       options: {
-        name: `magchoの雑記`,
-        short_name: `magchoBlog`,
-        start_url: `/`,
-        background_color: `#ffffff`,
-        theme_color: `#7cb3d9`,
-        display: `minimal-ui`,
-        icon: `src/assets/icon.jpg`,
+        query: `
+          {
+            site {
+              siteMetadata {
+                title
+                description
+                siteUrl
+                site_url: siteUrl
+              }
+            }
+          }
+        `,
+        feeds: [
+          {
+            serialize: ({ query: { site, allMarkdownRemark } }) => {
+              return allMarkdownRemark.nodes.map((node) => {
+                return Object.assign({}, node.frontmatter, {
+                  description: node.excerpt,
+                  date: node.frontmatter.date,
+                  url: site.siteMetadata.siteUrl + node.fields.slug,
+                  guid: site.siteMetadata.siteUrl + node.fields.slug,
+                  custom_elements: [{ 'content:encoded': node.html }],
+                })
+              })
+            },
+            query: `
+              {
+                allMarkdownRemark(
+                  sort: { order: DESC, fields: [frontmatter___date] },
+                ) {
+                  nodes {
+                    excerpt
+                    html
+                    fields {
+                      slug
+                    }
+                    frontmatter {
+                      title
+                      date
+                    }
+                  }
+                }
+              }
+            `,
+            output: '/rss.xml',
+            title: "magcho's blog",
+          },
+        ],
       },
     },
     `gatsby-plugin-offline`,
@@ -77,10 +117,7 @@ module.exports = {
       resolve: `gatsby-plugin-sitemap`,
       options: {
         output: `/sitemap.xml`,
-        // Exclude specific pages or groups of pages using glob parameters
-        // See: https://github.com/isaacs/minimatch
-        // The example below will exclude the single `path/to/page` and all routes beginning with `category`
-        exclude: ['/category/*', `/tag/*`, `/dev-404-page/`, `/404/`, `/404.html`],
+        excludes: ['/category/*', `/tag/*`, `/dev-404-page/`, `/404/`, `/404.html`],
         query: `
           {
             site {
