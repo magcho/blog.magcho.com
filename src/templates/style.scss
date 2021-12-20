@@ -96,6 +96,14 @@ body {
       border-bottom: dashed 1px black;
       font-family: $font-gothic;
       word-wrap: break-word;
+      #article-meta{
+          margin-top: 1rem;
+          margin-left: 1em;
+          span{
+              margin-right: 1em;
+          }
+      }
+
       @include dark-mode {
         border-top: dashed 1px rgba(255, 255, 255, 0.5);
         border-bottom: dashed 1px rgba(255, 255, 255, 0.5);
@@ -138,11 +146,6 @@ body {
         font-family: $font-pop;
         @include dark-mode {
           font-family: $font-gothic;
-        }
-      }
-      @include mq(pc) {
-        .title-flame {
-          float: left;
         }
       }
       div.title > a {
@@ -346,7 +349,7 @@ body {
 
         @include mq(pc) {
           margin: {
-            top: 2em;
+            top: 1em;
             bottom: 0;
             left: 1em;
           }

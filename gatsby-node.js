@@ -1,5 +1,6 @@
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
+const { execSync } = require('child_process')
 
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
@@ -126,11 +127,25 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode })
+    const filePath = createFilePath({ node, getNode })
     createNodeField({
       name: `slug`,
       node,
-      value,
+      value: filePath,
+    })
+
+    const lastFileUpdatedAt = execSync(`git log -1 --pretty=format:%aI ${node.fileAbsolutePath}`).toString()
+    createNodeField({
+      name: 'lastFileUpdatedAt',
+      node,
+      value: lastFileUpdatedAt,
+    })
+
+    const fileRevisionCount = execSync(`git rev-list --count HEAD ${node.fileAbsolutePath}`).toString().trim()
+    createNodeField({
+      name: 'fileRevisionCount',
+      node,
+      value: fileRevisionCount,
     })
   }
 }

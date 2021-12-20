@@ -37,11 +37,18 @@ const BlogPostTemplate = ({ data, location, pageContext }) => {
             <PostTitle category={post.frontmatter.category}>{post.frontmatter.title}</PostTitle>
           </div>
         </div>
-        <div>
-          <time dateTime={post.frontmatter.fullDate}>
-            <span>{post.frontmatter.fullDate}</span>
-          </time>
+        <div id="article-meta">
+          <span>
+            Created at: <time dateTime={post.frontmatter.fullDate}>{post.frontmatter.fullDate}</time>
+          </span>
+          <span>
+            Last updated at:
+            <time dateTime={post.fields.lastFileUpdatedAt}>
+              {post.fields.lastFileUpdatedAt} (Revision: {post.fields.fileRevisionCount})
+            </time>
+          </span>
         </div>
+
         <Tags list={post.frontmatter.tags || []} category={post.frontmatter.category || []} />
         <div className={'content-body'} dangerouslySetInnerHTML={{ __html: post.html }} />
         <Tags list={post.frontmatter.tags || []} category={post.frontmatter.category || []} />
@@ -71,6 +78,10 @@ export const pageQuery = graphql`
         tags
         category
         fullDate: date(formatString: "YYYY-MM-DD")
+      }
+      fields {
+        lastFileUpdatedAt(formatString: "YYYY-MM-DD")
+        fileRevisionCount
       }
     }
     allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
