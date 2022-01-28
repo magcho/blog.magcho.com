@@ -17,7 +17,7 @@ tags:
 以下のコマンドでビルドします。
 
 ```shell
-brew install gnutls texinfo autoconf zlib libgccjit jannson
+brew install gnutls texinfo autoconf zlib libgccjit jansson
 
 export CPATH=$CPATH:/opt/homebrew/Cellar/libgccjit/11.2.0_1/include
 export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/Cellar/libgccjit/11.2.0_1/lib/gcc/11
