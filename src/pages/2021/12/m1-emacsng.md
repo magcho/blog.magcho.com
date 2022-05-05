@@ -19,8 +19,8 @@ tags:
 ```shell
 brew install gnutls texinfo autoconf zlib libgccjit jansson
 
-export CPATH=$CPATH:/opt/homebrew/Cellar/libgccjit/11.2.0_1/include
-export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/Cellar/libgccjit/11.2.0_1/lib/gcc/11
+export CPATH="$CPATH:$(brew --prefix libgccjit)/include"
+export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix libgccjit)/lib/gcc/11"
 
 ./autogen.sh
 
@@ -29,7 +29,6 @@ export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/Cellar/libgccjit/11.2.0_1/lib/gc
 make -j8
 
 make install
-
 ```
 
 
