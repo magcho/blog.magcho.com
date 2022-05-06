@@ -31,8 +31,27 @@ make -j8
 make install
 ```
 
-
-
 今回は`--with-native-compilation`と`--with-json`を有効化します。jsonの方は`libjansson`をbrewでインストールし、configure時にオプションを渡してあげればOKです。
 
 native compilationの方は、現状コンパイラがlibgccjitのパスを見つけられないみたいなので、環境変数を利用してコンパイラにパスを渡しておけばビルドできます。
+
+
+## 追記
+インストール先を`/opt/emacs-ng`にしたかったので最近は以下のオプションでコンパイルしています
+
+```shell
+./configure \
+ --enable-locallisppath=/opt/emacs-ng/share/site-lisp \
+ --infodir=/opt/emacs-ng/share/info/emacs \
+ --prefix=/opt/emacs-ng \
+ --with-json \
+ --with-native-compilation \
+ --with-modules \
+ --with-gnutls \
+ --with-xml2 \
+ --without-x \
+ --without-ns \
+ --without-dbus \
+ --without-imagemagick \
+ --without-selinux
+```
