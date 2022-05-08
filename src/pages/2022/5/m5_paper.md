@@ -3,6 +3,8 @@ layout: post
 title: M5Paper V1.1にPlatform.ioから書き込みをする
 category:  電子工作
 date: 2022-05-08
+tags:
+  - M5Paper
 ---
 
 [M5Paper](https://switch-science.com/catalog/7359/)の出荷時に書き込まれているファームウェアーをベースに機能を追加してみようと思い[初期ファームウェア](https://github.com/m5stack/M5Paper_FactoryTest)をvscode(platform.io)で開いたもののビルドできない&書き込めなくて困ったので解決方法をメモ
