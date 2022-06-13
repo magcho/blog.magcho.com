@@ -20,7 +20,7 @@ const AllCategories = () => {
         {categories.map((category) => {
           return (
             <li key={category}>
-              <Link to={`/category/${category}/`}>{category}</Link>
+              <Link to={`/category/${category.toLowerCase()}/`}>{category}</Link>
             </li>
           )
         })}
