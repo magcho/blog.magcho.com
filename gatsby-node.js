@@ -98,7 +98,7 @@ exports.createPages = async ({ graphql, actions }) => {
   const categoryisPageTemplate = path.resolve('./src/templates/categories-list.jsx')
   categories.map((category) => {
     createPage({
-      path: `/category/${category}/`,
+      path: `/category/${category.toLowerCase()}/`,
       component: categoryisPageTemplate,
       context: {
         categoryName: category,
@@ -112,7 +112,7 @@ exports.createPages = async ({ graphql, actions }) => {
   const tagsListTemplate = path.resolve('./src/templates/tags-list.jsx')
   tags.map((tag) => {
     createPage({
-      path: `/tag/${tag.fieldValue}`,
+      path: `/tag/${tag.fieldValue.toLowerCase()}`,
       component: tagsListTemplate,
       context: {
         tagName: tag.fieldValue,

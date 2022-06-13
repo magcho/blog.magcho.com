@@ -29,7 +29,7 @@ const AllTags = () => {
           }
           return (
             <li key={tag.fieldValue}>
-              <Link to={`/tag/${tag.fieldValue}/`}>{tag.fieldValue}</Link>
+              <Link to={`/tag/${tag.fieldValue.toLowerCase()}/`}>{tag.fieldValue}</Link>
             </li>
           )
         })}
