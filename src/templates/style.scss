@@ -87,6 +87,13 @@ body {
       padding: 0;
     }
 
+    .tag-name {
+      color: #022547;
+      @include dark-mode {
+        color: white;
+      }
+    }
+
     article {
       z-index: 2;
       margin: 2em 0;
@@ -96,12 +103,12 @@ body {
       border-bottom: dashed 1px black;
       font-family: $font-gothic;
       word-wrap: break-word;
-      #article-meta{
-          margin-top: 1rem;
-          margin-left: 1em;
-          span{
-              margin-right: 1em;
-          }
+      #article-meta {
+        margin-top: 1rem;
+        margin-left: 1em;
+        span {
+          margin-right: 1em;
+        }
       }
 
       @include dark-mode {
