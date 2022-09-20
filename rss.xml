@@ -1,4 +1,137 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[magcho's blog RSS Feed]]></title><description><![CDATA[magchoの日記とか思いつきを記録するブログ]]></description><link>https://blog.magcho.com</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 17 Sep 2022 20:42:41 GMT</lastBuildDate><item><title><![CDATA[既存プロジェクトに後からopenapiを追加してAxiosのリクエストをJestでテストしたい]]></title><description><![CDATA[スタート当初はOpenAPIが存在せず、仕様を整理する目的で後からOpenAPIが追加されたプロジェクトがありました。OpenAPIの仕様を満たせているかは人力でレビューするのみでありスキーマを定義した旨味がないなーと思っていたので後からOpenAPI…]]></description><link>https://blog.magcho.com/2022/9/openapi-validation-test/</link><guid isPermaLink="false">https://blog.magcho.com/2022/9/openapi-validation-test/</guid><pubDate>Mon, 19 Sep 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;スタート当初はOpenAPIが存在せず、仕様を整理する目的で後からOpenAPIが追加されたプロジェクトがありました。OpenAPIの仕様を満たせているかは人力でレビューするのみでありスキーマを定義した旨味がないなーと思っていたので後からOpenAPIを追加した場合でも仕様を満たせていることを担保できる仕組みを整備しました。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[magcho's blog RSS Feed]]></title><description><![CDATA[magchoの日記とか思いつきを記録するブログ]]></description><link>https://blog.magcho.com</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 20 Sep 2022 08:10:18 GMT</lastBuildDate><item><title><![CDATA[JestでJest did not exit one second after the test run has completedでテストが終了してもJestのプロセスが終了しない時のデバッグ]]></title><description><![CDATA[Jest でテストを実行すると といった表示とともに全てのテストが Pass になっているのに関わらず Jest のプロセスが数分間終了しない問題に遭遇することがあります。 エラー文で検索すると Puppeteer や DB…]]></description><link>https://blog.magcho.com/2022/9/jest-did-not-exit/</link><guid isPermaLink="false">https://blog.magcho.com/2022/9/jest-did-not-exit/</guid><pubDate>Tue, 20 Sep 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Jest でテストを実行すると&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;Ran all &lt;span class=&quot;token builtin class-name&quot;&gt;test&lt;/span&gt; suites matching path&lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;/to&lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;/hoge.spec.ts/i.
+Jest did not &lt;span class=&quot;token builtin class-name&quot;&gt;exit&lt;/span&gt; one second after the &lt;span class=&quot;token builtin class-name&quot;&gt;test&lt;/span&gt; run has completed.
+
+This usually means that there are asynchronous operations that weren&apos;t stopped &lt;span class=&quot;token keyword&quot;&gt;in&lt;/span&gt; your tests. Consider running Jest with &lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;`&lt;/span&gt;--detectOpenHandles&lt;span class=&quot;token variable&quot;&gt;`&lt;/span&gt;&lt;/span&gt; to troubleshoot this issue.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;といった表示とともに全てのテストが Pass になっているのに関わらず Jest のプロセスが数分間終了しない問題に遭遇することがあります。&lt;/p&gt;
+&lt;p&gt;エラー文で検索すると Puppeteer や DB コネクションの修了処理を忘れていてテスト時に起動した別プロセスが終了していないため、Jest がそれらの終了を待ってしまうことが多いみたいです。&lt;/p&gt;
+&lt;p&gt;このような場合はツールの修了処理を追加してあげれば改善することが多いのですが、このようなツールを利用していないプロジェクトで起きた場合は原因特定・修正をする必要が出てきます。&lt;/p&gt;
+&lt;h2&gt;Jest のデバッグ実行&lt;/h2&gt;
+&lt;p&gt;Jest には Chromium 系のブラウザに付いている Dev Tools を利用したトラブルシューティング機能があります。(Node.js の機能ですが Jest はこれを正式にサポートしています)&lt;/p&gt;
+&lt;p&gt;上記のエラーメッセージと一緒に当該の問題が発生しているテストのファイル名が表示されていると思います。このファイルのみをデバッグ実行して原因を探っていきます。&lt;/p&gt;
+&lt;p&gt;Jest のドキュメントに従って&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;&lt;span class=&quot;token function&quot;&gt;node&lt;/span&gt; --inspect-brk node_modules/.bin/jest --runInBand /path/to/sample.spec.js&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;を実行した後、Chromium 系のブラウザで &lt;code class=&quot;language-text&quot;&gt;chrome://inspect&lt;/code&gt; にアクセスすると Remote Target に Jest のプロセスが表示されるので&lt;code class=&quot;language-text&quot;&gt;inspect&lt;/code&gt;をクリックすると見慣れた Dev tools が別ウィンドウで表示されます。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 590px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/16ce34d58e395a066bb9d27fa6c3472c/3126c/jest-1.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 43.91891891891892%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAIAAAC9o5sfAAAACXBIWXMAABYlAAAWJQFJUiTwAAAA20lEQVQoz6WPTU/DMAyG+1NBgIAxPoQQJy4gOCD2H4ugY6XpmiZtEjuJY9R1O1IN8cgny4/9OjtZnM/frufPV6ePs4uXy7vF/c3r7dnT7ODh6HCo44nKWqmIkrFWKc1/JNN6cFpLnXHOOkBkZkQsy7IoCmvtlIyb6cZQ1WjZdutGoY+AmOe5ECKlNHm560Lw2vhV3a/qft06qdFH8h6JiJnTLwyyMSaEoLUSQnxXlXWQEu37c4yRmUUt3z+Wn8uvWvYACBvcDtiBiGNntLJxhwECpCEN7cU2Nv+DH/MQ8DhbTspcAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;jest 1&quot;
+        title=&quot;jest 1&quot;
+        src=&quot;/static/16ce34d58e395a066bb9d27fa6c3472c/fcda8/jest-1.png&quot;
+        srcset=&quot;/static/16ce34d58e395a066bb9d27fa6c3472c/12f09/jest-1.png 148w,
+/static/16ce34d58e395a066bb9d27fa6c3472c/e4a3f/jest-1.png 295w,
+/static/16ce34d58e395a066bb9d27fa6c3472c/fcda8/jest-1.png 590w,
+/static/16ce34d58e395a066bb9d27fa6c3472c/efc66/jest-1.png 885w,
+/static/16ce34d58e395a066bb9d27fa6c3472c/c83ae/jest-1.png 1180w,
+/static/16ce34d58e395a066bb9d27fa6c3472c/3126c/jest-1.png 1876w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;インスペクターは必ず Jest の実行直前で一時停止するようになっているので&lt;kbd&gt;&lt;kbd&gt;Ctrl&lt;/kbd&gt; + &lt;kbd&gt;p&lt;/kbd&gt;&lt;/kbd&gt;を押して対象のテストファイルを開き問題箇所周辺をデバッグしていくことができます。&lt;/p&gt;
+&lt;p&gt;割と忘れやすいのが、ブレイクポイントを張り終えた後、再実行しようとターミナルで&lt;kbd&gt;Ctrl + c&lt;/kbd&gt;して再実行するとdev toolsとのセッションが切れます。がしかし、&lt;strong&gt;dev toolsの画面は自動で閉じません&lt;/strong&gt;。Jestの再実行の後にさっきまでのdev toolsのウィンドウを閉じた後、再び&lt;code class=&quot;language-text&quot;&gt;chrome://inspect&lt;/code&gt;から同様に起動してください。dev toolsの作業内容はウィンドウを閉じても保持されるため新しいウィンドウでもさっき頑張って貼ったブレイクポイントのところでちゃんと止まります。&lt;/p&gt;
+&lt;h2&gt;デバッグ勘所&lt;/h2&gt;
+&lt;p&gt;私がこのエラーに遭遇した時に行っているデバッグ方法をを紹介します。&lt;/p&gt;
+&lt;h3&gt;最初に疑うところ&lt;/h3&gt;
+&lt;p&gt;私の経験則ですが、非同期やイベント周りでエラーや考慮漏れがあるとこのようなエラーになることが多かったです。テストの中で作られた Promose オブジェクトが pending のままになっていたり、Reject を返しているのにそれらを考慮していない時などにもこのようなエラーになったことがあります。&lt;/p&gt;
+&lt;h3&gt;console.log を眺める&lt;/h3&gt;
+&lt;p&gt;Jest をターミナルで実行している時にも&lt;code class=&quot;language-text&quot;&gt;console.log&lt;/code&gt;は表示されますが、ログが出力された該当箇所へのジャンプは dev tools でないとできません。&lt;/p&gt;
+&lt;p&gt;ORM ライブラリなどが実行中に出力するログの出力元に何かヒントがある可能性があります。&lt;/p&gt;
+&lt;h3&gt;catch されていない例外をみる&lt;/h3&gt;
+&lt;p&gt;実行中に例外が投げられており、その例外をキャッチしていない箇所に自動でブレイクポイントを設定できます。&lt;a href=&quot;https://developer.chrome.com/docs/devtools/javascript/breakpoints/#exceptions&quot;&gt;(参考)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 590px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/6595c7de717fd50b3a12c94ac9c44cd5/36c33/jest-2.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 63.51351351351351%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAIAAAAmMtkJAAAACXBIWXMAABYlAAAWJQFJUiTwAAABVklEQVQoz43SXU7cMBDA8RwDVbCbbOwk/pixZ+KPJF5aECyqClL7jhAHgHv0JD1nK7QV6kN3F+n/Ysk/W7KnGpQ9VD+YfX+XygJAWdi5ccqT1lBpg/9NaRhDJo6eAjoG9NoiOo/OU1muvj9O211FYzpUyoU5ckghzRxyiHPKhdL8yrtnvmsNVimXQ8VUiONSvuT5UhsXxtwSPdH1b3h96qZPUlYxLUfiMe++Ptze3U/TVhiblP+lfzzarQFvwR/DKRdAGpS14HFMwcef7uGbL2dd17a9EP0J7HwgTgbJKHjBmxuchPNGgexV1+sTGB0TJ0vjVec/Q5KA1jrZvckPYWUQkJRB44g5AVIreiEHIYfjD1Y8hZjm5fKaQ9Ya3v7f4PvwnLjZWHd+UV+smroR4NhTNNat67ZuRN2I07hu2mYj60as1pvVevMuP4T/2S2bjdwftMd/ANrkmO15vx61AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;jest 2&quot;
+        title=&quot;jest 2&quot;
+        src=&quot;/static/6595c7de717fd50b3a12c94ac9c44cd5/fcda8/jest-2.png&quot;
+        srcset=&quot;/static/6595c7de717fd50b3a12c94ac9c44cd5/12f09/jest-2.png 148w,
+/static/6595c7de717fd50b3a12c94ac9c44cd5/e4a3f/jest-2.png 295w,
+/static/6595c7de717fd50b3a12c94ac9c44cd5/fcda8/jest-2.png 590w,
+/static/6595c7de717fd50b3a12c94ac9c44cd5/efc66/jest-2.png 885w,
+/static/6595c7de717fd50b3a12c94ac9c44cd5/36c33/jest-2.png 946w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;ここでは try-catch していない Error, Promse.reject があるとそこで実行が止まります。意図していない箇所で止まっている場合にはそこを修正することでテストの実行が改善する可能性があります。&lt;/p&gt;
+&lt;p&gt;それでも見つからない場合/改善しない場合は”Pause on caught exceptions”にチェックを入れることでtry-catchしている部分ももれなく実行を一時停止することができます。&lt;/p&gt;
+&lt;h2&gt;Jest上で実行されている別プロセスがないか確認する&lt;/h2&gt;
+&lt;p&gt;testやdescribeの最終行にブレイクポイントを張り実行を一時停止した状態で別のターミナルでhtopなどを用いてJestの子プロセスとして起動中（終了していない）プロセスが残っていないかを確認する&lt;/p&gt;
+&lt;p&gt;Jestの小プロセスにpuppeteerなどが残っているとこのように&lt;code class=&quot;language-text&quot;&gt;node --inspect-brk ...&lt;/code&gt;の子プロセスに表示されます。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 590px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/67b08f1411831524885dc8a4221881a6/b918a/jest-3.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 43.24324324324324%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAABYlAAAWJQFJUiTwAAAB/ElEQVQoz23N30/aYBTG8ZcCLW3f9qWUn21BwQkFEwXdD50yFUSju9jmEr1aFreRuXmxxF0sy/73fheKS7zYxSfPeU5OcoSr7MR28ti5TGLkBL6y8FwLQxNLWYEnTTzHopAV6JpAzwhKrkVJyfRmsV+ksgxE1S+irFzi6BrFQoZA5fEMDTsjcHKCspmn4krCeo2gogh8h8CX+I5EWQUKi6eZJVMTCLm9ktijJubTVuLsrGBvhjijJt7zTjoXtgLkiw5ydw2520bttXF2V9FHEfooxNhuPhIhylUPw9TIB5JSVWHbOYqeRT0oIx0D085jyjyZrEBkBEJ7lP9zOJ1xMJmyczrh+Oyc8fGUxW52fsF4OuPo5JST89eMJye8WvTZGfuHE3bHh6m98dHDvEyx1mkTNQNa/Sd04x6rrYhOe4VBv0erFRGGDXq9deK4lxoM+vT7Mb3uOhuDmI1Bn0E/Jo676Z2olFRiGRrF0E9q1RKumcdXNlGjgjR19Kyg6ivCeoWgVqYV1lOLvrhpPojq5bSLyCvh5XKJW3WJSj6+rlOzbdaqNcoFE0eIdNeQDg3p0nBcAlcRqiKB6xIqleY/Yvj5XTKcXzKYv0k2v7zl2bdrDn58YOv2PcPvV4zurtj8ekn34wXDu2sO/tzy8vec/V9z9u9vln5+Wrq/4S+yuPRLEAakSAAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;jest 3&quot;
+        title=&quot;jest 3&quot;
+        src=&quot;/static/67b08f1411831524885dc8a4221881a6/fcda8/jest-3.png&quot;
+        srcset=&quot;/static/67b08f1411831524885dc8a4221881a6/12f09/jest-3.png 148w,
+/static/67b08f1411831524885dc8a4221881a6/e4a3f/jest-3.png 295w,
+/static/67b08f1411831524885dc8a4221881a6/fcda8/jest-3.png 590w,
+/static/67b08f1411831524885dc8a4221881a6/efc66/jest-3.png 885w,
+/static/67b08f1411831524885dc8a4221881a6/c83ae/jest-3.png 1180w,
+/static/67b08f1411831524885dc8a4221881a6/b918a/jest-3.png 2780w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;プロセスの終了が行われていれば&lt;code class=&quot;language-text&quot;&gt;node --inspect-brk ...&lt;/code&gt;の子プロセスは１つも表示されなくなります。&lt;/p&gt;
+&lt;h2&gt;refs&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://jestjs.io/docs/troubleshooting&quot;&gt;https://jestjs.io/docs/troubleshooting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://developer.chrome.com/docs/devtools/javascript/breakpoints/#exceptions&quot;&gt;https://developer.chrome.com/docs/devtools/javascript/breakpoints/#exceptions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[既存プロジェクトに後からopenapiを追加してAxiosのリクエストをJestでテストしたい]]></title><description><![CDATA[スタート当初はOpenAPIが存在せず、仕様を整理する目的で後からOpenAPIが追加されたプロジェクトがありました。OpenAPIの仕様を満たせているかは人力でレビューするのみでありスキーマを定義した旨味がないなーと思っていたので後からOpenAPI…]]></description><link>https://blog.magcho.com/2022/9/openapi-validation-test/</link><guid isPermaLink="false">https://blog.magcho.com/2022/9/openapi-validation-test/</guid><pubDate>Mon, 19 Sep 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;スタート当初はOpenAPIが存在せず、仕様を整理する目的で後からOpenAPIが追加されたプロジェクトがありました。OpenAPIの仕様を満たせているかは人力でレビューするのみでありスキーマを定義した旨味がないなーと思っていたので後からOpenAPIを追加した場合でも仕様を満たせていることを担保できる仕組みを整備しました。&lt;/p&gt;
 &lt;p&gt;SwaggerもといOpenAPIはAPIの定義ファイルから &lt;a href=&quot;https://github.com/OpenAPITools/openapi-generator-cli&quot;&gt;openapi-generator-cli&lt;/a&gt; などを利用して定義通りのリクエストであることを担保できます。しかしこの方法はプロジェクト立ち上げ時の既存コードがない状態ではいいですが、既存のコードがあるとこの自動生成コードに置き換える必要があり大変です。&lt;/p&gt;
 &lt;p&gt;既存コードではAxiosでリクエストを行いJestの単体テストを行う環境が整備されていたのでここに乗っかる形で自動テスト時にOpenAPIの仕様を満たせているかを担保したいと思います。&lt;/p&gt;
 &lt;h2&gt;Axiosはリクエスト直前に処理を追加できる&lt;/h2&gt;
@@ -119,7 +252,7 @@ axios&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;interceptors&
 &lt;li&gt;MacOS Monterey&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;ビルドエラー&lt;/h2&gt;
-&lt;p&gt;初期ファームウェアのコード &lt;a href=&quot;https://github.com/m5stack/M5Paper_FactoryTest&quot;&gt;m5stack/M5Paper_FactoryTest&lt;/a&gt;  をクローンし、vscodeで開いた後、ビルドをするとエラーで完了しない。&lt;/p&gt;
+&lt;p&gt;初期ファームウェアのコード &lt;a href=&quot;https://github.com/m5stack/M5Paper_FactoryTest&quot;&gt;m5stack/M5Paper_FactoryTest&lt;/a&gt; をクローンし、vscodeで開いた後、ビルドをするとエラーで完了しない。&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;log&quot;&gt;&lt;pre class=&quot;language-log&quot;&gt;&lt;code class=&quot;language-log&quot;&gt;Building in release mode
 Compiling &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;pio&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;build&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;m5stack&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;fire&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;src&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;frame&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;frame_factorytest&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;cpp&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;o
 &lt;span class=&quot;token property&quot;&gt;src/frame/frame_factorytest.cpp:&lt;/span&gt; In member function &lt;span class=&quot;token string&quot;&gt;&apos;bool Frame_FactoryTest::checkGrove(int, int)&apos;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;
@@ -208,7 +341,7 @@ tty.wchusbserial52D20507581&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
   &lt;span class=&quot;token key attr-name&quot;&gt;upload_speed&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token value attr-value&quot;&gt;2000000&lt;/span&gt;
   &lt;span class=&quot;token key attr-name&quot;&gt;monitor_speed&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token value attr-value&quot;&gt;115200&lt;/span&gt;
   &lt;span class=&quot;token key attr-name&quot;&gt;board_build.partitions&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token value attr-value&quot;&gt;default_16MB.csv&lt;/span&gt;
-  &lt;span class=&quot;token key attr-name&quot;&gt;build_flags&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;=&lt;/span&gt; 
+  &lt;span class=&quot;token key attr-name&quot;&gt;build_flags&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;=&lt;/span&gt;
  	&lt;span class=&quot;token key attr-name&quot;&gt;-DCORE_DEBUG_LEVEL&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token value attr-value&quot;&gt;4&lt;/span&gt;
  	-DBOARD_HAS_PSRAM
  	-mfix-esp32-psram-cache-issue
@@ -421,7 +554,7 @@ cargo-cache
 
 ./configure --with-json --without-x --with-native-compilation
 
-&lt;span class=&quot;token function&quot;&gt;make&lt;/span&gt; -j&lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;nproc&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;token function&quot;&gt;make&lt;/span&gt; -j&lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;nproc&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;makeコマンドによりrust部のコンパイル-&gt;emacs部のコンパイル(gcc)-&gt;lisp部のコンパイルが順に行われます。DenoはRust実装なので最初の段階でDeno runtimeがビルドされました。肝心のnative compはemacsの初回起動時に行われます、詳細は&lt;code class=&quot;language-text&quot;&gt;native compile log&lt;/code&gt;バッファに出力され、completeが表示されるまで20分ぐらい待ちました。&lt;/p&gt;
 &lt;h2&gt;詰まりどころ&lt;/h2&gt;
 &lt;p&gt;自分はemacsをターミナルでしか使わないのでGUI関連を全て無くした&lt;code class=&quot;language-text&quot;&gt;--without-x --without-ns&lt;/code&gt;をしたかったのですが、&lt;code class=&quot;language-text&quot;&gt;--without-ns&lt;/code&gt;オプションを付与するとrust実装部分のコンパイルが通りませんでした。issueなどをみる感じ他の方はビルドできるっぽいのですが自分の環境では断念。NextStepがある分バイナリサイズが大きくなりますが、特にそれ以外に不都合はないのでこのままにしました。&lt;/p&gt;
@@ -557,35 +690,34 @@ Failed to unload one or &lt;span class=&quot;token function&quot;&gt;more&lt;/sp
   request&lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;しかし、Axiosは非同期的に使うと思うので&lt;code class=&quot;language-text&quot;&gt;await axios.get()&lt;/code&gt;の返り値は&lt;code class=&quot;language-text&quot;&gt;AxiosPromise&lt;/code&gt;ですが、以下のような型定義&lt;sup id=&quot;fnref-2&quot;&gt;&lt;a href=&quot;#fn-2&quot; class=&quot;footnote-ref&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;なので同じとみなせます。&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;typescript&quot;&gt;&lt;pre class=&quot;language-typescript&quot;&gt;&lt;code class=&quot;language-typescript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;AxiosPromise&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;&lt;span class=&quot;token builtin&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;AxiosResponse&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;typescript&quot;&gt;&lt;pre class=&quot;language-typescript&quot;&gt;&lt;code class=&quot;language-typescript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;AxiosPromise&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;&lt;span class=&quot;token builtin&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;AxiosResponse&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;ということは、以下のようなコードがかけます。&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;https://example.com/api/&lt;/code&gt;のレスポンスが以下の型である時&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;typescript&quot;&gt;&lt;pre class=&quot;language-typescript&quot;&gt;&lt;code class=&quot;language-typescript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;ApiResponceType&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-  name&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;typescript&quot;&gt;&lt;pre class=&quot;language-typescript&quot;&gt;&lt;code class=&quot;language-typescript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;ApiResponceType&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  name&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;string&lt;/span&gt;
   id&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;string&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;リクエストするAxiosのコードは&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;typescript&quot;&gt;&lt;pre class=&quot;language-typescript&quot;&gt;&lt;code class=&quot;language-typescript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; axios&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; AxiosRequestConfig&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AxiosResponce &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;axios&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;typescript&quot;&gt;&lt;pre class=&quot;language-typescript&quot;&gt;&lt;code class=&quot;language-typescript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; axios&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; AxiosRequestConfig&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AxiosResponce &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;axios&apos;&lt;/span&gt;
 
-&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; responce &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;await&lt;/span&gt; axios&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token generic-function&quot;&gt;&lt;span class=&quot;token function&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;token generic class-name&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;ApiResponceType&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;https://example.com/api/&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; responce &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;await&lt;/span&gt; axios&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token generic-function&quot;&gt;&lt;span class=&quot;token function&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;token generic class-name&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;ApiResponceType&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;https://example.com/api/&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 
 responce&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;data &lt;span class=&quot;token comment&quot;&gt;// ここの型がApiResponceTypeになる&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2&gt;Bearerヘッダーを付与・JWTの有効期限も考慮する&lt;/h2&gt;
 &lt;p&gt;axiosのインスタンスを作り、そこにBearerヘッダーを付与しておきます。さらにaxiosのrequest/responceにミドルウェア的に処理を挟み込める仕組みとしてinterrceptors&lt;sup id=&quot;fnref-4&quot;&gt;&lt;a href=&quot;#fn-4&quot; class=&quot;footnote-ref&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;があるので、これを用いてJWTの有効期限が切れていた時はJWTの更新・再リクエストをおこないます。&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;typescript&quot;&gt;&lt;pre class=&quot;language-typescript&quot;&gt;&lt;code class=&quot;language-typescript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; axios&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; AxiosResponse&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AxiosError&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AxiosRequestConfig &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;axios&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;typescript&quot;&gt;&lt;pre class=&quot;language-typescript&quot;&gt;&lt;code class=&quot;language-typescript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; axios&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; AxiosResponse&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AxiosError&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; AxiosRequestConfig &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;axios&apos;&lt;/span&gt;
 
 &lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; apiClient &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token generic-function&quot;&gt;&lt;span class=&quot;token function&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;token generic class-name&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; AxiosResponse&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
   url&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  method&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;get&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;post&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  method&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;get&apos;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;post&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
   data&lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
   headers&lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; Map&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
   &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;requestConfig&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;any&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;user&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;token keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;undefined currentuser&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;undefined currentuser&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; jwtToken &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;getJwtToken&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 👈 任意の方法で保持しているJWT&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; jwtToken &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;getJwtToken&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 👈 任意の方法で保持しているJWT&lt;/span&gt;
 
   &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; config&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; AxiosRequestConfig &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;requestConfig&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
@@ -593,36 +725,35 @@ responce&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;data &lt;s
     method&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; method&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
     data&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
     headers&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;token string-property property&quot;&gt;&quot;Content-Type&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;application/json&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;token string-property property&quot;&gt;&quot;Authorization&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;Bearer &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;jwtToken&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;token string-property property&quot;&gt;&apos;Content-Type&apos;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;application/json&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      Authorization&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;Bearer &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;jwtToken&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
       &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;headers&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
 
-  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; customAxios &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; axios&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; customAxios &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; axios&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 
-  &lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; isRetry &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; isRetry &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;false&lt;/span&gt;
   customAxios&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;interceptors&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;response&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;use&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
     &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; AxiosResponse&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; res&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;token keyword&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;error&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; AxiosError&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;error&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;response&lt;span class=&quot;token operator&quot;&gt;?.&lt;/span&gt;status &lt;span class=&quot;token operator&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;401&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; isRetry&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 👈 JWT有効期限切れかつ一回目のリクエストである時&lt;/span&gt;
-        isRetry &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;error&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;response&lt;span class=&quot;token operator&quot;&gt;?.&lt;/span&gt;status &lt;span class=&quot;token operator&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;401&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; isRetry&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token comment&quot;&gt;// 👈 JWT有効期限切れかつ一回目のリクエストである時&lt;/span&gt;
+        isRetry &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;true&lt;/span&gt;
         &lt;span class=&quot;token keyword&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;refreshJwtToken&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 
-        &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; originalRequestConfig &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; error&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;config&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; customAxios&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;originalRequestConfig&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 👈 再度リクエスト&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; originalRequestConfig &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; error&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;config
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; customAxios&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;originalRequestConfig&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 👈 再度リクエスト&lt;/span&gt;
       &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;error&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;error&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
       &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; customAxios&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;config&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; customAxios&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;config&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
 
-
-
-&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; responce &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token generic-function&quot;&gt;&lt;span class=&quot;token function&quot;&gt;apiClient&lt;/span&gt;&lt;span class=&quot;token generic class-name&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;ApiResponceType&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;https://example.com/api/&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;id&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-responce&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;data  &lt;span class=&quot;token comment&quot;&gt;// 👈 ApiResponceTypeの型がつく&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; responce &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token generic-function&quot;&gt;&lt;span class=&quot;token function&quot;&gt;apiClient&lt;/span&gt;&lt;span class=&quot;token generic class-name&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;ApiResponceType&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;https://example.com/api/&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; id&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+responce&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;data &lt;span class=&quot;token comment&quot;&gt;// 👈 ApiResponceTypeの型がつく&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;div class=&quot;footnotes&quot;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
@@ -770,7 +901,7 @@ $ &lt;span class=&quot;token function&quot;&gt;man&lt;/span&gt; launchd.plist&lt
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;xml&quot;&gt;&lt;pre class=&quot;language-xml&quot;&gt;&lt;code class=&quot;language-xml&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;&amp;lt;!-- message.xml --&gt;&lt;/span&gt;
 &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token namespace&quot;&gt;soapenv:&lt;/span&gt;Envelope&lt;/span&gt;
   &lt;span class=&quot;token attr-name&quot;&gt;&lt;span class=&quot;token namespace&quot;&gt;xmlns:&lt;/span&gt;xsi&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;http://www.w3.org/2001/XMLSchema-instance&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
-  &lt;span class=&quot;token attr-name&quot;&gt;&lt;span class=&quot;token namespace&quot;&gt;xmlns:&lt;/span&gt;xsd&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;http://www.w3.org/2001/XMLSchema&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; 
+  &lt;span class=&quot;token attr-name&quot;&gt;&lt;span class=&quot;token namespace&quot;&gt;xmlns:&lt;/span&gt;xsd&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;http://www.w3.org/2001/XMLSchema&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
   &lt;span class=&quot;token attr-name&quot;&gt;&lt;span class=&quot;token namespace&quot;&gt;xmlns:&lt;/span&gt;soapenv&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;http://schemas.xmlsoap.org/soap/envelope/&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
   &lt;span class=&quot;token attr-name&quot;&gt;&lt;span class=&quot;token namespace&quot;&gt;xmlns:&lt;/span&gt;req&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;https://example.com/req/&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
     &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token namespace&quot;&gt;soapenv:&lt;/span&gt;Header&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;/&gt;&lt;/span&gt;&lt;/span&gt;
@@ -778,7 +909,7 @@ $ &lt;span class=&quot;token function&quot;&gt;man&lt;/span&gt; launchd.plist&lt
         &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token namespace&quot;&gt;req:&lt;/span&gt;zipcode&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
             100-0001
         &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;token namespace&quot;&gt;req:&lt;/span&gt;zipcode&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
-    &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;token namespace&quot;&gt;soapenv:&lt;/span&gt;Body&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;      
+    &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;token namespace&quot;&gt;soapenv:&lt;/span&gt;Body&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;token namespace&quot;&gt;soapenv:&lt;/span&gt;Envelope&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;curlで呼び出します&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; https://endpoint.example.com/ &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
@@ -852,7 +983,7 @@ $ &lt;span class=&quot;token function&quot;&gt;man&lt;/span&gt; launchd.plist&lt
 	}
   &lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; siteTitle &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; site&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;sitemetadata&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;title
-  
+
   &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
 	&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
 	  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;h1&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;siteTitle&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;h1&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
@@ -1266,7 +1397,7 @@ bool &lt;span class=&quot;token function&quot;&gt;process_record_user&lt;/span&g
             &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
         &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
         &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; false&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-		
+
 	&lt;span class=&quot;token keyword&quot;&gt;case&lt;/span&gt; RAISE&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;
         &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;record&lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt;event&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;pressed&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
 			is_prelayer_numberlayer &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;layer_state_is&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;_NUMBER&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
@@ -1357,7 +1488,7 @@ bool &lt;span class=&quot;token function&quot;&gt;process_record_user&lt;/span&g
 		&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token variable&quot;&gt;${RES&lt;span class=&quot;token operator&quot;&gt;%%&lt;/span&gt;http_code*}&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; .gitignore
 	&lt;span class=&quot;token keyword&quot;&gt;fi&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt;
-	&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token variable&quot;&gt;$1&lt;/span&gt; is undefined.&quot;&lt;/span&gt; 
+	&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token variable&quot;&gt;$1&lt;/span&gt; is undefined.&quot;&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;fi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;.gitconfigに書くとときには全体を関数にする・ダブルクォーテーションをエスケープ・&lt;code class=&quot;language-text&quot;&gt;echo -n&lt;/code&gt;が使えないので&lt;code class=&quot;language-text&quot;&gt;printf&lt;/code&gt;に差し替えなどをすると以下になります。&lt;/p&gt;
 &lt;p&gt;書いていて気づいたんですが、#はエスケープせずに動きますね。&lt;/p&gt;
@@ -1740,7 +1871,7 @@ bool &lt;span class=&quot;token function&quot;&gt;process_record_user&lt;/span&g
 &lt;li&gt;PC (配信用, 映像素材出し用, パワポ用)&lt;/li&gt;
 &lt;li&gt;カメラ GH4 Lumix &amp;#x26; Dock&lt;/li&gt;
 &lt;li&gt;カメラ Blackmagic Pocket Cinema Camera 4K BlackmagicDesign&lt;/li&gt;
-&lt;li&gt;マイク 2本  AT808G AudioTechnica&lt;/li&gt;
+&lt;li&gt;マイク 2本 AT808G AudioTechnica&lt;/li&gt;
 &lt;li&gt;集音マイク RTA-M dbx&lt;/li&gt;
 &lt;li&gt;音響卓&lt;/li&gt;
 &lt;li&gt;ビデオキャプチャー blackmagic intensity shuttle blackmagicDesign&lt;/li&gt;
@@ -1883,7 +2014,7 @@ bool &lt;span class=&quot;token function&quot;&gt;process_record_user&lt;/span&g
 &lt;p&gt;その他、キーバインドなど自分で設定した項目を遅延ロードのきっかけにすることができます。以下のキーワードを用いて設定をすれば遅延ロードを自動で設定してくれます。&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;lisp&quot;&gt;&lt;pre class=&quot;language-lisp&quot;&gt;&lt;code class=&quot;language-lisp&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; perl-mode
   &lt;span class=&quot;token lisp-property property&quot;&gt;:defer&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-  
+
 &lt;span class=&quot;token comment&quot;&gt;;; version2で指定秒数の遅延が追加されたようです。lspなど外部プロセスに依存するようなパッケージに有効ではないでしょうか。&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; perl-mode
   &lt;span class=&quot;token lisp-property property&quot;&gt;:defer&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -2020,7 +2151,7 @@ bool &lt;span class=&quot;token function&quot;&gt;process_record_user&lt;/span&g
 &lt;p&gt;以下の例ではivyとhydraがどちらもロードされた直後のタイミングまで当該パッケージの読み込みを遅延します。&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;lisp&quot;&gt;&lt;pre class=&quot;language-lisp&quot;&gt;&lt;code class=&quot;language-lisp&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; ivy-hydra
   &lt;span class=&quot;token lisp-property property&quot;&gt;:after&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token car&quot;&gt;ivy&lt;/span&gt; hydra&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-  
+
 &lt;span class=&quot;token comment&quot;&gt;;; もしくは&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; ivy-hydra
   &lt;span class=&quot;token lisp-property property&quot;&gt;:after&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token lisp-property property&quot;&gt;:all&lt;/span&gt; ivy hydra&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -2039,7 +2170,7 @@ bool &lt;span class=&quot;token function&quot;&gt;process_record_user&lt;/span&g
 &lt;p&gt;また、use-packageではなく手動でインストールしたパッケージもmanualを指定すればOKです。&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;lisp&quot;&gt;&lt;pre class=&quot;language-lisp&quot;&gt;&lt;code class=&quot;language-lisp&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; hoge
   &lt;span class=&quot;token lisp-property property&quot;&gt;:pin&lt;/span&gt; gnu&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-  
+
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; org
   &lt;span class=&quot;token lisp-property property&quot;&gt;:pin&lt;/span&gt; manual&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2&gt;モードライン&lt;/h2&gt;
@@ -2049,7 +2180,7 @@ bool &lt;span class=&quot;token function&quot;&gt;process_record_user&lt;/span&g
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;lisp&quot;&gt;&lt;pre class=&quot;language-lisp&quot;&gt;&lt;code class=&quot;language-lisp&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;;; 表示を消す&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; addrev
   &lt;span class=&quot;token lisp-property property&quot;&gt;:diminish&lt;/span&gt; addrev-mode&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-  
+
 &lt;span class=&quot;token comment&quot;&gt;;; 表示を変更する&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; addrev
   &lt;span class=&quot;token lisp-property property&quot;&gt;:diminish&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token car&quot;&gt;addrev-mode&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;AddR&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -2058,7 +2189,7 @@ bool &lt;span class=&quot;token function&quot;&gt;process_record_user&lt;/span&g
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;lisp&quot;&gt;&lt;pre class=&quot;language-lisp&quot;&gt;&lt;code class=&quot;language-lisp&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;;; 表示を消す&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; addrev
   &lt;span class=&quot;token lisp-property property&quot;&gt;:delight&lt;/span&gt; addrev-mode&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-  
+
 &lt;span class=&quot;token comment&quot;&gt;;; 表示を消す(短縮記法)&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; addrev
   &lt;span class=&quot;token lisp-property property&quot;&gt;:delight&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
@@ -2066,7 +2197,7 @@ bool &lt;span class=&quot;token function&quot;&gt;process_record_user&lt;/span&g
 &lt;span class=&quot;token comment&quot;&gt;;; 表示を変更する&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; addrev
   &lt;span class=&quot;token lisp-property property&quot;&gt;:delight&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token car&quot;&gt;addrev-mode&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;AddR&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-  
+
 &lt;span class=&quot;token comment&quot;&gt;;; 変数を利用して表示名を変更する&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; projectile
   &lt;span class=&quot;token lisp-property property&quot;&gt;:delight&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;&apos;(&lt;/span&gt;&lt;span class=&quot;token lisp-property property&quot;&gt;:eval&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;concat&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot; &quot;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token car&quot;&gt;projectile-project-name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -2112,12 +2243,12 @@ bool &lt;span class=&quot;token function&quot;&gt;process_record_user&lt;/span&g
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;lisp&quot;&gt;&lt;pre class=&quot;language-lisp&quot;&gt;&lt;code class=&quot;language-lisp&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;;; rgコマンドがなければ brew install rg を試みます&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; rg
   &lt;span class=&quot;token lisp-property property&quot;&gt;:ensure-system-package&lt;/span&gt; rg&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-  
+
 &lt;span class=&quot;token comment&quot;&gt;;; コマンド名とインストールの時に指定する名前が違う場合&lt;/span&gt;
 &lt;span class=&quot;token comment&quot;&gt;;; rgコマンドがなければ brew install ripgrep を試みます&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; rg
   &lt;span class=&quot;token lisp-property property&quot;&gt;:ensure-system-package&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token car&quot;&gt;rg&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt; ripgrep&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-  
+
 &lt;span class=&quot;token comment&quot;&gt;;; brewでは無いパッケージマネージャーを使う時&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;use-package&lt;/span&gt; prettier-mode
   &lt;span class=&quot;token lisp-property property&quot;&gt;:ensure-system-package&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token car&quot;&gt;prettier&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;npm install -g prettier&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -2156,8 +2287,8 @@ bool &lt;span class=&quot;token function&quot;&gt;process_record_user&lt;/span&g
 &lt;p&gt;今回はGolang向けのコマンドラインアプリケーションライブラリの &lt;a href=&quot;https://github.com/urfave/cli&quot;&gt;urfave/cli&lt;/a&gt;を使いました。&lt;/p&gt;
 &lt;p&gt;このライブラリではサブコマンドやパラメータのほか、yaml, toml, jsonなどの設定ファイルを読み込んだり環境変数を読んだりとcliアプリケーションを作る上ではこのライブラリで完結すると思います。あと、ドキュメント読まなくても書き始められるぐらいわかりやすい構造をしています。感動！！&lt;/p&gt;
 &lt;p&gt;今回はとりあえずmacOS向けのバイナリしか作ってませんが、CIでそれぞれのOS向けのバイナリをビルドして公開してみようかなと考えています。&lt;/p&gt;
-&lt;p&gt;また、今回はhomebrewの&lt;a href=&quot;https://github.com/magcho/homebrew-magcho&quot;&gt;オレオレformula&lt;/a&gt;も用意しているのでdotzのインストール自体もセットアップスクリプト内に収めることができますね、最高です。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[tmux上のemacsで下線が表示されなかった話]]></title><description><![CDATA[macOS(Mojave)でiterm2を使っています、emacsのテーマを設定していてunderlineが表示できなくて困りました。 emacsでは文字色や背景色のほか、文字の下線, 太字,  斜体, 取り消しなど色々な表記ができます。 自分の環境ではflycheck…]]></description><link>https://blog.magcho.com/2019/08/tmux-emacs-underline/</link><guid isPermaLink="false">https://blog.magcho.com/2019/08/tmux-emacs-underline/</guid><pubDate>Wed, 21 Aug 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;macOS(Mojave)でiterm2を使っています、emacsのテーマを設定していてunderlineが表示できなくて困りました。&lt;/p&gt;
-&lt;p&gt;emacsでは文字色や背景色のほか、&lt;u&gt;文字の下線&lt;/u&gt;, &lt;strong&gt;太字&lt;/strong&gt;,  &lt;em&gt;斜体&lt;/em&gt;, &lt;s&gt;取り消し&lt;/s&gt;など色々な表記ができます。&lt;/p&gt;
+&lt;p&gt;また、今回はhomebrewの&lt;a href=&quot;https://github.com/magcho/homebrew-magcho&quot;&gt;オレオレformula&lt;/a&gt;も用意しているのでdotzのインストール自体もセットアップスクリプト内に収めることができますね、最高です。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[tmux上のemacsで下線が表示されなかった話]]></title><description><![CDATA[macOS(Mojave)でiterm2を使っています、emacsのテーマを設定していてunderlineが表示できなくて困りました。 emacsでは文字色や背景色のほか、文字の下線, 太字, 斜体, 取り消しなど色々な表記ができます。 自分の環境ではflycheckのerror…]]></description><link>https://blog.magcho.com/2019/08/tmux-emacs-underline/</link><guid isPermaLink="false">https://blog.magcho.com/2019/08/tmux-emacs-underline/</guid><pubDate>Wed, 21 Aug 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;macOS(Mojave)でiterm2を使っています、emacsのテーマを設定していてunderlineが表示できなくて困りました。&lt;/p&gt;
+&lt;p&gt;emacsでは文字色や背景色のほか、&lt;u&gt;文字の下線&lt;/u&gt;, &lt;strong&gt;太字&lt;/strong&gt;, &lt;em&gt;斜体&lt;/em&gt;, &lt;s&gt;取り消し&lt;/s&gt;など色々な表記ができます。&lt;/p&gt;
 &lt;p&gt;自分の環境ではflycheckのerror, warningなどが下線付きの書式になるはずでした。&lt;/p&gt;
 &lt;p&gt;iterm2上で直接emacsを起動している時にはきちんと下線が表示されますが、tmuxセッション上でemacsを起動すると下線が表示されませんでした。&lt;/p&gt;
 &lt;p&gt;&lt;span
