@@ -1,13 +1,12 @@
 ---
 layout: post
 title: Lily58にレイヤーを追加する
-category:  プログラミング
+category: プログラミング
 date: 2020-06-20
 tags:
-- lily58
-- 自作キーボード
+  - lily58
+  - 自作キーボード
 ---
-
 
 自分は [Lily58 Pro](https://yuchi-kbd.hatenablog.com/entry/2018/12/23/214342) という左右分割の自作キーボードを使っています。ErgoDoxよりは小さくCorneよりは大きいのでとても自分に合っています。
 
@@ -19,8 +18,8 @@ Lily58のデフォルトFWにはRaise/Lower/Adjustの3レイヤーが定義さ�
 
 レイヤーの切り替え方は何通りかあります、デフォルトのRaise/Lowerは押している時だけレイヤーを切り替える方式です。そのレイヤーのキーを１つタイプするだけならば便利な方式ですが、テンキーレイヤー等では連続して数値を入力し続けたいことがほとんどなので今回は一回押したらレイヤーを切り替え、もう一度押すとレイヤーが戻るtoggle方式にしました。
 
-
 まず、以下のようにNUMBERレイヤーを定義します。
+
 ```diff-c:title=keymap.c
  #define _QWERTY 0
  #define _LOWER 1
@@ -61,7 +60,6 @@ Lily58のデフォルトFWにはRaise/Lower/Adjustの3レイヤーが定義さ�
 );
 ```
 
-
 NUMBERレイヤーへtoggleするためのキーをQWERTYレイヤーに定義します。右手側の一番左の１つだけ横に出ているキーに割り当てます。
 
 `TG(レイヤー番号)`のように割り当て、切り替え先のレイヤーには`KC_TRANSPARENT`かそのエイリアスである`_______`を割り当ておきます。
@@ -90,7 +88,6 @@ NUMBERレイヤーへtoggleするためのキーをQWERTYレイヤーに定義�
 		KC_LSFT, KC_LGUI, LOWER, KC_SPC, KC_ENT, RAISE, KC_RGUI, KC_RALT),
 
 ```
-
 
 これでNUMBERレイヤーが動作します。
 
@@ -124,7 +121,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         return false;
-		
+
 	case RAISE:
         if (record->event.pressed) {
 			is_prelayer_numberlayer = layer_state_is(_NUMBER);
@@ -145,7 +142,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 ```
 
 以上の実装で3層目のレイヤーも期待する動作になります。
-
 
 ## OLEDに表示されるレイヤー名を修正する
 
@@ -177,6 +173,7 @@ Lily58のオプションで付けられるOLEDにはレイヤー名や入力履�
     return layer_state_str;
  }
 ```
+
 これでOLEDにLayer: Numberと表示されるようになります。めでたしめでたし。
 
 ## おまけ
@@ -186,4 +183,4 @@ qmkではレイヤーの状態を`unit32_t layer_state` で保持し、下位ビ
 `layer_on(LAYER)`は指定したビットを立てるわけではなく、現在の`layer_state`を左に指定量ビットシフトしている。確かに`keymap.c`で`#define _NUMBER 4`を定義しましたね。当然`layer_off(LAYER)`は右に指定量ビットシフトです。
 
 今までLily58にFWを書き込む時には繋いでるTRRSを抜いて書き込んでいたのですが、軽く調べた感じ繋ぎっぱなしで書き込んで問題なさそう(私は設計者ではないので信憑性のない情報)
-[回路図](https://github.com/kata0510/Lily58/tree/master/Pro/PCB ) を見た感じUSBの通信線とは別のピンでPro Micro同士を繋いでいます。TRRSのアサインは先端からUSBからのVCC/GND/通信線/NCっぽい。ProMicroの仕様書をざっと見た感じFW書き込み時にシリアルピンは影響なさそうなのでTRRSを抜かずに書き込めそうです。
+[回路図](https://github.com/kata0510/Lily58/tree/master/Pro/PCB) を見た感じUSBの通信線とは別のピンでPro Micro同士を繋いでいます。TRRSのアサインは先端からUSBからのVCC/GND/通信線/NCっぽい。ProMicroの仕様書をざっと見た感じFW書き込み時にシリアルピンは影響なさそうなのでTRRSを抜かずに書き込めそうです。

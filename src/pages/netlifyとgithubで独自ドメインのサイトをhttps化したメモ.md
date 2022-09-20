@@ -79,8 +79,6 @@ Netlify で `Domain management -> Domains -> HTTPS -> SSL/TLS certificate`で `V
 
 最後の仕上げとして、http でアクセスがあった時に https にリダイレクトさせたいので`Force TLS connections`を有効化して完了です。そんなの表示されてないよって時はリロードするとたぶん出てきます。
 
-
-
 ## コメント
 
 ドメイン周りの設定は順番が大切なので、3 回ぐらい失敗してサイトを消してやり直してを繰り返してしまった。勉強不足だ。

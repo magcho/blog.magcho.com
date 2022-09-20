@@ -1,10 +1,10 @@
 ---
 layout: post
 title: Cloud Batteryでバッテリー残量を確認する
-category:  日記
+category: 日記
 date: 2021-04-11
 tags:
-- mac
+  - mac
 ---
 
 ## バッテリー残量を確認したい
@@ -42,6 +42,7 @@ tags:
 よくある`systemctl`を用いたデーモン化というやつなのですが、macには`systemctl`はなく、同様の機能を持った`launchctl`を用いて設定するようです。
 
 詳しいことは`man`コマンドから読めます
+
 ```bash
 $ man launchd
 $ man launchctl
@@ -84,16 +85,17 @@ $ launchctl load ~/Library/LaunchAgents/com.hoge.fuga.plist
 これで快適なバッテリー管理が出来る！
 
 ## plistメモ
-| name             | value                                                                                        |
-| :-------------   | :-------------                                                                               |
-| KeepAlive        | cronのように定期実行なら`true` 常時起動なら`false`                                           |
-| Label            | 識別名なので被らなければなんでも良い                                                         |
-| ProgramArguments | 起動したいバイナリを指定、`〇〇.app`はディレクトリなのでその中のバイナリーを指すようにする |
-| RunAtLoad        | スタートアップに登録するなら`true`                                                           |
-| StartInterval    | 単位は秒                                                                                     |
 
+| name             | value                                                                                      |
+| :--------------- | :----------------------------------------------------------------------------------------- |
+| KeepAlive        | cronのように定期実行なら`true` 常時起動なら`false`                                         |
+| Label            | 識別名なので被らなければなんでも良い                                                       |
+| ProgramArguments | 起動したいバイナリを指定、`〇〇.app`はディレクトリなのでその中のバイナリーを指すようにする |
+| RunAtLoad        | スタートアップに登録するなら`true`                                                         |
+| StartInterval    | 単位は秒                                                                                   |
 
 ## 参考
+
 - https://www.alanyan.ca/CloudBattery/
 - https://news.mynavi.jp/article/20071211-iul01/resources/Leopard_launchd_newkeywords.pdf
 - https://qiita.com/rsahara/items/7d37a4cb6c73329d4683

@@ -1,12 +1,11 @@
 ---
 layout: post
 title: Gatsby.jsをv3に更新した
-category:  プログラミング
+category: プログラミング
 date: 2021-03-14
 tags:
-- gatsby.js
+  - gatsby.js
 ---
-
 
 2021年3月にGatsby.jsのv3がリリースされました、多少の破壊的な変更はあるもののv1からv2の時ほどの苦労はなくアップデートできた気がします。
 
@@ -20,8 +19,8 @@ v2からv3への更新にあたっていくつかの破壊的な更新がある�
 
 まずはnpmでGatsby.jsをアップデートします。これはnpm7の仕様変更によるものですがpeer dependencies周りでエラーになったので`npm install gatsby@latest --legacy-peer-deps`オプション付きで更新します。
 
+次にgraphql関係のimportを修正しました。[マイグレーションガイド](https://www.gatsbyjs.com/docs/reference/release-notes/migrating-from-v2-to-v3/#using-a-global-graphql-tag-for-queries) にも書いてありますが`graphql`がグローバルではなくなったのでインポート文を追加しておきます。
 
-次にgraphql関係のimportを修正しました。[マイグレーションガイド](https://www.gatsbyjs.com/docs/reference/release-notes/migrating-from-v2-to-v3/#using-a-global-graphql-tag-for-queries ) にも書いてありますが`graphql`がグローバルではなくなったのでインポート文を追加しておきます。
 ```diff-js
 + import { graphql } from "gatsby"
 ```
@@ -92,7 +91,7 @@ export default const FugaComponent = () => {
 	}
   `)
   const siteTitle = site.sitemetadata.title
-  
+
   return (
 	<div>
 	  <h1>{siteTitle}</h1>
@@ -103,12 +102,8 @@ export default const FugaComponent = () => {
 
 ## Incremental Build
 
-[リリースノート](https://www.gatsbyjs.com/docs/reference/release-notes/v3.0/#incremental-builds-in-oss )に書いてありますが、incremental buildがデフォルトで有効化されました。`/.cache/`と`/public/`ディレクトリの内容を２回目以降のビルドで再利用するようになりビルド時間が短縮されました。デプロイフローにてこれらのキャッシュを破棄しないように修正する必要がありそうです。
+[リリースノート](https://www.gatsbyjs.com/docs/reference/release-notes/v3.0/#incremental-builds-in-oss)に書いてありますが、incremental buildがデフォルトで有効化されました。`/.cache/`と`/public/`ディレクトリの内容を２回目以降のビルドで再利用するようになりビルド時間が短縮されました。デプロイフローにてこれらのキャッシュを破棄しないように修正する必要がありそうです。
 
 このブログは現状Netlifyでbuild and deployをしていますがビルドが遅いのが気になっていました。Netlifyのbuild環境はRuby/Python/Go/Rusy/Node..などなどたくさんのランタイムをインストールした後にビルドを始めるので時間がかかります、なのでGithub Actionsに乗り換えることを検討中です。
-
-
-
-
 
 [^1]: StaticQueryという物を利用すれば今までもcomponent自身でfetchできていたようです。知らなかった。

@@ -1,12 +1,12 @@
 ---
 layout: post
 title: dotfilesを管理するツールを作った
-category:  プログラミング
+category: プログラミング
 date: 2019-09-20
 tags:
-- golang
-- dotz
-- macOS
+  - golang
+  - dotz
+  - macOS
 ---
 
 増税前にPCを買い換えておこうと思い、高校の時に買ったMacBook Air 13-inch Early 2015から2019 MacBook Pro 2019 13-inch 4thunderbolt3 portsにしました。
@@ -29,4 +29,4 @@ tags:
 
 今回はとりあえずmacOS向けのバイナリしか作ってませんが、CIでそれぞれのOS向けのバイナリをビルドして公開してみようかなと考えています。
 
-また、今回はhomebrewの[オレオレformula](https://github.com/magcho/homebrew-magcho)も用意しているのでdotzのインストール自体もセットアップスクリプト内に収めることができますね、最高です。 
+また、今回はhomebrewの[オレオレformula](https://github.com/magcho/homebrew-magcho)も用意しているのでdotzのインストール自体もセットアップスクリプト内に収めることができますね、最高です。

@@ -1,16 +1,16 @@
 ---
 layout: post
-title: "qmk firmwareでctrlとの同時押しをカスタマイズする"
-category:  プログラミング
+title: 'qmk firmwareでctrlとの同時押しをカスタマイズする'
+category: プログラミング
 date: 2020-04-08
 tags:
- - qmk firmware
- - 自作キーボード
+  - qmk firmware
+  - 自作キーボード
 ---
 
 キー入力が下手なのでバックスペースを連打しがちなのですがバックスペースキーはキーボード上では遥か右上にあります。これが原因で右手首を痛めたことも。入力精度を上げろという話なのですが出来るならもうしてます。
 
-また、以外と日本語入力をしていると使いがちな「ー」伸ばし棒も近くに欲しいものです。 
+また、以外と日本語入力をしていると使いがちな「ー」伸ばし棒も近くに欲しいものです。
 
 今回は`C-j`にbackspace・`C-n`にハイフンを割り当てます。
 
@@ -26,15 +26,15 @@ qmk firmwareではraise/lower等のキーマップを変更・追加してカス
 
 qmk firmwareにてキー入力を拡張するには`process_record_user()`を用いる方法があります。
 
-[公式ドキュメント](https://docs.qmk.fm/#/custom_quantum_functions?id=programming-the-behavior-of-any-keycode )に詳しくはありますが、`process_record_user()`はqmk firmwareがキー入力を検知しPCへキー情報を送信する前に毎回呼び出される関数です。通常時返り値を`true`とすることで現在のレイヤーのkeymapを見てPCへキー情報を送信してくれます。今回のように何か特別でキーマップは関与しない処理を行う場合は一通りの処理が終わった後`false`を返しておきます。この場合は`process_record_user`を抜けた時点で処理を終了するようになります。
+[公式ドキュメント](https://docs.qmk.fm/#/custom_quantum_functions?id=programming-the-behavior-of-any-keycode)に詳しくはありますが、`process_record_user()`はqmk firmwareがキー入力を検知しPCへキー情報を送信する前に毎回呼び出される関数です。通常時返り値を`true`とすることで現在のレイヤーのkeymapを見てPCへキー情報を送信してくれます。今回のように何か特別でキーマップは関与しない処理を行う場合は一通りの処理が終わった後`false`を返しておきます。この場合は`process_record_user`を抜けた時点で処理を終了するようになります。
 
 今回は`C-j`と`C-n`の時に任意の処理をし、それ以外はキーマップに従うようにしていきます。
 
 この関数はキーの押下時に加えて"押上"時にも呼び出されます。ctrlとの複合キーであることを判定するにはctrlキー押下時にctrl_pressedという押下フラグを立てておく方法をとります。
 
-そしてポイントなのがキーの反復機能です。テキストエディタでAキーを押しっぱなしにすると`AAAAAAAAAAAAAA`のようにAが大量に入力されます。それはそう。反復機能が働いている時にキーボードが`KC_A`のkey\_downコードを連続して送信しているわけではなく、PC側でkey\_downコードが来てからなかなかkey\_upコードが来ないので押しっぱなしであると判断しています。
+そしてポイントなのがキーの反復機能です。テキストエディタでAキーを押しっぱなしにすると`AAAAAAAAAAAAAA`のようにAが大量に入力されます。それはそう。反復機能が働いている時にキーボードが`KC_A`のkey_downコードを連続して送信しているわけではなく、PC側でkey_downコードが来てからなかなかkey_upコードが来ないので押しっぱなしであると判断しています。
 
-qmk firmwareにはキーコードを送信するための関数がいくか用意されていますがよく使うのは`tap_code(KEYCODE)`と`register_code(KEYCODE) / unregister_code(KEYCODE)`です。前者はkey\_downコードとkey\_upコードを連続して送信し、後者はresigerがdown・unregisterがupのコードを送信するものです。用途に合わせて使い分ける必要があります。
+qmk firmwareにはキーコードを送信するための関数がいくか用意されていますがよく使うのは`tap_code(KEYCODE)`と`register_code(KEYCODE) / unregister_code(KEYCODE)`です。前者はkey_downコードとkey_upコードを連続して送信し、後者はresigerがdown・unregisterがupのコードを送信するものです。用途に合わせて使い分ける必要があります。
 
 ## 実装
 
@@ -126,6 +126,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 ```
+
 上のコードで、switchにてctrlキーとレイヤ切り替えキーを判定し、それ以外はdefaultに入ります。ここで`ctrl\_pressed`フラグを用いて押下中(修飾キー)であるかを判定し、任意のキーとの組み合わせ(ここでは`C-J`/`C-N`)であれば`register\_code(KEYCODE)`にてキーを打ちます。
 
 今回のようにbackspaceやハイフンといった本来修飾キーを用いないキー(Ctrlとの複合キーではないキー)の場合はPCにこれは修飾キーでないことを伝えるために`unregister_code(KC_LCTRL)`にてctrlキーをを仮想的に押上しておきます。
@@ -141,8 +142,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 キーマップのカスタマイズは既成のキーボードでも十分できますが、自作キーボードでは大抵のことを作ればできるので楽しい。
 
 ## リンク
+
 - [Mac のキーボードショートカット - Apple サポート](https://support.apple.com/ja-jp/HT201236)
-- [qmk_firmware/keymap.c at master · qmk/qmk_firmware](https://github.com/qmk/qmk_firmware/blob/master/keyboards/lily58/keymaps/default/keymap.c ) 
+- [qmk_firmware/keymap.c at master · qmk/qmk_firmware](https://github.com/qmk/qmk_firmware/blob/master/keyboards/lily58/keymaps/default/keymap.c)
 - [qmk firmware/keymap.c at master · magcho/qmk firmware](https://github.com/magcho/qmk_firmware/blob/master/keyboards/lily58/keymaps/magcho/keymap.c)
-- [Customizing Functionality - QMK Firmware](https://docs.qmk.fm/#/custom_quantum_functions?id=programming-the-behavior-of-any-keycode )
-- [Full List - QMK Firmware](https://docs.qmk.fm/#/keycodes ) 
+- [Customizing Functionality - QMK Firmware](https://docs.qmk.fm/#/custom_quantum_functions?id=programming-the-behavior-of-any-keycode)
+- [Full List - QMK Firmware](https://docs.qmk.fm/#/keycodes)

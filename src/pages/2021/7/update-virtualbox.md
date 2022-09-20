@@ -1,10 +1,10 @@
 ---
 layout: post
 title: virtualBoxをアップデートした
-category:  プログラミング
+category: プログラミング
 date: 2021-07-26
 tags:
-- homebrew
+  - homebrew
 ---
 
 昨日`brew update && brew upgrade`したらvirtualboxがアップデートできなかったので対応をメモ。
@@ -108,4 +108,5 @@ https://forum.macbidouille.com/index.php?showtopic=420332
 Bluetoothのペアリングをやり直して今回は対応終了。
 
 ## 最後に
+
 ザーッと検索したところ類似のエラーが起こっている人が少なかっので、自分が追加でインストールしているExtention Packに要因があるのかもしれないと思った。検証はしてないので予想。

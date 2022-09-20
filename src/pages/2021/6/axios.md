@@ -1,10 +1,10 @@
 ---
 layout: post
 title: AxiosにJWTつけてレスポンスに型もつけたい
-category:  プログラミング
+category: プログラミング
 date: 2021-06-11
 tags:
-- TypeScript
+  - TypeScript
 ---
 
 JWTを用いたAPIリクエストをするSPAをReactで作っていた中で、全てのAxiosのリクエストのヘッダーにJWTを付与してさらにレスポンスに型をつけたかった。
@@ -29,51 +29,48 @@ export interface AxiosResponse<T = any>  {
 しかし、Axiosは非同期的に使うと思うので`await axios.get()`の返り値は`AxiosPromise`ですが、以下のような型定義[^2]なので同じとみなせます。
 
 ```typescript
-export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {
-}
+export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
 ```
-
 
 ということは、以下のようなコードがかけます。
 
-
 `https://example.com/api/`のレスポンスが以下の型である時
+
 ```typescript
-interface ApiResponceType{
-  name: string,
+interface ApiResponceType {
+  name: string
   id: string
 }
 ```
 
-
 リクエストするAxiosのコードは
-```typescript
-import axios, { AxiosRequestConfig, AxiosResponce } from "axios";
 
-const responce = await axios.get<ApiResponceType>('https://example.com/api/');
+```typescript
+import axios, { AxiosRequestConfig, AxiosResponce } from 'axios'
+
+const responce = await axios.get<ApiResponceType>('https://example.com/api/')
 
 responce.data // ここの型がApiResponceTypeになる
 ```
-
 
 ## Bearerヘッダーを付与・JWTの有効期限も考慮する
 
 axiosのインスタンスを作り、そこにBearerヘッダーを付与しておきます。さらにaxiosのrequest/responceにミドルウェア的に処理を挟み込める仕組みとしてinterrceptors[^4]があるので、これを用いてJWTの有効期限が切れていた時はJWTの更新・再リクエストをおこないます。
 
 ```typescript
-import axios, { AxiosResponse, AxiosError, AxiosRequestConfig } from "axios";
+import axios, { AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios'
 
 export const apiClient = async <T, R = AxiosResponse<T>>(
   url: string,
-  method: "get" | "post",
+  method: 'get' | 'post',
   data?: any,
   headers?: Map<string, string>,
   ...requestConfig: any
 ): Promise<R> => {
   if (!user) {
-    throw new Error("undefined currentuser");
+    throw new Error('undefined currentuser')
   }
-  const jwtToken = getJwtToken(); // 👈 任意の方法で保持しているJWT
+  const jwtToken = getJwtToken() // 👈 任意の方法で保持しているJWT
 
   const config: AxiosRequestConfig = {
     ...requestConfig,
@@ -81,41 +78,36 @@ export const apiClient = async <T, R = AxiosResponse<T>>(
     method: method,
     data,
     headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${jwtToken}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwtToken}`,
       ...headers,
     },
-  };
+  }
 
-  const customAxios = axios.create();
+  const customAxios = axios.create()
 
-  let isRetry = false;
+  let isRetry = false
   customAxios.interceptors.response.use(
     (res: AxiosResponse<T>) => res,
     async (error: AxiosError) => {
-      if (error.response?.status === 401 && isRetry) { // 👈 JWT有効期限切れかつ一回目のリクエストである時
-        isRetry = true;
+      if (error.response?.status === 401 && isRetry) {
+        // 👈 JWT有効期限切れかつ一回目のリクエストである時
+        isRetry = true
         await refreshJwtToken()
 
-        const originalRequestConfig = error.config;
-        return customAxios.request(originalRequestConfig); // 👈 再度リクエスト
+        const originalRequestConfig = error.config
+        return customAxios.request(originalRequestConfig) // 👈 再度リクエスト
       } else {
-        return Promise.reject(error);
+        return Promise.reject(error)
       }
     }
-  );
-  return customAxios.request(config);
-};
+  )
+  return customAxios.request(config)
+}
 
-
-
-const responce = apiClient<ApiResponceType>('https://example.com/api/', {id: 1});
-responce.data  // 👈 ApiResponceTypeの型がつく
+const responce = apiClient<ApiResponceType>('https://example.com/api/', { id: 1 })
+responce.data // 👈 ApiResponceTypeの型がつく
 ```
-
-
-
-
 
 [^1]: https://github.com/axios/axios/blob/e9965bfafc82d8b42765705061b9ebe2d5532493/index.d.ts#L83-L90
 [^2]: https://github.com/axios/axios/blob/e9965bfafc82d8b42765705061b9ebe2d5532493/index.d.ts#L101

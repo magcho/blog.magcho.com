@@ -1,18 +1,19 @@
 ---
 layout: post
 title: GitHub Actionsのセルフホストランナーを試す
-category:  プログラミング
+category: プログラミング
 date: 2021-10-18
 tags:
-- github
+  - github
 ---
 
 ## 初めに
+
 GitHub Actionsには2000分/月の無料枠がありますがビジュアルテストなど時間がかかりそうなテストをたくさん回そうとすると足りなくなることがあります。GitHubが提供しているSelf hosted runnerのエージェントを自前で用意したマシンに入れることで代わりの実行環境として利用できます。
 
 ## VM
 
-Oracle cloudのARMマシンが余っていたのでこのマシンたちを利用して構築しました。[セルフホストランナーをサポートするアーキテクチャとオペレーティングシステム](https://docs.github.com/ja/actions/hosting-your-own-runners/about-self-hosted-runners#supported-architectures-and-operating-systems-for-self-hosted-runners )に記載されているようにLinuxであればARMでも利用できます。
+Oracle cloudのARMマシンが余っていたのでこのマシンたちを利用して構築しました。[セルフホストランナーをサポートするアーキテクチャとオペレーティングシステム](https://docs.github.com/ja/actions/hosting-your-own-runners/about-self-hosted-runners#supported-architectures-and-operating-systems-for-self-hosted-runners)に記載されているようにLinuxであればARMでも利用できます。
 
 ## インストール
 
@@ -31,7 +32,5 @@ self-hosted runnerをActionsで利用するには`runs-on: 'self-hosted'`とす�
 ## 雑感
 
 Githubの通常の実行環境であれば毎回マシンが破棄されるで依存パッケージ等のキャッシュや、環境変数など気を遣う部分が多かったのですがセルフホストランナーではマシンの環境変数やフォルダーへのアクセスができるので対応しやすいです。
-
-
 
 [^1]: https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#communication-between-self-hosted-runners-and-github

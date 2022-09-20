@@ -1,12 +1,12 @@
 ---
 layout: post
-title: "Goで作ったCLIツールのビルド・配布をGitHub Actionsで自動化する"
-category:  プログラミング
+title: 'Goで作ったCLIツールのビルド・配布をGitHub Actionsで自動化する'
+category: プログラミング
 date: 2020-04-06
 tags:
-- go
-- GitHub Actions
-- dotz
+  - go
+  - GitHub Actions
+  - dotz
 ---
 
 Goで作ったdotfiles管理ツールのdotzをビルド・バイナリ配布・homebrewのアップデートまでを自動化したメモ。
@@ -81,7 +81,7 @@ formulaのtestとformatを掛けたのち、formulaをuploadします。formula�
 
 [githubの個人設定](https://github.com/settings/tokens)からPersonal access tokenを払い出してリポジトリのSettingタブ->Secretsから任意の名前でsecretに登録しておきます。
 
-![](./0601.png) 
+![](./0601.png)
 
 あとはworkflowから`${{secrets.****}}`で参照できるのでtokenを渡しておきます。
 
@@ -94,7 +94,6 @@ formulaのtestとformatを掛けたのち、formulaをuploadします。formula�
 ```
 
 これにてtag付きでmasterにpushすれば勝手にリリースまでやってくれるようになります。
-
 
 ## おわり
 

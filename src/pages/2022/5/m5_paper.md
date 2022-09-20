@@ -1,7 +1,7 @@
 ---
 layout: post
 title: M5Paper V1.1にPlatform.ioから書き込みをする
-category:  電子工作
+category: 電子工作
 date: 2022-05-08
 tags:
   - M5Paper
@@ -10,10 +10,12 @@ tags:
 [M5Paper](https://switch-science.com/catalog/7359/)の出荷時に書き込まれているファームウェアーをベースに機能を追加してみようと思い[初期ファームウェア](https://github.com/m5stack/M5Paper_FactoryTest)をvscode(platform.io)で開いたもののビルドできない&書き込めなくて困ったので解決方法をメモ
 
 ## 環境
+
 - MacOS Monterey
 
 ## ビルドエラー
-初期ファームウェアのコード [m5stack/M5Paper_FactoryTest](https://github.com/m5stack/M5Paper_FactoryTest )  をクローンし、vscodeで開いた後、ビルドをするとエラーで完了しない。
+
+初期ファームウェアのコード [m5stack/M5Paper_FactoryTest](https://github.com/m5stack/M5Paper_FactoryTest) をクローンし、vscodeで開いた後、ビルドをするとエラーで完了しない。
 
 ```log
 Building in release mode
@@ -95,7 +97,6 @@ tty.wchusbserial52D20507581
 
 先ほどのエラーログを見る限り`/dev/cu.usbmodemXXXXXXX`を使おうとしてコケているので設定から`/dev/wchusbserialXXXXXX`を使うように指定してみる
 
-
 ```ini:title=platformio.ini
   ; PlatformIO Project Configuration File
   ;
@@ -114,7 +115,7 @@ tty.wchusbserial52D20507581
   upload_speed = 2000000
   monitor_speed = 115200
   board_build.partitions = default_16MB.csv
-  build_flags = 
+  build_flags =
  	-DCORE_DEBUG_LEVEL=4
  	-DBOARD_HAS_PSRAM
  	-mfix-esp32-psram-cache-issue
@@ -126,4 +127,5 @@ tty.wchusbserial52D20507581
 これでuploadを押すと書き込めるようになった。
 
 ## TODO
+
 後でPR投げておくかな

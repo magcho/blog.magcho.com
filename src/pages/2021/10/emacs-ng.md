@@ -4,10 +4,10 @@ title: emacs-ngをnative comp有効化してmacos向けにビルドした
 category: プログラミング
 date: 2021-10-11
 tags:
-- emacs
+  - emacs
 ---
 
-![](./emacs-1.png ) 
+![](./emacs-1.png)
 
 https://github.com/emacs-ng/emacs-ng
 
@@ -56,18 +56,18 @@ export RUSTFLAGS="$RUSTFLAGS -Ctarget-cpu=native"
 
 ./configure --with-json --without-x --with-native-compilation
 
-make -j$(nproc) 
+make -j$(nproc)
 ```
 
 makeコマンドによりrust部のコンパイル->emacs部のコンパイル(gcc)->lisp部のコンパイルが順に行われます。DenoはRust実装なので最初の段階でDeno runtimeがビルドされました。肝心のnative compはemacsの初回起動時に行われます、詳細は`native compile log`バッファに出力され、completeが表示されるまで20分ぐらい待ちました。
 
 ## 詰まりどころ
+
 自分はemacsをターミナルでしか使わないのでGUI関連を全て無くした`--without-x --without-ns`をしたかったのですが、`--without-ns`オプションを付与するとrust実装部分のコンパイルが通りませんでした。issueなどをみる感じ他の方はビルドできるっぽいのですが自分の環境では断念。NextStepがある分バイナリサイズが大きくなりますが、特にそれ以外に不都合はないのでこのままにしました。
 
 `--with-native-compilation`オブションを付与するとemacs部のコンパイル時に`clang: error: linker command failed with exit code 1 (use -v to see invocation)`で止まってしまいます。`fatal error: 'libgccjit.h' file not found`となっており、コンパイラへPATHが通っていないようです。
 
 この類のPATHは`./configure`時にcheckされるはずで、実際に`./configure`のログ内でもlibgccjitにOKが付いています、なので原因わからず。とりあえずコンパイラにPATHを渡せればいいのでhttps://github.com/jimeh/build-emacs-for-macos/issues/20 を参考にCFLAGS, LDFLAGS, LIBRARY_PATHにlibgccjitのPATHを付与してから`./configure`をやり直してめでたくビルド成功です。
-
 
 ## さいご
 
@@ -78,6 +78,5 @@ emacs lispからは`(eval-js 'xxx.js')`のような形でDenoランタイムを�
 従来のelispでパッケージを書いていたときは非同期な処理を書くのが難しいと感じていたのでサクッとasync/awaitで書けるJSでemacsのパッケージが作れるようになるのは嬉しいです。vimにも似たアプローチのDenops.vimがありますがそちらは通常のvimのプラグインとしてDeno runtimeを入れられるのでemacs-ngに比べると手軽ですね。
 
 Denops.vimのパッケージをemacs-ngに移植したりといったことから始めてみようと思います。
-
 
 [^1]: 本家EmacsのforkのREmacsのforkのemacs-ng？

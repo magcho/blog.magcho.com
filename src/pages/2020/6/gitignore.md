@@ -1,21 +1,20 @@
 ---
 layout: post
 title: .gitignoreを自動生成するサブコマンドを作ろう
-category:  プログラミング
+category: プログラミング
 date: 2020-06-14
 tags:
-- git
+  - git
 ---
 
 ## demo
-[![asciicast](https://asciinema.org/a/339422.svg)](https://asciinema.org/a/339422)
 
+[![asciicast](https://asciinema.org/a/339422.svg)](https://asciinema.org/a/339422)
 
 gitignoreを言語とに自動生成してくれるサービスはいくつかありますが、わざわざwebサイトを開くのも面倒です。
 幸いなことにgitignore.ioがapiを提供してくれています、これを利用してgitにサブコマンドを追加しましょう。
 
 ついでに.gitignoreを上書き・追記の確認・gitignore.ioにテンプレートが存在しない場合はエラーを表示などもあると親切ですね。shにするとこんな感じに。
-
 
 ```bash
 #!/bin/bash
@@ -48,7 +47,7 @@ if [ 200 = "${RES##*http_code=}" ]; then
 		echo "${RES%%http_code*}" > .gitignore
 	fi
 else
-	echo "$1 is undefined." 
+	echo "$1 is undefined."
 fi
 ```
 
@@ -63,11 +62,9 @@ fi
 ```
 
 ## 使い方
+
 ```bash
 git ignore [language]
 git ignore java
 git ignore node,stylus
 ```
-
-
-
