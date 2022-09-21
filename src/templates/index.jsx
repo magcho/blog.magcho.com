@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link, graphql } from 'gatsby'
 
-import Helmet from 'react-helmet'
-
 import Layout from '../components/layout'
 import Penguin from '../components/penguin'
 import '../templates/style.scss'
@@ -11,12 +9,22 @@ import PostTitle from '../components/posttitle'
 import ReadMore from '../components/readmore'
 import Ogp from '../components/ogp'
 
+export const Head = ({ data }) => {
+  const siteMetadata = data.site.siteMetadata
+
+  return (
+    <>
+      <title>{siteMetadata.title}</title>
+      <meta name="description" content="{siteMetadata.description}" />
+      <Ogp />
+    </>
+  )
+}
+
 const BlogIndex = ({ data, location, pageContext }) => {
   const siteMetadata = data.site.siteMetadata
   const posts = data.allMarkdownRemark.edges
-  const tagsList = data.allMarkdownRemark.group
 
-  // const index = this.props.pageContext.index
   const currentPageNum = pageContext.currentPage
 
   let previousPath
@@ -33,12 +41,6 @@ const BlogIndex = ({ data, location, pageContext }) => {
 
   return (
     <Layout siteTitle={siteMetadata.title} previousPath={previousPath} nextPath={nextPath}>
-      <Helmet
-        htmlAttributes={{ lang: 'ja' }}
-        meta={[{ name: 'description', content: siteMetadata.description }]}
-        title={siteMetadata.title}
-      />
-      <Ogp />
       {posts.map(({ node }) => {
         return (
           <article key={node.fields.slug}>

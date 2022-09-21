@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Helmet } from 'react-helmet'
 import { graphql } from 'gatsby'
 
 import Layout from '../components/layout'
@@ -9,28 +8,29 @@ import PostTitle from '../components/posttitle'
 import Ogp from '../components/ogp'
 import GithubLink from '../components/githubLink'
 
-const BlogPostTemplate = ({ data, location, pageContext }) => {
+export const Head = ({ data }) => {
   const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata.title
   const postDescription = post.excerpt
+
+  return (
+    <>
+      <title>{`${post.frontmatter.title} | ${siteTitle}`}</title>
+      <meta name="description" content={postDescription} />
+      <Ogp title={siteTitle} description={postDescription} />
+    </>
+  )
+}
+
+const BlogPostTemplate = ({ data, location, pageContext }) => {
+  const post = data.markdownRemark
+  const siteTitle = data.site.siteMetadata.title
 
   const previousPath = pageContext.previous ? pageContext.previous.fields.slug : null
   const nextPath = pageContext.next ? pageContext.next.fields.slug : null
 
   return (
     <Layout location={location} siteTitle={siteTitle} previousPath={previousPath} nextPath={nextPath}>
-      <Helmet
-        htmlAttributes={{ lang: 'ja' }}
-        meta={[
-          {
-            name: 'description',
-            content: postDescription,
-          },
-        ]}
-        title={`${post.frontmatter.title} | ${siteTitle}`}
-      />
-      <Ogp title={siteTitle} description={postDescription} />
-
       <article key={post.id}>
         <div className={'content-header'}>
           <div className={'title'}>

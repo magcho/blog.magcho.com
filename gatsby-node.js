@@ -64,7 +64,7 @@ exports.createPages = async ({ graphql, actions }) => {
   Array.from({ length: numPages }).forEach((_, i) => {
     createPage({
       path: i === 0 ? `/` : `/${i + 1}`,
-      component: path.resolve('./src/templates/index.jsx'),
+      component: indexTempalte,
       context: {
         limit: POST_PAR_PAGE,
         skip: i * POST_PAR_PAGE,

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Helmet } from 'react-helmet'
 import { graphql, Link } from 'gatsby'
 
 import Layout from '../components/layout'
@@ -11,25 +10,27 @@ import PostTitle from '../components/posttitle'
 import Ogp from '../components/ogp'
 import ReadMore from '../components/readmore'
 
-const TagsListTemplate = ({ location, pageContext, data }) => {
+export const Head = ({ data, pageContext }) => {
+  const tagName = pageContext.tagName
   const siteTitle = data.site.siteMetadata.title
   const siteDescription = data.site.siteMetadata.siteDescription
+
+  return (
+    <>
+      <title>{`${tagName} | ${siteTitle}`}</title>
+      <meta name="description" content={siteDescription} />
+      <Ogp title={siteTitle} description={siteDescription} />
+    </>
+  )
+}
+
+const TagsListTemplate = ({ location, pageContext, data }) => {
+  const siteTitle = data.site.siteMetadata.title
   const tagName = pageContext.tagName
   const postList = data.allMarkdownRemark.edges
 
   return (
     <Layout location={location} siteTitle={siteTitle} previous="" next="">
-      <Helmet
-        htmlAttributes={{ lang: 'ja' }}
-        meta={[
-          {
-            name: 'description',
-            content: siteDescription,
-          },
-        ]}
-        title={`${tagName} | ${siteTitle}`}
-      />
-      <Ogp />
       <h1 className="tag-name">#{tagName}</h1>
       {postList.map((item) => {
         const slug = item.node.fields.slug
