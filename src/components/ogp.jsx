@@ -1,8 +1,7 @@
 import * as React from 'react'
-import { Helmet } from 'react-helmet'
 import { useStaticQuery, graphql } from 'gatsby'
 
-const OgpHelmet = ({ description, title }) => {
+const Ogp = ({ description, title }) => {
   const { site } = useStaticQuery(graphql`
     query {
       site {
@@ -27,7 +26,6 @@ const OgpHelmet = ({ description, title }) => {
       <meta name="twitter:site" content={site.siteMetadata.social.twitter} />
       <meta name="twitter:player" content={site.siteMetadata.social.twitter} />
       <meta property="og:title" content={ogpTitle} />
-
       <meta property="og:description" content={ogpDescription} />
       <meta property="og:site_name" content={ogpTitle} />
       <meta property="og:image" content={`${site.siteMetadata.siteUrl}/twitter-icon.jpg`} />
@@ -35,4 +33,4 @@ const OgpHelmet = ({ description, title }) => {
   )
 }
 
-export default OgpHelmet
+export default Ogp

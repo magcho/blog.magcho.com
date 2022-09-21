@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Helmet } from 'react-helmet'
 import { Link, graphql } from 'gatsby'
 
 import '../templates/style.scss'
@@ -11,23 +10,26 @@ import Penguin from '../components/penguin'
 import Ogp from '../components/ogp'
 import ReadMore from '../components/readmore'
 
+export const Head = ({ data, pageContext }) => {
+  const categoryName = pageContext.categoryName
+  const siteTitle = data.site.siteMetadata.title
+  const siteDescription = data.site.siteMetadata.siteDescription
+
+  return (
+    <>
+      <title>{`${categoryName} | ${siteTitle}`}</title>
+      <meta name="description" content={siteDescription} />
+      <Ogp title={siteTitle} description={siteDescription} />
+    </>
+  )
+}
+
 const CategoryPostListTemplate = ({ data, location, pageContext }) => {
   const siteTitle = data.site.siteMetadata.title
   const postList = data.allMarkdownRemark.edges
 
   return (
     <Layout location={location} siteTitle={siteTitle} previous="" next="">
-      <Helmet
-        htmlAttributes={{ lang: 'ja' }}
-        meta={[
-          {
-            name: 'description',
-            content: data.site.siteMetadata.description,
-          },
-        ]}
-        title={`${pageContext.categoryName} | ${siteTitle}`}
-      />
-      <Ogp />
       <h1 className="tag-name">【{pageContext.categoryName}】</h1>
       {postList.map((item) => (
         <article key={item.node.fields.slug} className="post">

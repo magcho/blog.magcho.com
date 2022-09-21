@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link, graphql } from 'gatsby'
 
-import Helmet from 'react-helmet'
-
 import Layout from '../components/layout'
 import Penguin from '../components/penguin'
 import '../templates/style.scss'
@@ -16,10 +14,8 @@ export const Head = ({ data }) => {
 
   return (
     <>
-      <Helmet
-        meta={[{ name: 'description', content: siteMetadata.description }]}
-        title={siteMetadata.title}
-      />
+      <title>{siteMetadata.title}</title>
+      <meta name="description" content="{siteMetadata.description}" />
       <Ogp />
     </>
   )
