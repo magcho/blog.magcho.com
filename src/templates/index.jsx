@@ -66,7 +66,7 @@ const BlogIndex = ({ data, location, pageContext }) => {
 
 export default BlogIndex
 
-export const BlogListQuery = graphql`
+export const pageQuery = graphql`
   query blogListQuery($skip: Int!, $limit: Int!) {
     site {
       siteMetadata {
@@ -74,7 +74,11 @@ export const BlogListQuery = graphql`
         description
       }
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, limit: $limit, skip: $skip) {
+    allMarkdownRemark(
+      sort: { frontmatter: { date: DESC } }
+      limit: $limit
+      skip: $skip
+    ) {
       edges {
         node {
           excerpt(pruneLength: 400)
@@ -89,7 +93,7 @@ export const BlogListQuery = graphql`
           }
         }
       }
-      group(field: frontmatter___tags) {
+      group(field: {frontmatter: {tags: SELECT}}) {
         fieldValue
         edges {
           node {

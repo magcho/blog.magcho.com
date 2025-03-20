@@ -49,7 +49,7 @@ const CategoryPostListTemplate = ({ data, location, pageContext }) => {
 
 export default CategoryPostListTemplate
 
-export const categoryPostList = graphql`
+export const pageQuery = graphql`
   query CategoryPage($categoryName: String) {
     site {
       siteMetadata {
@@ -59,7 +59,7 @@ export const categoryPostList = graphql`
     }
     allMarkdownRemark(
       limit: 1000
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { category: { eq: $categoryName } } }
     ) {
       totalCount

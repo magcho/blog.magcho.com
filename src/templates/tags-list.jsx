@@ -59,7 +59,7 @@ const TagsListTemplate = ({ location, pageContext, data }) => {
 
 export default TagsListTemplate
 
-export const TagPostList = graphql`
+export const pageQuery = graphql`
   query TagPostList($tagName: String) {
     site {
       siteMetadata {
@@ -69,7 +69,7 @@ export const TagPostList = graphql`
     }
     allMarkdownRemark(
       limit: 1000
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { tags: { eq: $tagName } } }
     ) {
       edges {

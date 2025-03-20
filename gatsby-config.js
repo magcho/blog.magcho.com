@@ -44,18 +44,18 @@ module.exports = {
           'gatsby-remark-prismjs',
           'gatsby-remark-copy-linked-files',
           'gatsby-remark-smartypants',
-          {
-            resolve: `gatsby-remark-prismjs`,
-          },
         ],
       },
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
-      resolve: `gatsby-plugin-google-analytics`,
+      resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingId: `UA-125180742-2`,
+        trackingIds: [`UA-125180742-2`],
+        gtagConfig: {
+          anonymize_ip: true,
+        },
       },
     },
     {
@@ -89,7 +89,7 @@ module.exports = {
             query: `
               {
                 allMarkdownRemark(
-                  sort: { order: DESC, fields: [frontmatter___date] },
+                  sort: { frontmatter: { date: DESC } }
                 ) {
                   nodes {
                     excerpt
@@ -127,7 +127,6 @@ module.exports = {
     {
       resolve: `gatsby-plugin-sitemap`,
       options: {
-        output: `/sitemap.xml`,
         excludes: ['/category/*', `/tag/*`, `/dev-404-page/`, `/404/`, `/404.html`],
       },
     },
