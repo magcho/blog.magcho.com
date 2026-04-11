@@ -1,4 +1,5 @@
 const path = require(`path`)
+const fs = require('fs/promises')
 const { createFilePath } = require(`gatsby-source-filesystem`)
 const { execSync } = require('child_process')
 
@@ -15,7 +16,7 @@ exports.createPages = async ({ graphql, actions }) => {
           postParPage
         }
       }
-      allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, limit: 1000) {
+      allMarkdownRemark(sort: [{ frontmatter: { date: DESC } }], limit: 1000) {
         edges {
           node {
             excerpt(pruneLength: 400)
@@ -30,7 +31,7 @@ exports.createPages = async ({ graphql, actions }) => {
             }
           }
         }
-        group(field: frontmatter___tags) {
+        group(field: { frontmatter: { tags: SELECT } }) {
           fieldValue
           edges {
             node {
@@ -148,4 +149,61 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       value: fileRevisionCount,
     })
   }
+}
+
+exports.onPostBuild = async ({ reporter }) => {
+  const siteUrl = 'https://blog.magcho.com'
+  const excludedPaths = new Set([
+    '/404',
+    '/404/',
+    '/404.html',
+    '/dev-404-page',
+    '/dev-404-page/',
+    '/offline-plugin-app-shell-fallback',
+    '/offline-plugin-app-shell-fallback/',
+  ])
+  const pagesDir = path.join(__dirname, 'public', 'page-data')
+  const pageDataPaths = []
+
+  const collectPageDataPaths = async (dir) => {
+    const entries = await fs.readdir(dir, { withFileTypes: true })
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name)
+      if (entry.isDirectory()) {
+        await collectPageDataPaths(fullPath)
+        continue
+      }
+
+      if (entry.name !== 'page-data.json') {
+        continue
+      }
+
+      const relativePath = path.dirname(fullPath).replace(pagesDir, '') || '/'
+      pageDataPaths.push(relativePath === '/index' ? '/' : relativePath)
+    }
+  }
+
+  await collectPageDataPaths(pagesDir)
+
+  const pages = pageDataPaths
+    .filter((pagePath) => !excludedPaths.has(pagePath))
+    .filter((pagePath) => !pagePath.startsWith('/category/'))
+    .filter((pagePath) => !pagePath.startsWith('/tag/'))
+
+  const urls = [...new Set(pages)].sort()
+  const sitemap = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls.map(
+      (pagePath) =>
+        `  <url><loc>${new URL(pagePath, siteUrl).toString()}</loc><changefreq>daily</changefreq><priority>0.7</priority></url>`
+    ),
+    '</urlset>',
+    '',
+  ].join('\n')
+
+  const sitemapPath = path.join(__dirname, 'public', 'sitemap.xml')
+  await fs.rm(sitemapPath, { recursive: true, force: true })
+  await fs.writeFile(sitemapPath, sitemap)
+  reporter.info(`Generated sitemap.xml with ${urls.length} URLs`)
 }

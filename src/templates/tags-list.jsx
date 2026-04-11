@@ -13,7 +13,7 @@ import ReadMore from '../components/readmore'
 export const Head = ({ data, pageContext }) => {
   const tagName = pageContext.tagName
   const siteTitle = data.site.siteMetadata.title
-  const siteDescription = data.site.siteMetadata.siteDescription
+  const siteDescription = data.site.siteMetadata.description
 
   return (
     <>
@@ -69,7 +69,7 @@ export const TagPostList = graphql`
     }
     allMarkdownRemark(
       limit: 1000
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: [{ frontmatter: { date: DESC } }]
       filter: { frontmatter: { tags: { eq: $tagName } } }
     ) {
       edges {

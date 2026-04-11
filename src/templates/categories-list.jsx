@@ -13,7 +13,7 @@ import ReadMore from '../components/readmore'
 export const Head = ({ data, pageContext }) => {
   const categoryName = pageContext.categoryName
   const siteTitle = data.site.siteMetadata.title
-  const siteDescription = data.site.siteMetadata.siteDescription
+  const siteDescription = data.site.siteMetadata.description
 
   return (
     <>
@@ -59,7 +59,7 @@ export const categoryPostList = graphql`
     }
     allMarkdownRemark(
       limit: 1000
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: [{ frontmatter: { date: DESC } }]
       filter: { frontmatter: { category: { eq: $categoryName } } }
     ) {
       totalCount

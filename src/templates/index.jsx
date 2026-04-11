@@ -15,7 +15,7 @@ export const Head = ({ data }) => {
   return (
     <>
       <title>{siteMetadata.title}</title>
-      <meta name="description" content="{siteMetadata.description}" />
+      <meta name="description" content={siteMetadata.description} />
       <Ogp />
     </>
   )
@@ -74,7 +74,7 @@ export const BlogListQuery = graphql`
         description
       }
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, limit: $limit, skip: $skip) {
+    allMarkdownRemark(sort: [{ frontmatter: { date: DESC } }], limit: $limit, skip: $skip) {
       edges {
         node {
           excerpt(pruneLength: 400)
@@ -89,7 +89,7 @@ export const BlogListQuery = graphql`
           }
         }
       }
-      group(field: frontmatter___tags) {
+      group(field: { frontmatter: { tags: SELECT } }) {
         fieldValue
         edges {
           node {

@@ -1,4 +1,5 @@
 module.exports = {
+  trailingSlash: 'always',
   siteMetadata: {
     title: "magcho's blog",
     author: 'magcho',
@@ -41,7 +42,6 @@ module.exports = {
               className: 'code-title',
             },
           },
-          'gatsby-remark-prismjs',
           'gatsby-remark-copy-linked-files',
           'gatsby-remark-smartypants',
           {
@@ -53,44 +53,40 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
-      resolve: `gatsby-plugin-google-analytics`,
+      resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingId: `UA-125180742-2`,
+        trackingIds: [`UA-125180742-2`],
+        pluginConfig: {
+          head: true,
+        },
       },
     },
     {
       resolve: `gatsby-plugin-feed`,
       options: {
-        query: `
-          {
-            site {
-              siteMetadata {
-                title
-                description
-                siteUrl
-                site_url: siteUrl
-              }
-            }
-          }
-        `,
+        setup: () => ({
+          title: "magcho's blog",
+          description: 'magchoの日記とか思いつきを記録するブログ',
+          feed_url: 'https://blog.magcho.com/rss.xml',
+          site_url: 'https://blog.magcho.com',
+          language: 'ja',
+        }),
         feeds: [
           {
-            serialize: ({ query: { site, allMarkdownRemark } }) => {
+            serialize: ({ query: { allMarkdownRemark } }) => {
               return allMarkdownRemark.nodes.map((node) => {
                 return Object.assign({}, node.frontmatter, {
                   description: node.excerpt,
                   date: node.frontmatter.date,
-                  url: site.siteMetadata.siteUrl + node.fields.slug,
-                  guid: site.siteMetadata.siteUrl + node.fields.slug,
+                  url: `https://blog.magcho.com${node.fields.slug}`,
+                  guid: `https://blog.magcho.com${node.fields.slug}`,
                   custom_elements: [{ 'content:encoded': node.html }],
                 })
               })
             },
             query: `
               {
-                allMarkdownRemark(
-                  sort: { order: DESC, fields: [frontmatter___date] },
-                ) {
+                allMarkdownRemark(sort: [{ frontmatter: { date: DESC } }]) {
                   nodes {
                     excerpt
                     html
@@ -124,12 +120,5 @@ module.exports = {
       },
     },
     `gatsby-plugin-offline`,
-    {
-      resolve: `gatsby-plugin-sitemap`,
-      options: {
-        output: `/sitemap.xml`,
-        excludes: ['/category/*', `/tag/*`, `/dev-404-page/`, `/404/`, `/404.html`],
-      },
-    },
   ],
 }
