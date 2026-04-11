@@ -15,10 +15,10 @@ const Pagenate = ({ previousPath, nextPath }) => {
   if (previousPath) {
     previousComponent = (
       <div className="previous">
-        <Link to={`${previousPath}`}>
-          <img src={previousPenguin} alt="Previous" className="light-mode" />
-          <img src={previousPenguinWhite} alt="Previous" className="dark-mode" />
-          <p>←Previous</p>
+        <Link to={`${previousPath}`} aria-label="前のページへ">
+          <img src={previousPenguin} alt="" className="light-mode" aria-hidden="true" />
+          <img src={previousPenguinWhite} alt="" className="dark-mode" aria-hidden="true" />
+          <span>←Previous</span>
         </Link>
       </div>
     )
@@ -28,10 +28,10 @@ const Pagenate = ({ previousPath, nextPath }) => {
   if (nextPath) {
     nextComponent = (
       <div className="next">
-        <Link to={`${nextPath}`}>
-          <img src={nextPenguin} alt="Next" className="light-mode" />
-          <img src={nextPenguinWhite} alt="Next" className="dark-mode" />
-          <p>Next→</p>
+        <Link to={`${nextPath}`} aria-label="次のページへ">
+          <img src={nextPenguin} alt="" className="light-mode" aria-hidden="true" />
+          <img src={nextPenguinWhite} alt="" className="dark-mode" aria-hidden="true" />
+          <span>Next→</span>
         </Link>
       </div>
     )
@@ -40,10 +40,10 @@ const Pagenate = ({ previousPath, nextPath }) => {
   }
 
   return (
-    <div className="pagenate">
+    <nav className="pagenate" aria-label="Pagination">
       {previousComponent}
       {nextComponent}
-    </div>
+    </nav>
   )
 }
 

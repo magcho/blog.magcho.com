@@ -47,7 +47,9 @@ const BlogIndex = ({ data, location, pageContext }) => {
             <div className={'content-header'}>
               <div className={'title'}>
                 <Link to={node.fields.slug}>
-                  <PostTitle category={node.frontmatter.category}>{node.frontmatter.title}</PostTitle>
+                  <PostTitle category={node.frontmatter.category} level="h2">
+                    {node.frontmatter.title}
+                  </PostTitle>
                 </Link>
               </div>
               <Penguin category={node.frontmatter.category} date={node.frontmatter.date} />
@@ -55,7 +57,11 @@ const BlogIndex = ({ data, location, pageContext }) => {
             <div className={'content-body'}>
               <p className={'excerpt'} dangerouslySetInnerHTML={{ __html: node.excerpt }} />
             </div>
-            <ReadMore category={node.frontmatter.category} slug={node.fields.slug} />
+            <ReadMore
+              category={node.frontmatter.category}
+              slug={node.fields.slug}
+              title={node.frontmatter.title}
+            />
             <Tags list={node.frontmatter.tags || []} category={node.frontmatter.category || []} />
           </article>
         )

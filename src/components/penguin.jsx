@@ -32,9 +32,9 @@ class Penguin extends React.Component {
     }
     return (
       <div className="date">
-        <img src={src} className="penguin-shadow" />
+        <img src={src} className="penguin-shadow" alt="" aria-hidden="true" />
         <p>
-          <time detatime={this.props.date}>{this.props.date}</time>
+          <time dateTime={this.props.date}>{this.props.date}</time>
         </p>
       </div>
     )

@@ -118,9 +118,9 @@ body {
         border-bottom: dashed 1px rgba(255, 255, 255, 0.5);
       }
       a {
-        color: #00b4ff;
+        color: #005a9c;
         &:visited {
-          color: #1d9db3;
+          color: #5a2ca0;
         }
       }
 
@@ -164,7 +164,7 @@ body {
           color: white;
         }
       }
-      h1.title {
+      .title-flame > .title {
         font: {
           font-family: $font-gothic;
           weight: inherit;
@@ -241,9 +241,9 @@ body {
           line-height: 1.8rem;
           margin-bottom: 2rem;
           a {
-            color: #00b4ff;
+            color: #005a9c;
             &:visited {
-              color: #1d9db3;
+              color: #5a2ca0;
             }
           }
         }
@@ -383,7 +383,7 @@ body {
           float: left;
 
           a {
-            color: #00b4ff;
+            color: #005a9c;
             font-family: $font-pop;
           }
 
@@ -414,7 +414,7 @@ body {
     font-family: serif;
 
     box-sizing: border-box;
-    h1 {
+    h2 {
       margin: {
         bottom: 10px;
       }
@@ -491,16 +491,16 @@ body {
     }
 
     a {
-      p {
+      span {
         margin: {
           top: 0px;
           bottom: 0;
         }
         font-family: $font-pop;
       }
-      color: #00b4ff;
+      color: #005a9c;
       &:visited {
-        color: #1d9db3;
+        color: #5a2ca0;
       }
     }
 
