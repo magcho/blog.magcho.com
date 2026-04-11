@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 $breakpoints: (
   'sm': 'screen and (max-width: 768px)',
   'pc': 'screen and (min-width: 769px)',
@@ -9,7 +11,7 @@ $font-pop: 'ヒラギノ丸ゴ Pro W4', 'ヒラギノ丸ゴ Pro', 'Hiragino Maru
   'Hiragino Kaku Gothic Pro', 'HG丸ｺﾞｼｯｸM-PRO', 'HGMaruGothicMPRO';
 
 @mixin mq($breakpoint: sm) {
-  @media #{map-get($breakpoints, $breakpoint)} {
+  @media #{map.get($breakpoints, $breakpoint)} {
     @content;
   }
 }
