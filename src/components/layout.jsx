@@ -59,13 +59,14 @@ const Template = ({ parent, siteTitle, children, previousPath, nextPath }) => {
   }
   return (
     <>
+      <a className="skip-link" href="#main-content">本文へ移動</a>
       <header style={headerStyle}>
-        <Link to={'/'} style={headerAnkerStyle}>
+        <Link to={'/'} style={headerAnkerStyle} aria-label={`${siteTitle} のトップページ`}>
           <div className="title">{siteTitle}</div>
         </Link>
       </header>
       <div className="mainframe">
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <AllCategories />
         <AllTags />
         <Pagenate previousPath={previousPath} nextPath={nextPath} />

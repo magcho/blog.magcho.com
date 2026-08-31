@@ -28,7 +28,30 @@ $font-pop: 'ヒラギノ丸ゴ Pro W4', 'ヒラギノ丸ゴ Pro', 'Hiragino Maru
 }
 
 body {
-  margin: 0;
+  --color-link: #006d9c;
+  --color-focus: #022547;
+
+  .skip-link {
+    position: fixed;
+    z-index: 10;
+    top: 0.5rem;
+    left: 0.5rem;
+    transform: translateY(-150%);
+    background: #ffffff;
+    color: #022547;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--color-focus);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  a:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
   @include dark-mode {
     background-color: #1a2937;
     color: #c5c8c6;
@@ -118,7 +141,7 @@ body {
         border-bottom: dashed 1px rgba(255, 255, 255, 0.5);
       }
       a {
-        color: #00b4ff;
+        color: var(--color-link);
         &:visited {
           color: #1d9db3;
         }
@@ -164,7 +187,7 @@ body {
           color: white;
         }
       }
-      h1.title {
+      .title-flame > .title {
         font: {
           font-family: $font-gothic;
           weight: inherit;
@@ -241,7 +264,7 @@ body {
           line-height: 1.8rem;
           margin-bottom: 2rem;
           a {
-            color: #00b4ff;
+            color: var(--color-link);
             &:visited {
               color: #1d9db3;
             }
@@ -383,7 +406,7 @@ body {
           float: left;
 
           a {
-            color: #00b4ff;
+            color: var(--color-link);
             font-family: $font-pop;
           }
 
@@ -446,7 +469,7 @@ body {
           color: #022547;
           font-family: $font-pop;
           @include dark-mode {
-            color: #00b4ff;
+            color: var(--color-link);
             line-height: 1.8rem;
             font-family: $font-gothic;
           }
@@ -498,7 +521,7 @@ body {
         }
         font-family: $font-pop;
       }
-      color: #00b4ff;
+      color: var(--color-link);
       &:visited {
         color: #1d9db3;
       }
