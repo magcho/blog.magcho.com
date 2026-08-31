@@ -41,13 +41,18 @@ const BlogIndex = ({ data, location, pageContext }) => {
 
   return (
     <Layout siteTitle={siteMetadata.title} previousPath={previousPath} nextPath={nextPath}>
+      <header className="listing-heading">
+        <h1>最新の記事</h1>
+      </header>
       {posts.map(({ node }) => {
         return (
-          <article key={node.fields.slug}>
+          <article key={node.fields.slug} className="post listing-card">
             <div className={'content-header'}>
               <div className={'title'}>
                 <Link to={node.fields.slug}>
-                  <PostTitle category={node.frontmatter.category}>{node.frontmatter.title}</PostTitle>
+                  <PostTitle category={node.frontmatter.category} level="h2">
+                    {node.frontmatter.title}
+                  </PostTitle>
                 </Link>
               </div>
               <Penguin category={node.frontmatter.category} date={node.frontmatter.date} />
@@ -77,7 +82,7 @@ export const BlogListQuery = graphql`
     allMarkdownRemark(sort: [{ frontmatter: { date: DESC } }], limit: $limit, skip: $skip) {
       edges {
         node {
-          excerpt(pruneLength: 400)
+          excerpt(pruneLength: 180)
           fields {
             slug
           }
@@ -94,7 +99,7 @@ export const BlogListQuery = graphql`
         edges {
           node {
             id
-            excerpt(pruneLength: 400)
+            excerpt(pruneLength: 180)
             frontmatter {
               date(formatString: "MM/DD")
               title
