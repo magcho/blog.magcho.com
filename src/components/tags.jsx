@@ -21,9 +21,10 @@ const TagLinks = ({ tags }) =>
     </li>
   ))
 
-const Tags = ({ list = [], category }) => {
-  const visibleTags = list.slice(0, MAX_VISIBLE_TAGS)
-  const hiddenTags = list.slice(MAX_VISIBLE_TAGS)
+const Tags = ({ list, category }) => {
+  const safeList = Array.isArray(list) ? list : []
+  const visibleTags = safeList.slice(0, MAX_VISIBLE_TAGS)
+  const hiddenTags = safeList.slice(MAX_VISIBLE_TAGS)
 
   return (
     <ul className="content-tags">
