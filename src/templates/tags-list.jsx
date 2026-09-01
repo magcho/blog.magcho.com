@@ -31,9 +31,9 @@ const TagsListTemplate = ({ location, pageContext, data }) => {
 
   return (
     <Layout location={location} siteTitle={siteTitle} previous="" next="">
-      <header className="listing-heading">
+      <div className="listing-heading">
         <h1>タグ: #{tagName}</h1>
-      </header>
+      </div>
       {postList.map((item) => {
         const slug = item.node.fields.slug
         const title = item.node.frontmatter.title

@@ -30,9 +30,9 @@ const CategoryPostListTemplate = ({ data, location, pageContext }) => {
 
   return (
     <Layout location={location} siteTitle={siteTitle} previous="" next="">
-      <header className="listing-heading">
+      <div className="listing-heading">
         <h1>カテゴリー: 【{pageContext.categoryName}】</h1>
-      </header>
+      </div>
       {postList.map((item) => (
         <article key={item.node.fields.slug} className="post listing-card">
           <Link to={item.node.fields.slug}>

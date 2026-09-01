@@ -41,9 +41,9 @@ const BlogIndex = ({ data, location, pageContext }) => {
 
   return (
     <Layout siteTitle={siteMetadata.title} previousPath={previousPath} nextPath={nextPath}>
-      <header className="listing-heading">
+      <div className="listing-heading">
         <h1>最新の記事</h1>
-      </header>
+      </div>
       {posts.map(({ node }) => {
         return (
           <article key={node.fields.slug} className="post listing-card">
