@@ -32,7 +32,7 @@ const TagsListTemplate = ({ location, pageContext, data }) => {
   return (
     <Layout location={location} siteTitle={siteTitle} previous="" next="">
       <div className="listing-heading">
-        <h1>タグ: #{tagName}</h1>
+        <h1>#{tagName}</h1>
       </div>
       {postList.map((item) => {
         const slug = item.node.fields.slug
