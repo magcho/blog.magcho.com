@@ -20,8 +20,8 @@ const AllTags = () => {
   })
 
   return (
-    <nav className="tag-link">
-      <h1 className="title">Tags</h1>
+    <nav className="tag-link" aria-labelledby="tags-heading">
+      <h2 id="tags-heading" className="title">Tags</h2>
       <ul>
         {tags.map((tag) => {
           if (tag.fieldValue == '') {

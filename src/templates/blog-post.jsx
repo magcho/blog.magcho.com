@@ -34,7 +34,7 @@ const BlogPostTemplate = ({ data, location, pageContext }) => {
       <article key={post.id}>
         <div className={'content-header'}>
           <div className={'title'}>
-            <PostTitle category={post.frontmatter.category}>{post.frontmatter.title}</PostTitle>
+            <PostTitle level="h1" category={post.frontmatter.category}>{post.frontmatter.title}</PostTitle>
           </div>
         </div>
         <div id="article-meta">
