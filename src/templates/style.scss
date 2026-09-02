@@ -53,6 +53,8 @@ body {
   }
 
   @include dark-mode {
+    --color-link: #00b4ff;
+    --color-focus: #ffffff;
     background-color: #1a2937;
     color: #c5c8c6;
   }

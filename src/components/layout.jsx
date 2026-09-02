@@ -66,7 +66,7 @@ const Template = ({ parent, siteTitle, children, previousPath, nextPath }) => {
         </Link>
       </header>
       <div className="mainframe">
-        <main id="main-content">{children}</main>
+        <main id="main-content" tabIndex="-1">{children}</main>
         <AllCategories />
         <AllTags />
         <Pagenate previousPath={previousPath} nextPath={nextPath} />
