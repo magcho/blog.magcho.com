@@ -2,6 +2,7 @@ import React from 'react'
 
 class PostTitle extends React.Component {
   render() {
+    const Heading = this.props.level || 'h1'
     let color
     switch (this.props.category) {
       case '舞台技術':
@@ -26,14 +27,14 @@ class PostTitle extends React.Component {
     }
     return (
       <div className="title-flame">
-        <h1
+        <Heading
           className="title"
           style={{
             borderBottom: `solid ${color} 0.3rem`,
           }}
         >
           {this.props.children}
-        </h1>
+        </Heading>
       </div>
     )
   }
