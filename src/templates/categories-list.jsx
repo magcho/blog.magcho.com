@@ -30,12 +30,16 @@ const CategoryPostListTemplate = ({ data, location, pageContext }) => {
 
   return (
     <Layout location={location} siteTitle={siteTitle} previous="" next="">
-      <h1 className="tag-name">【{pageContext.categoryName}】</h1>
+      <div className="listing-heading">
+        <h1>【{pageContext.categoryName}】</h1>
+      </div>
       {postList.map((item) => (
-        <article key={item.node.fields.slug} className="post">
+        <article key={item.node.fields.slug} className="post listing-card">
           <Link to={item.node.fields.slug}>
             <div className="eyecatch" />
-            <PostTitle category={pageContext.categoryName}>{item.node.frontmatter.title}</PostTitle>
+            <PostTitle category={pageContext.categoryName} level="h2">
+              {item.node.frontmatter.title}
+            </PostTitle>
             <Penguin category={pageContext.categoryName} date={item.node.frontmatter.date} />
             <p className="excerpt">{item.node.excerpt}</p>
           </Link>
@@ -65,7 +69,7 @@ export const categoryPostList = graphql`
       totalCount
       edges {
         node {
-          excerpt(pruneLength: 400)
+          excerpt(pruneLength: 180)
           fields {
             slug
           }

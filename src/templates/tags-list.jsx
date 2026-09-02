@@ -31,7 +31,9 @@ const TagsListTemplate = ({ location, pageContext, data }) => {
 
   return (
     <Layout location={location} siteTitle={siteTitle} previous="" next="">
-      <h1 className="tag-name">#{tagName}</h1>
+      <div className="listing-heading">
+        <h1>#{tagName}</h1>
+      </div>
       {postList.map((item) => {
         const slug = item.node.fields.slug
         const title = item.node.frontmatter.title
@@ -41,10 +43,12 @@ const TagsListTemplate = ({ location, pageContext, data }) => {
         const excerpt = item.node.excerpt
 
         return (
-          <article key={slug} className="post">
+          <article key={slug} className="post listing-card">
             <Link to={slug}>
               <div className="eyecatch" />
-              <PostTitle category={category}>{title}</PostTitle>
+              <PostTitle category={category} level="h2">
+                {title}
+              </PostTitle>
               <Penguin category={category} date={date} />
               <p className="excerpt">{excerpt}</p>
             </Link>
@@ -74,7 +78,7 @@ export const TagPostList = graphql`
     ) {
       edges {
         node {
-          excerpt(pruneLength: 400)
+          excerpt(pruneLength: 180)
           fields {
             slug
           }

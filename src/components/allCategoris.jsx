@@ -14,8 +14,8 @@ const AllCategories = () => {
 
   const categories = allMarkdownRemark.group.map((category) => category.fieldValue)
   return (
-    <nav className="category-link">
-      <h1 className="title">Categories</h1>
+    <nav className="category-link" aria-labelledby="categories-heading">
+      <h2 id="categories-heading" className="title">Categories</h2>
       <ul>
         {categories.map((category) => {
           return (
